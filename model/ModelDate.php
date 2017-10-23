@@ -19,9 +19,18 @@ class ModelDate
      * @var int
      */
     private $annee;
-    
 
-    // a constructor
+	/**
+	 * @var string
+	 */
+	static protected $object = "Date";
+
+	/**
+	 * @var string
+	 */
+	static protected $primary;//TODO
+
+	// a constructor
     public function __construct($j = NULL, $m = NULL, $a=NULL) {
         if (!is_null($j) && !is_null($m) && !is_null($a)) {
             $this->jour=$j;

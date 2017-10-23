@@ -8,8 +8,17 @@
 	 */
 	class Model
 	{
+		/**
+		 * @var PDO
+		 */
 		public static $pdo;
+		/**
+		 * @var String
+		 */
 		protected static $object;
+		/**
+		 * @var String
+		 */
 		protected static $primary;
 
 		public static function Init ()
@@ -31,7 +40,9 @@
 				die(); //supprimer equilvalent à System.exit(1); en java
 			}
 		}
-
+		/**
+		 * @return mixed
+		 */
 		/*
 		 * Cette fonction sera utilisé par les Model-fils où
 		 * les informations tel que "object" seront spécifié.
@@ -51,7 +62,11 @@
 			return $req_prep -> fetchAll ();
 		}
 
-
+		/**
+		 * @param $primary_value
+		 *
+		 * @return bool
+		 */
 		/*
 		 * Cette fonction prend en valeur une valeur correspondant à l'une des valeurs de clés primaires
 		 * et retourne le premier tuple trouvé.
@@ -75,6 +90,10 @@
 
 			return $tab_rep[ 0 ];
 		}
+
+		/**
+		 * @param $primary_value
+		 */
 
 		/*
 		* Cette fonction prend en valeur une valeur correspondant à l'une des valeurs de clés primaires
