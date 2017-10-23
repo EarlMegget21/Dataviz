@@ -1,8 +1,8 @@
 <?php
-require_once File::build_path(array('Config','Conf.php'));
+require_once File::build_path(array('config','Conf.php'));
 
 /**
- * Description of Model
+ * Description of model
  *
  * @author sonettir
  */

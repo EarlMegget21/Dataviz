@@ -61,7 +61,7 @@ class ModelEvent
     
     public static function getAllEvent(){
         try{
-            $rep=Model::$pdo->query('SELECT * FROM Event');
+            $rep=Model::$pdo->query('SELECT * FROM event');
             $tab_event=$rep->fetchAll(PDO::FETCH_CLASS, 'ModelEvent');
             return $tab_event;
         } catch(PDOException $e){
@@ -72,7 +72,7 @@ class ModelEvent
     
     public static function getEventById($id) {
 	// In the query, put tags :xxx instead of variables $xxx
-    $sql = "SELECT * from Event WHERE id=:nom_tag";
+    $sql = "SELECT * from event WHERE id=:nom_tag";
         try{
             // Prepare the SQL statement
             $req_prep = Model::$pdo->prepare($sql);
@@ -99,7 +99,7 @@ class ModelEvent
     }
     
     public function save() {
-        $sql = "INSERT INTO Event (date, coordonneesX, coordonneesY, description, nom, login) VALUES(:date, :coordonneesX, :coordonneesY, :description, :nom, :login)";
+        $sql = "INSERT INTO event (date, coordonneesX, coordonneesY, description, nom, login) VALUES(:date, :coordonneesX, :coordonneesY, :description, :nom, :login)";
         try{
             $req_prep = Model::$pdo->prepare($sql);
 
@@ -120,7 +120,7 @@ class ModelEvent
     }
     
     public function update($id) {
-        $sql = "UPDATE Event SET date=:date, coordonneesX=:coordonneesX, coordonneesY=:coordonneesY, description=:description, nom=:nom, login=:login WHERE id='$id'";
+        $sql = "UPDATE event SET date=:date, coordonneesX=:coordonneesX, coordonneesY=:coordonneesY, description=:description, nom=:nom, login=:login WHERE id='$id'";
         try{
             $req_prep = Model::$pdo->prepare($sql);
 
@@ -141,7 +141,7 @@ class ModelEvent
     }
     
     public static function delete($id) {
-        $sql = "DELETE FROM Event WHERE id='$id'";
+        $sql = "DELETE FROM event WHERE id='$id'";
         try{
             $req_prep = Model::$pdo->prepare($sql);
             $req_prep->execute();

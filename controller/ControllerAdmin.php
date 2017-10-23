@@ -1,5 +1,5 @@
 <?php
-//Ctrl+H permet de remplacer les mots par un autre Event->Admin
+//Ctrl+H permet de remplacer les mots par un autre event->admin
 require_once File::build_path(array('Model','ModelAdmin.php')); // chargement du modèle
 class ControllerAdmin {
     public static function readAll() {
@@ -7,28 +7,28 @@ class ControllerAdmin {
           //"redirige" vers la vue (pas require_once car on peut appeler plusieur fois dans le code pour 'copier' le html à la manière d'un include en C
         $pagetitle='ListAdmin';
         $view='ListAdmin';
-        $controller='Admin';
-        require File::build_path(array('View','View.php'));
+        $controller='admin';
+        require File::build_path(array('view','view.php'));
     }
     public static function read() {
         $immat=$_GET['immatriculation'];
         if(!$v = ModelAdmin::getAdminByImmat($immat)){
             $pagetitle='Error!';
             $view='Error';
-            $controller='Main';
-            require File::build_path(array('View','View.php'));
+            $controller='main';
+            require File::build_path(array('view','view.php'));
         } else {
             $pagetitle='DetailAdmin';
             $view='DetailAdmin';
-            $controller='Admin';
-            require File::build_path(array('View','View.php'));
+            $controller='admin';
+            require File::build_path(array('view','view.php'));
         }   
     }
     public static function create() {
         $pagetitle='Create';
         $view='Create';
-        $controller='Admin';
-        require File::build_path(array('View','View.php'));
+        $controller='admin';
+        require File::build_path(array('view','view.php'));
     }
     public static function created() {
 //        $tab_v=array(
@@ -39,21 +39,21 @@ class ControllerAdmin {
         if(!$car1->save()){ //NULL est interprété comme non vrai aussi donc soit on return true en cas de succès soit on teste si $car1->save() === false (le === check si c'est bien un boolean et si c'est false donc si c'est NULL ça ne sera pas un boolean)
             $pagetitle='Error!';
             $view='Error';
-            $controller='Main';
-            require File::build_path(array('View','View.php'));
+            $controller='main';
+            require File::build_path(array('view','view.php'));
         } else {
             $tab_v = ModelAdmin::getAllAdmin();
             $pagetitle='ListAdmin';
             $view='Created';
-            $controller='Admin';
-            require File::build_path(array('View','View.php'));
+            $controller='admin';
+            require File::build_path(array('view','view.php'));
         }
     }
     public static function update() {
         $pagetitle='Update';
         $view='Update';
-        $controller='Admin';
-        require File::build_path(array('View','View.php'));
+        $controller='admin';
+        require File::build_path(array('view','view.php'));
     }
     public static function updated() {
 //        $tab_v=array(
@@ -64,14 +64,14 @@ class ControllerAdmin {
         if(!$car1->update($_GET['immatriculation'])){ //NULL est interprété comme non vrai aussi donc soit on return true en cas de succès soit on teste si $car1->save() === false (le === check si c'est bien un boolean et si c'est false donc si c'est NULL ça ne sera pas un boolean)
             $pagetitle='Error!';
             $view='Error';
-            $controller='Main';
-            require File::build_path(array('View','View.php'));
+            $controller='main';
+            require File::build_path(array('view','view.php'));
         } else {
             $v = ModelAdmin::getAdminByImmat($_GET["immatriculation"]);
             $pagetitle='DetailAdmin';
             $view='Updated';
-            $controller='Admin';
-            require File::build_path(array('View','View.php'));
+            $controller='admin';
+            require File::build_path(array('view','view.php'));
         }
     }
     public static function delete() {
@@ -79,7 +79,7 @@ class ControllerAdmin {
         $tab_v = ModelAdmin::getAllAdmin();
         $pagetitle='ListAdmin';
         $view='Deleted';
-        $controller='Admin';
-        require File::build_path(array('View','View.php'));
+        $controller='admin';
+        require File::build_path(array('view','view.php'));
     }
 }
