@@ -8,6 +8,8 @@ require_once File::build_path(array('config','Conf.php'));
  */
 class Model {
     public static $pdo;
+	protected static $object;
+	protected static $primary;
 
     public static function Init(){
         $hostname=Conf::getHostname();
@@ -25,7 +27,21 @@ class Model {
            }
             die(); //supprimer equilvalent à System.exit(1); en java
         }
-            
     }
+	public static function selectAll ()
+	{
+
+		$table_name = [ "name" => static ::$object ];
+		$class_name = 'Model' . ucfirst ( static ::$object );
+		$sql = "SELECT * FROM " . $table_name[ "name" ];
+
+		$req_prep = Model ::$pdo -> prepare ( $sql );
+		$req_prep -> execute ();
+
+		$req_prep -> setFetchMode ( PDO::FETCH_CLASS , $class_name );
+
+		return $req_prep -> fetchAll ();
+	}
+
 }
 Model::Init();
