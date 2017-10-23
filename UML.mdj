@@ -63,8 +63,7 @@
 											"autoResize": false,
 											"underline": false,
 											"horizontalAlignment": 2,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "LabelView",
@@ -87,10 +86,9 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "Event",
+											"text": "ModelEvent",
 											"horizontalAlignment": 2,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "LabelView",
@@ -115,8 +113,7 @@
 											"underline": false,
 											"text": "(from Model)",
 											"horizontalAlignment": 2,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "LabelView",
@@ -140,8 +137,7 @@
 											"autoResize": false,
 											"underline": false,
 											"horizontalAlignment": 1,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										}
 									],
 									"visible": true,
@@ -205,10 +201,9 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+date: Date",
+											"text": "-date: Date",
 											"horizontalAlignment": 0,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "UMLAttributeView",
@@ -234,10 +229,9 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+CoordonneeX: float",
+											"text": "-CoordonneeX: float",
 											"horizontalAlignment": 0,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "UMLAttributeView",
@@ -263,10 +257,9 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+CoordonneeY: float",
+											"text": "-CoordonneeY: float",
 											"horizontalAlignment": 0,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "UMLAttributeView",
@@ -292,10 +285,9 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Description: String",
+											"text": "-Description: String",
 											"horizontalAlignment": 0,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "UMLAttributeView",
@@ -321,10 +313,9 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Mp3: Mp3",
+											"text": "-Mp3: Mp3",
 											"horizontalAlignment": 0,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "UMLAttributeView",
@@ -350,10 +341,9 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+id: int",
+											"text": "-id: int",
 											"horizontalAlignment": 0,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "UMLAttributeView",
@@ -379,10 +369,9 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+nom: String",
+											"text": "-nom: String",
 											"horizontalAlignment": 0,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										}
 									],
 									"visible": true,
@@ -549,15 +538,14 @@
 											"showShadow": true,
 											"containerChangeable": false,
 											"containerExtending": false,
-											"left": -16,
+											"left": -32,
 											"top": -16,
 											"width": 0,
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
 											"horizontalAlignment": 2,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "LabelView",
@@ -574,16 +562,15 @@
 											"showShadow": true,
 											"containerChangeable": false,
 											"containerExtending": false,
-											"left": 573,
+											"left": 565,
 											"top": 247,
-											"width": 63.57177734375,
+											"width": 103,
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "Utilisateur",
+											"text": "ModelUtilisateur",
 											"horizontalAlignment": 2,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "LabelView",
@@ -600,7 +587,7 @@
 											"showShadow": true,
 											"containerChangeable": false,
 											"containerExtending": false,
-											"left": -16,
+											"left": -32,
 											"top": -16,
 											"width": 73.67724609375,
 											"height": 13,
@@ -608,8 +595,7 @@
 											"underline": false,
 											"text": "(from Model)",
 											"horizontalAlignment": 2,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "LabelView",
@@ -626,15 +612,14 @@
 											"showShadow": true,
 											"containerChangeable": false,
 											"containerExtending": false,
-											"left": -16,
+											"left": -32,
 											"top": -16,
 											"width": 0,
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
 											"horizontalAlignment": 1,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										}
 									],
 									"visible": true,
@@ -646,9 +631,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 568,
+									"left": 560,
 									"top": 240,
-									"width": 73.57177734375,
+									"width": 113,
 									"height": 25,
 									"autoResize": false,
 									"stereotypeLabel": {
@@ -682,9 +667,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 568,
+									"left": 560,
 									"top": 265,
-									"width": 73.57177734375,
+									"width": 113,
 									"height": 10,
 									"autoResize": false
 								},
@@ -706,9 +691,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 568,
+									"left": 560,
 									"top": 275,
-									"width": 73.57177734375,
+									"width": 113,
 									"height": 10,
 									"autoResize": false
 								},
@@ -730,7 +715,7 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": -8,
+									"left": -16,
 									"top": -8,
 									"width": 10,
 									"height": 10,
@@ -754,7 +739,7 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": -8,
+									"left": -16,
 									"top": -8,
 									"width": 10,
 									"height": 10,
@@ -770,9 +755,9 @@
 							"showShadow": true,
 							"containerChangeable": true,
 							"containerExtending": false,
-							"left": 568,
+							"left": 560,
 							"top": 240,
-							"width": 73.57177734375,
+							"width": 113,
 							"height": 45,
 							"autoResize": false,
 							"stereotypeDisplay": "label",
@@ -844,8 +829,7 @@
 											"autoResize": false,
 											"underline": false,
 											"horizontalAlignment": 2,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "LabelView",
@@ -864,14 +848,13 @@
 											"containerExtending": false,
 											"left": 509,
 											"top": 55,
-											"width": 41.919921875,
+											"width": 80,
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "Admin",
+											"text": "ModelAdmin",
 											"horizontalAlignment": 2,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "LabelView",
@@ -896,8 +879,7 @@
 											"underline": false,
 											"text": "(from Model)",
 											"horizontalAlignment": 2,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										},
 										{
 											"_type": "LabelView",
@@ -921,8 +903,7 @@
 											"autoResize": false,
 											"underline": false,
 											"horizontalAlignment": 1,
-											"verticalAlignment": 5,
-											"wordWrap": false
+											"verticalAlignment": 5
 										}
 									],
 									"visible": true,
@@ -936,7 +917,7 @@
 									"containerExtending": false,
 									"left": 504,
 									"top": 48,
-									"width": 51.919921875,
+									"width": 90,
 									"height": 25,
 									"autoResize": false,
 									"stereotypeLabel": {
@@ -972,7 +953,7 @@
 									"containerExtending": false,
 									"left": 504,
 									"top": 73,
-									"width": 51.919921875,
+									"width": 90,
 									"height": 10,
 									"autoResize": false
 								},
@@ -996,7 +977,7 @@
 									"containerExtending": false,
 									"left": 504,
 									"top": 83,
-									"width": 51.919921875,
+									"width": 90,
 									"height": 10,
 									"autoResize": false
 								},
@@ -1060,7 +1041,7 @@
 							"containerExtending": false,
 							"left": 504,
 							"top": 48,
-							"width": 51.919921875,
+							"width": 90,
 							"height": 45,
 							"autoResize": false,
 							"stereotypeDisplay": "label",
@@ -1098,7 +1079,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Event",
+					"name": "ModelEvent",
 					"visibility": "public",
 					"attributes": [
 						{
@@ -1108,7 +1089,7 @@
 								"$ref": "AAAAAAFfSEwjTBxoSvQ="
 							},
 							"name": "date",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "Date",
@@ -1126,7 +1107,7 @@
 								"$ref": "AAAAAAFfSEwjTBxoSvQ="
 							},
 							"name": "CoordonneeX",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "float",
@@ -1144,7 +1125,7 @@
 								"$ref": "AAAAAAFfSEwjTBxoSvQ="
 							},
 							"name": "CoordonneeY",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "float",
@@ -1162,7 +1143,7 @@
 								"$ref": "AAAAAAFfSEwjTBxoSvQ="
 							},
 							"name": "Description",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "String",
@@ -1180,7 +1161,7 @@
 								"$ref": "AAAAAAFfSEwjTBxoSvQ="
 							},
 							"name": "Mp3",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "Mp3",
@@ -1198,7 +1179,7 @@
 								"$ref": "AAAAAAFfSEwjTBxoSvQ="
 							},
 							"name": "id",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "int",
@@ -1216,7 +1197,7 @@
 								"$ref": "AAAAAAFfSEwjTBxoSvQ="
 							},
 							"name": "nom",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "String",
@@ -1239,7 +1220,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Utilisateur",
+					"name": "ModelUtilisateur",
 					"visibility": "public",
 					"isAbstract": false,
 					"isFinalSpecialization": false,
@@ -1252,7 +1233,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Admin",
+					"name": "ModelAdmin",
 					"visibility": "public",
 					"isAbstract": false,
 					"isFinalSpecialization": false,
