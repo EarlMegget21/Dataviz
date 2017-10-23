@@ -11,15 +11,17 @@
 		/**
 		 * @var PDO
 		 */
-		public static $pdo;
+		static private $pdo;
+
 		/**
 		 * @var String
 		 */
-		protected static $object;
+		static protected $object;
+
 		/**
 		 * @var String
 		 */
-		protected static $primary;
+		static protected $primary;
 
 		public static function Init ()
 		{
@@ -40,6 +42,7 @@
 				die(); //supprimer equilvalent à System.exit(1); en java
 			}
 		}
+
 		/**
 		 * @return mixed
 		 */
@@ -109,6 +112,55 @@
 			$req_prep -> execute ( $values );
 		}
 
+		/**
+		 * @param $data array
+		 */
+		/*
+		 * Cette fonction prend en paramètre un tableau ayant pour index le nom
+		 * des attributs de la table excepté l'identifiant et comme valeur,
+		 * les valeurs correspondante aux index.
+		 */
+		public static function save ( $data )
+		{
+			$table_name = [ "name" => static ::$object ];
+
+			$sqlPart1 = "INSERT INTO " . $table_name[ "name" ] . "(";
+			$sqlPart2 = ")VALUES(";
+			foreach ( $data as $cle => $v ) {
+				$sqlPart1 = $sqlPart1 . $cle . ",";
+				$sqlPart2 = $sqlPart2 . ":" . $cle . ",";
+			}
+			$sql = rtrim ( $sqlPart1 , "," ) . rtrim ( $sqlPart2 , "," ) . ')';
+
+			$req_prep = Model ::$pdo -> prepare ( $sql );
+			$req_prep -> execute ( $data );
+		}
+		/**
+		 * @param $data array
+		 */
+		/*
+		 * Cette fonction prend en paramètre un tableau ayant pour
+		 * index le nom des attributs de la table et comme valeur,
+		 * les valeurs correspondante aux index.
+		 */
+		public static function update ( $data )
+		{
+
+			$table_name = [ "name" => static ::$object , "primary" => static ::$primary , ];
+			$class_name = 'Model' . ucfirst ( static ::$object );
+			$sql = "UPDATE " . $table_name[ "name" ] . " SET ";
+			foreach ( $data as $cle => $v ) {
+				if ( strcmp ( $cle , $table_name[ "primary" ] ) != 0 ) {
+					$sql = $sql . " " . $cle . "= :" . $cle . " ,";
+				}
+			}
+			$sql = rtrim ( $sql , "," ) . " WHERE " . $table_name[ "primary" ] . " =:" . $table_name[ "primary" ];
+
+			$req_prep = Model ::$pdo -> prepare ( $sql );
+			$req_prep -> execute ( $data );
+
+		}
 	}
 
 	Model ::Init ();
+?>

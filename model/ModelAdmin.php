@@ -3,7 +3,7 @@
 	/**
 	 *
 	 */
-	class ModelModerateur
+	class ModelAdmin extends Model
 	{
 		/**
 		 * @var String
@@ -38,6 +38,23 @@
 				$this -> mdp = $m;
 			}
 		}
+
+		/**
+		 * @return String
+		 */
+		public function getLogin ()
+		{
+			return $this -> login;
+		}
+
+		/**
+		 * @return String
+		 */
+		public function getMdp ()
+		{
+			return $this -> mdp;
+		}
+
 	}
 
 ?>

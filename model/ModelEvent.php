@@ -3,7 +3,7 @@
 	/**
 	 *
 	 */
-	class ModelEvent
+	class ModelEvent extends Model
 	{
 		/**
 		 * @var int
@@ -55,7 +55,16 @@
 		 */
 		static protected $primary = "id";
 
-		// a constructor
+		/**
+		 * ModelEvent constructor.
+		 *
+		 * @param null $n
+		 * @param null $d
+		 * @param null $x
+		 * @param null $y
+		 * @param null $de
+		 * @param null $al
+		 */
 		public function __construct ( $n = NULL , $d = NULL , $x = NULL , $y = NULL , $de = NULL , $al = NULL )
 		{
 			if ( !is_null ( $n ) && !is_null ( $d ) && !is_null ( $x ) && !is_null ( $y ) && !is_null ( $de ) && !is_null ( $al ) ) {
@@ -70,109 +79,62 @@
 			}
 		}
 
-		public static function getAllEvent ()
+		/**
+		 * @return int
+		 */
+		public function getId ()
 		{
-			try {
-				$rep = Model ::$pdo -> query ( 'SELECT * FROM event' );
-				$tab_event = $rep -> fetchAll ( PDO::FETCH_CLASS , 'ModelEvent' );
-
-				return $tab_event;
-			} catch ( PDOException $e ) {
-				echo $e -> getMessage (); // affiche un message d'erreur
-				die(); //supprimer equilvalent à System.exit(1); en java
-			}
+			return $this -> id;
 		}
 
-		public static function getEventById ( $id )
+		/**
+		 * @return Date
+		 */
+		public function getDate ()
 		{
-			// In the query, put tags :xxx instead of variables $xxx
-			$sql = "SELECT * from event WHERE id=:nom_tag";
-			try {
-				// Prepare the SQL statement
-				$req_prep = Model ::$pdo -> prepare ( $sql );
-
-				$values = [
-					"nom_tag" => $id ,
-					//nomdutag => valeur, ...
-				];
-				// Execute the SQL prepared statement after replacing tags
-				// with the values given in $values
-				$req_prep -> execute ( $values );
-
-				// Retrieve results as previously
-				$req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelEvent' );
-				$tab_event = $req_prep -> fetchAll ();
-				// Careful: you should handle the special case of no results
-				if ( empty( $tab_event ) )
-					return FALSE;
-
-				return $tab_event[ 0 ];
-			} catch ( PDOException $e ) {
-				echo $e -> getMessage (); // affiche un message d'erreur
-				die(); //supprimer equilvalent à System.exit(1); en java
-			}
+			return $this -> date;
 		}
 
-		public function save ()
+		/**
+		 * @return float
+		 */
+		public function getCoordonneeX ()
 		{
-			$sql = "INSERT INTO event (date, coordonneesX, coordonneesY, description, nom, login) VALUES(:date, :coordonneesX, :coordonneesY, :description, :nom, :login)";
-			try {
-				$req_prep = Model ::$pdo -> prepare ( $sql );
-
-				$values = [
-					"date"         => $this -> date ,
-					"coordonneesX" => $this -> coordonneesX ,
-					"coordonneesY" => $this -> coordonneesY ,
-					"description"  => $this -> description ,
-					"nom"          => $this -> nom ,
-					"login"        => $this -> adminLogin ,
-				];
-				$req_prep -> execute ( $values );
-
-				return TRUE; //si on return pas true, la valeur retournée sera NULL
-			} catch ( PDOException $e ) {
-				echo $e -> getMessage (); // affiche un message d'erreur
-
-				return FALSE;
-			}
+			return $this -> coordonneeX;
 		}
 
-		public function update ( $id )
+		/**
+		 * @return float
+		 */
+		public function getCoordonneeY ()
 		{
-			$sql = "UPDATE event SET date=:date, coordonneesX=:coordonneesX, coordonneesY=:coordonneesY, description=:description, nom=:nom, login=:login WHERE id='$id'";
-			try {
-				$req_prep = Model ::$pdo -> prepare ( $sql );
-
-				$values = [
-					"date"         => $this -> date ,
-					"coordonneesX" => $this -> coordonneesX ,
-					"coordonneesY" => $this -> coordonneesY ,
-					"description"  => $this -> description ,
-					"nom"          => $this -> nom ,
-					"login"        => $this -> adminLogin ,
-				];
-				$req_prep -> execute ( $values );
-
-				return TRUE; //si on return pas true, la valeur retournée sera NULL
-			} catch ( PDOException $e ) {
-				echo $e -> getMessage (); // affiche un message d'erreur
-
-				return FALSE;
-			}
+			return $this -> coordonneeY;
 		}
 
-		public static function delete ( $id )
+		/**
+		 * @return String
+		 */
+		public function getDescription ()
 		{
-			$sql = "DELETE FROM event WHERE id='$id'";
-			try {
-				$req_prep = Model ::$pdo -> prepare ( $sql );
-				$req_prep -> execute ();
-
-				return TRUE; //si on return pas true, la valeur retournée sera NULL
-			} catch ( PDOException $e ) {
-				echo $e -> getMessage (); // affiche un message d'erreur
-
-				return FALSE;
-			}
+			return $this -> description;
 		}
+
+		/**
+		 * @return String
+		 */
+		public function getNom ()
+		{
+			return $this -> nom;
+		}
+
+		/**
+		 * @return String
+		 */
+		public function getAdminLogin ()
+		{
+			return $this -> adminLogin;
+		}
+
 	}
+
+?>
