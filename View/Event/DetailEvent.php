@@ -1,0 +1,3 @@
+<?php
+    echo "Car ".htmlspecialchars($v->getImm())." of make ".htmlspecialchars($v->getMarque())." (color ".htmlspecialchars($v->getCouleur()).") <a href=http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=update&immatriculation=".rawurlencode($_GET['immatriculation']).">Update Car</a> <a href=http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=delete&immatriculation=".rawurlencode($_GET['immatriculation']).">Delete Car</a> <br>";
+?>

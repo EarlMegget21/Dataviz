@@ -1,0 +1,100 @@
+<?php
+require_once File::build_path(array('Model','ModelEvent.php')); // chargement du modèle
+class ControllerEvent {
+    public static function readAll() {
+        $tab_v = ModelEvent::getAllEvent(); //appel au modèle pour gerer la BD
+          //"redirige" vers la vue (pas require_once car on peut appeler plusieur fois dans le code pour 'copier' le html à la manière d'un include en C
+        $pagetitle='ListEvent';
+        $view='ListEvent';
+        $controller='Event';
+        require File::build_path(array('View','View.php'));
+    }
+    public static function read() {
+        $immat=$_GET['immatriculation'];
+        if(!$v = ModelEvent::getEventByImmat($immat)){
+            $pagetitle='Error!';
+            $view='Error';
+            $controller='Main';
+            require File::build_path(array('View','View.php'));
+        } else {
+            $pagetitle='DetailEvent';
+            $view='DetailEvent';
+            $controller='Event';
+            require File::build_path(array('View','View.php'));
+        }   
+    }
+    public static function create() {
+        $pagetitle='Create';
+        $view='Create';
+        $controller='Event';
+        require File::build_path(array('View','View.php'));
+    }
+    public static function created() {
+//        $tab_v=array(
+//            'marque'=>$_GET['marque'],
+//            'couleur'=>$_GET['couleur'],
+//            'immatriculation'=>$_GET['immatriculation']);
+        $car1=new ModelEvent($_GET["marque"], $_GET["couleur"], $_GET["immatriculation"]);
+        if(!$car1->save()){ //NULL est interprété comme non vrai aussi donc soit on return true en cas de succès soit on teste si $car1->save() === false (le === check si c'est bien un boolean et si c'est false donc si c'est NULL ça ne sera pas un boolean)
+            $pagetitle='Error!';
+            $view='Error';
+            $controller='Main';
+            require File::build_path(array('View','View.php'));
+        } else {
+            $tab_v = ModelEvent::getAllEvent();
+            $pagetitle='ListEvent';
+            $view='Created';
+            $controller='Event';
+            require File::build_path(array('View','View.php'));
+        }
+    }
+    public static function update() {
+        $pagetitle='Update';
+        $view='Update';
+        $controller='Event';
+        require File::build_path(array('View','View.php'));
+    }
+    public static function updated() {
+//        $tab_v=array(
+//            'marque'=>$_GET['marque'],
+//            'couleur'=>$_GET['couleur'],
+//            'immatriculation'=>$_GET['immatriculation']);
+        $car1=new ModelEvent($_GET["marque"], $_GET["couleur"], $_GET["immatriculation"]);
+        if(!$car1->update($_GET['immatriculation'])){ //NULL est interprété comme non vrai aussi donc soit on return true en cas de succès soit on teste si $car1->save() === false (le === check si c'est bien un boolean et si c'est false donc si c'est NULL ça ne sera pas un boolean)
+            $pagetitle='Error!';
+            $view='Error';
+            $controller='Main';
+            require File::build_path(array('View','View.php'));
+        } else {
+            $v = ModelEvent::getEventByImmat($_GET["immatriculation"]);
+            $pagetitle='DetailEvent';
+            $view='Updated';
+            $controller='Event';
+            require File::build_path(array('View','View.php'));
+        }
+    }
+    public static function delete() {
+        ModelEvent::delete($_GET['immatriculation']);
+        $tab_v = ModelEvent::getAllEvent();
+        $pagetitle='ListEvent';
+        $view='Deleted';
+        $controller='Event';
+        require File::build_path(array('View','View.php'));
+    }
+}
+
+
+
+
+//$rep=Model::$pdo->query('SELECT * FROM Event');
+//$tab_obj=$rep->fetchAll(PDO::FETCH_OBJ); //créer tableau d'objets avec attributs d'objets=attributs de table
+//$rep->setFetchMode(PDO::FETCH_CLASS, 'ModelEvent'); //permet de créer une classe dans le même principe qu'au dessus mais on peut la renommer et définir des méthodes etc
+//$tab_voit=$rep->fetchAll(PDO::FETCH_CLASS, 'ModelEvent'); //si on met la ligne du dessus, on appel fetchAll sans paramêtres
+//foreach (ModelEvent::getAllEvent() as $key => $value) {
+////    echo $value->marque.$value->immatriculation.$value->couleur;
+//    echo $value->display();
+//}
+//echo Event::getEventByImmat('21XYZ34')->display();
+//$lambo=new ModelEvent('Lambo', 'jaune', 'XXXXX2');
+//$lambo->save();
+//echo ModelEvent::getEventByImmat('XXXXX2')->display();
