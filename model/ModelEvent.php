@@ -38,12 +38,16 @@
 		/**
 		 * @var String
 		 */
+		private $MP3;
+		/**
+		 * @var String
+		 */
 		private $nom;
 
 		/**
 		 * @var String
 		 */
-		private $adminLogin;
+		private $login;
 
 		/**
 		 * @var string
@@ -65,17 +69,17 @@
 		 * @param null $de
 		 * @param null $al
 		 */
-		public function __construct ( $n = NULL , $d = NULL , $x = NULL , $y = NULL , $de = NULL , $al = NULL )
+		public function __construct ( $i=NULL , $d = NULL , $x = NULL , $y = NULL , $de = NULL ,$m=NULL,$n = NULL, $l = NULL )
 		{
-			if ( !is_null ( $n ) && !is_null ( $d ) && !is_null ( $x ) && !is_null ( $y ) && !is_null ( $de ) && !is_null ( $al ) ) {
-				$this -> id = ModelEvent ::$lastId;
-				ModelEvent ::$lastId += 1;
+			if ( !is_null ($i) && !is_null ( $n ) && !is_null ( $d ) && !is_null ( $x ) && !is_null ( $y ) && !is_null ( $de ) && !is_null ( al ) ) {
+				$this->id=$i;
 				$this -> nom = $n;
 				$this -> date = $d;
 				$this -> coordonneX = $x;
 				$this -> coordonneY = $y;
 				$this -> description = $de;
-				$this -> adminLogin = $al;
+				$this -> login = $l;
+				$this->MP3=$m;
 			}
 		}
 
