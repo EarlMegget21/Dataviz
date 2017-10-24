@@ -1,21 +1,82 @@
-<form method="get" action="../TD2/index.php"> <!-- action determine le fichier dans lequel on est redirigé avec les variables rentrées après Submit -->
-  <fieldset>
-    <legend>My form:</legend>
-    <p>
-      <input type='hidden' name='action' value='updated'> <!-- ajoute un input caché qui défini la variable GET action -->
-        
-      <label for="immat_id">License number</label> : <!-- for permet de renvoyer vers la zone test ayant l'id indiqué en cliquant sur le label -->
-      <input type="text" value="<?php echo $_GET['immatriculation']?>" name="immatriculation" id="immat_id" readonly required/>
+<?php
+	echo "<form method=\"get\" action=\"index.php\">"; //TODO: Une fois finis changer le get en post
+	if ( isset($_GET[ModelEvent::getPrimary () ]) ) {
+		$v = ModelEvent ::select ( $_GET[ModelEvent::getPrimary () ] );
 
-      <label for="marque_id">Make</label> :
-      <input type="text" value="<?php echo ModelEvent::getEventByImmat($_GET['immatriculation'])->getMarque() ?>" name="marque" id="marque_id" required/>
+		echo "<fieldset>
+	<legend>Mon formulaire :</legend>
+	<p>
+		<label for=\"id\">id</label> :
+		<input type=\"text\" placeholder=\"Ex : 1\" name=\"id\" id=\"id\" value=\"" . $v -> getLogin () . "\" readonly/>
+		
+		<label for=\"date_id\">Date</label> :
+		<input type=\"date\" placeholder=\"Ex :00/00/00\" name=\"date\" id=\"date_id\" value=\"" . $v -> getDate () . "\" required/>
+		
+		<label for=\"coordonneeX_id\">Coordonee X</label> :
+		<input type=\"text\" placeholder=\"Ex :128\" name=\"coordonneeX\" id=\"coordonneeX_id\" value=\"" . $v -> getCoordonneeX () . "\" required/>
+		
+		<label for=\"coordonneeY_id\">Coordonee Y</label> :
+		<input type=\"text\" placeholder=\"Ex :256\" name=\"coordonneeY\" id=\"coordonneeY_id\" value=\"" . $v -> getCoordonneeY () . "\" required/>
+		
+		<label for=\"description_id\">Description</label></label> :
+		<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\" value=\"" . $v -> getDescription () . "\" required/>
+		
+		<label for=\"mp3_id\">MP3</label> :
+		<input type=\"text\" placeholder=\"Ex :http://loremipsum.fr/exemple.mp3\" name=\"mp3\" id=\"mp3_id\" value=\"" . $v -> getMP3 () . "\" required/>
+		
+		<label for=\"nom_id\">Nom</label> :
+		<input type=\"text\" placeholder=\"Ex :Developpement des écoles\" name=\"nom\" id=\"nom_id\" value=\"" . $v -> getNom () . "\" required/>
+		
+		
+		<label for=\"login_id\">Login du créateur</label> :
+		<input type=\"text\" placeholder=\"Ex :XxDarkSasukeDu69KiDefonceToutxX\" name=\"login\" id=\"login_id\" value=\"" . $v -> getLogin () . "\" required/>
+		
+		<input type='hidden' name='action' value='updated'>
+		<input type='hidden' name='controller' value='admin'>
+	</p>
+	<p>
+		<input type=\"submit\" value=\"Envoyer\"/>
+	</p>
+</fieldset>
+</form>";
+	} else {
+		echo "
+<fieldset>
+	<legend>Mon formulaire :</legend>
+	<p>
+	
+		<label for=\"date_id\">Date</label> :
+		<input type=\"date\" placeholder=\"Ex :00/00/00\" name=\"date\" id=\"date_id\" required/>
+		
+		<label for=\"coordonneeX_id\">Coordonee X</label> :
+		<input type=\"text\" placeholder=\"Ex :128\" name=\"coordonneeX\" id=\"coordonneeX_id\"  required/>
+		
+		<label for=\"coordonneeY_id\">Coordonee Y</label> :
+		<input type=\"text\" placeholder=\"Ex :256\" name=\"coordonneeY\" id=\"coordonneeY_id\" required/>
+		
+		<label for=\"description_id\">Description</label></label> :
+		<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\"  required/>
+		
+		<label for=\"mp3_id\">MP3</label> :
+		<input type=\"text\" placeholder=\"Ex :http://loremipsum.fr/exemple.mp3\" name=\"mp3\" id=\"mp3_id\" required/>
+		
+		<label for=\"nom_id\">Nom</label> :
+		<input type=\"text\" placeholder=\"Ex :Developpement des écoles\" name=\"nom\" id=\"nom_id\" required/>
+		
+		
+		<label for=\"login_id\">Login du créateur</label> :
+		<input type=\"text\" placeholder=\"Ex :XxDarkSasukeDu69KiDefonceToutxX\" name=\"login\" id=\"login_id\"  required/>
+		
+		
+		<input type='hidden' name='action' value='created'>
+		<input type='hidden' name='controller' value='admin'>
 
-      <label for="color_id">Color</label> :
-      <input type="text" value="<?php echo ModelEvent::getEventByImmat($_GET['immatriculation'])->getCouleur() ?>" name="couleur" id="color_id" required/>
-
-    </p>
-    <p>
-      <input type="submit" value="Submit" />
-    </p>
-  </fieldset> 
+	</p>
+	<p>
+		<input type=\"submit\" value=\"Envoyer\"/>
+	</p>
+</fieldset>
 </form>
+";
+	}
+?>

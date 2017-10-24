@@ -158,7 +158,6 @@
 
 			$req_prep = Model ::$pdo -> prepare ( $sql );
 			$req_prep -> execute ( $data );
-
 		}
 	}
 
