@@ -14,7 +14,7 @@
         </header>
 <?php
 // Si $controller='event' et $view='ListEvent',
-// alors $filepath="/chemin_du_site/view/event/ListEvent.php"
+// alors $filepath="/chemin_du_site/view/event/list.php"
 $filepath = File::build_path(array("view", $controller, "$view.php"));
 require $filepath;
 ?>
