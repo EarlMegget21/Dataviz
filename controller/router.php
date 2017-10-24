@@ -56,7 +56,7 @@
                         $controller_class ::updated ( $data );
                         break;
                     default:
-                        $controller_class ::err ();
+                        require File::build_path(array('view','main','error.php'));
                         break;
                 }
             } else {
