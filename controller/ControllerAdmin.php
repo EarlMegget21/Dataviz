@@ -5,8 +5,8 @@ class ControllerAdmin {
     public static function readAll() {
         $tab_v = ModelAdmin::getAllAdmin();     //appel au modèle pour gerer la BD
           //"redirige" vers la vue (pas require_once car on peut appeler plusieur fois dans le code pour 'copier' le html à la manière d'un include en C
-        $pagetitle='ListAdmin';
-        $view='ListAdmin';
+        $pagetitle='List Admin';
+        $view='list';
         $controller='admin';
         require File::build_path(array('view','view.php'));
     }

@@ -1,6 +1,17 @@
 <?php
-    foreach ($tab_v as $v) // Display of the cars stored in $tab_v
-    echo "Car <a href=http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=read&immatriculation=".rawurlencode($v->getImm()).">".htmlspecialchars($v->getImm())."</a> <a href=http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=delete&immatriculation=".rawurlencode($v->getImm()).">Delete Car</a> <br>";
-//rawurlencode() permet d'eviter URL injection, htmlspecialchars permet d'éviter SQL injection
+// Display of the cars stored in $tab_v
+foreach ( $tab_v as $v ) {
+    echo '<p><a href=\'./index.php?controller=event&action=read&'
+        .ModelEvent::getPrimary ()
+        .'='
+        . rawurlencode ( $v -> getId () )
+        . '\'>'
+        . htmlspecialchars ( $v -> getId () ) . '</a>&nbsp'. $v->getNom()
+        .'   [<a href=\'./index.php?controller=event&action=delete&'
+        . ModelEvent ::getPrimary ()
+        . '='
+        . rawurlencode ( $v -> getId () )
+        . '\'>DELETE</a>]</p>';
+}
+//<a href="http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=create">Créer Event</a>
 ?>
-<a href="http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=create">Créer Event</a>

@@ -140,6 +140,14 @@
 			return $this -> adminLogin;
 		}
 
+        /**
+         * @return string
+         */
+        public static function getPrimary()
+        {
+            return self::$primary;
+        }
+
 	}
 
 ?>

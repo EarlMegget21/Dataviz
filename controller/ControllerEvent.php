@@ -5,7 +5,7 @@ class ControllerEvent {
         $tab_v = ModelEvent::selectAll(); //appel au modèle pour gerer la BD
           //"redirige" vers la vue (pas require_once car on peut appeler plusieur fois dans le code pour 'copier' le html à la manière d'un include en C
         $pagetitle='ListEvent';
-        $view='ListEvent';
+        $view='list';
         $controller='event';
         require File::build_path(array('view','view.php'));
     }
