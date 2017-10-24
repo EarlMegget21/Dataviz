@@ -4,7 +4,7 @@ class Conf {
   static private $databases = array(
     // Hostname is webinfo at IUT
     // or localhost on your computer
-    'hostname' => 'guiltycore.fr/phpmyadmin',
+    'hostname' => 'guiltycore.fr',
     // At IUT, you have a database named after your login
     // On your computer, please create a database
     'database' => 'dataviz',
@@ -14,7 +14,8 @@ class Conf {
     // At IUT, it is your database password 
     // (=PHPMyAdmin pwd, INE by defaut)
     // On your computer, you created the pwd during setup
-    'password' => 'dataviz'
+    'password' => 'dataviz',
+    'port'=>'3306'
   );
   
   static private $debug = True; 
@@ -39,6 +40,8 @@ class Conf {
     //in PHP, indices of arrays car be strings (or integers)
     return self::$databases['database'];
   }
-   
+  static public function getPort(){
+    return self::$databases['port'];
+  }
 }
 ?>
