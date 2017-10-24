@@ -1,21 +1,45 @@
-<form method="get" action="../TD2/index.php"> <!-- action determine le fichier dans lequel on est redirigé avec les variables rentrées après Submit -->
-  <fieldset>
-    <legend>My form:</legend>
-    <p>
-      <input type='hidden' name='action' value='updated'> <!-- ajoute un input caché qui défini la variable GET action -->
-        
-      <label for="immat_id">License number</label> : <!-- for permet de renvoyer vers la zone test ayant l'id indiqué en cliquant sur le label -->
-      <input type="text" value="<?php echo $_GET['immatriculation']?>" name="immatriculation" id="immat_id" readonly required/>
+<?php
+	echo "<form method=\"get\" action=\"index.php\">"; //TODO: Une fois finis changer le get en post
+	if ( isset($_GET[ModelVoiture::getPrimary () ]) ) {
+		$v = ModelAdmin ::select ( $_GET[ModelAdmin::getPrimary () ] );
 
-      <label for="marque_id">Make</label> :
-      <input type="text" value="<?php echo ModelUtilisateur::getUtilisateurByImmat($_GET['immatriculation'])->getMarque() ?>" name="marque" id="marque_id" required/>
+		echo "<fieldset>
+	<legend>Mon formulaire :</legend>
+	<p>
+		<label for=\"marque_id\">Login</label> :
+		<input type=\"text\" placeholder=\"Ex : XxDarkSasukeDu69KiDefonceToutxX\" name=\"login\" id=\"login_id\" value=\"" . $v -> getLogin () . "\" readonly/>
+		
+		<label for=\"mdp_id\">Mot de passe</label> :
+		<input type=\"password\" placeholder=\"Ex :Gh;]Yv<ZKM_87^%E\" name=\"mdp\" id=\"mdp_id\" value=\"" . $v -> getMdp () . "\" required/>
+		
+		<input type='hidden' name='action' value='updated'>
+		<input type='hidden' name='controller' value='admin'>
+	</p>
+	<p>
+		<input type=\"submit\" value=\"Envoyer\"/>
+	</p>
+</fieldset>
+</form>";
+	} else {
+		echo "
+<fieldset>
+	<legend>Mon formulaire :</legend>
+	<p>
+		<label for=\"login_id\">Login</label> :
+		<input type=\"text\" placeholder=\"Ex : XxDarkSasukeDu69KiDefonceToutxX\" name=\"login\" id=\"login_id\" required/>
+		
+		<label for=\"marque_id\">Mot de passe</label> :
+		<input type=\"password\" placeholder=\"Ex : Gh;]Yv<ZKM_87^%E\" name=\"marque\" id=\"marque_id\" required/>
+		
+		<input type='hidden' name='action' value='created'>
+		<input type='hidden' name='controller' value='admin'>
 
-      <label for="color_id">Color</label> :
-      <input type="text" value="<?php echo ModelUtilisateur::getUtilisateurByImmat($_GET['immatriculation'])->getCouleur() ?>" name="couleur" id="color_id" required/>
-
-    </p>
-    <p>
-      <input type="submit" value="Submit" />
-    </p>
-  </fieldset> 
+	</p>
+	<p>
+		<input type=\"submit\" value=\"Envoyer\"/>
+	</p>
+</fieldset>
 </form>
+";
+	}
+?>
