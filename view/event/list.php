@@ -13,4 +13,4 @@ foreach ( $tab_v as $v ) {
 }
 ?>
 <br>
-<a href="index.php?controller=event&action=update">Créer event</a>
+<a href="index.php?controller=event&action=update">Créer évenement</a>
