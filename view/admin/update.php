@@ -1,6 +1,6 @@
 <?php
 	echo "<form method=\"get\" action=\"index.php\">"; //TODO: Une fois finis changer le get en post
-	if ( isset($_GET[ModelVoiture::getPrimary () ]) ) {
+	if ( isset($_GET[ModelAdmin	::getPrimary () ]) ) {
 		$v = ModelAdmin ::select ( $_GET[ModelAdmin::getPrimary () ] );
 
 		echo "<fieldset>

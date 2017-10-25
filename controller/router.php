@@ -36,22 +36,14 @@
                         $controller_class ::delete ( $_GET[ $model_class::getPrimary ()] );
                         break;
                     case "update":
-                        if(isset($_GET[ $model_class::getPrimary () ] )){
-                            $controller_class ::update ( $_GET[ $model_class::getPrimary ()] );
-
-                        }
-                        else{
-                            $controller_class ::update ( NULL );
-                        }
+                            $controller_class ::update ();
                         break;
                     case "updated":
-
                         $data= array ();
                         foreach ($_GET as $k=>$v){
                             if(strcmp($k,"action")!=0&& strcmp($k,"controller")!=0){
                                 $data+=[$k=>$v];
                             }
-
                         }
                         $controller_class ::updated ( $data );
                         break;

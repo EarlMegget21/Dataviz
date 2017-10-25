@@ -15,7 +15,8 @@
 <?php
 // Si $controller='event' et $view='ListEvent',
 // alors $filepath="/chemin_du_site/view/event/list.php"
-$filepath = File::build_path(array("view", $controller, "$view.php"));
+$filepath = File::build_path(array("view", $object,
+    "$view.php"));
 require $filepath;
 ?>
         <footer>
