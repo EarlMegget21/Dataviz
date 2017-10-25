@@ -7,9 +7,8 @@
     <body>
         <header>
             <nav>
-                <a href="http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=readAll">Home</a>
-                <a href="http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=readAll&controller=user">Profil</a>
-                <a href="http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=readAll&controller=journey">Journey</a>
+                <a href="index.php?action=readAll&controller=event">Event</a>
+                <a href="index.php?action=readAll&controller=admin">Admin</a>
             </nav>
         </header>
 <?php

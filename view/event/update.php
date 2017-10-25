@@ -7,7 +7,7 @@
 	<legend>Mon formulaire :</legend>
 	<p>
 		<label for=\"id\">id</label> :
-		<input type=\"text\" placeholder=\"Ex : 1\" name=\"id\" id=\"id\" value=\"" . $v -> getLogin () . "\" readonly/>
+		<input type=\"text\" placeholder=\"Ex : 1\" name=\"id\" id=\"id\" value=\"" . $v -> getId () . "\" readonly/>
 		
 		<label for=\"date_id\">Date</label> :
 		<input type=\"date\" placeholder=\"Ex :00/00/00\" name=\"date\" id=\"date_id\" value=\"" . $v -> getDate () . "\" required/>
@@ -19,20 +19,20 @@
 		<input type=\"text\" placeholder=\"Ex :256\" name=\"coordonneeY\" id=\"coordonneeY_id\" value=\"" . $v -> getCoordonneeY () . "\" required/>
 		
 		<label for=\"description_id\">Description</label></label> :
-		<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\" value=\"" . $v -> getDescription () . "\" required/>
+		<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\" value=\"" . $v -> getDescription () . "\" />
 		
 		<label for=\"mp3_id\">MP3</label> :
-		<input type=\"text\" placeholder=\"Ex :http://loremipsum.fr/exemple.mp3\" name=\"mp3\" id=\"mp3_id\" value=\"" . $v -> getMP3 () . "\" required/>
+		<input type=\"text\" placeholder=\"Ex :http://loremipsum.fr/exemple.mp3\" name=\"mp3\" id=\"mp3_id\" value=\"" . $v -> getMP3 () . "\" />
 		
 		<label for=\"nom_id\">Nom</label> :
 		<input type=\"text\" placeholder=\"Ex :Developpement des écoles\" name=\"nom\" id=\"nom_id\" value=\"" . $v -> getNom () . "\" required/>
 		
 		
 		<label for=\"login_id\">Login du créateur</label> :
-		<input type=\"text\" placeholder=\"Ex :XxDarkSasukeDu69KiDefonceToutxX\" name=\"login\" id=\"login_id\" value=\"" . $v -> getLogin () . "\" required/>
+		<input type=\"text\" placeholder=\"Ex :XxDarkSasukeDu69KiDefonceToutxX\" name=\"login\" id=\"login_id\" value=\"" . $v -> getLogin () . "\" readonly/>
 		
 		<input type='hidden' name='action' value='updated'>
-		<input type='hidden' name='controller' value='admin'>
+		<input type='hidden' name='controller' value='event'>
 	</p>
 	<p>
 		<input type=\"submit\" value=\"Envoyer\"/>
@@ -55,10 +55,10 @@
 		<input type=\"text\" placeholder=\"Ex :256\" name=\"coordonneeY\" id=\"coordonneeY_id\" required/>
 		
 		<label for=\"description_id\">Description</label></label> :
-		<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\"  required/>
+		<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\"  />
 		
 		<label for=\"mp3_id\">MP3</label> :
-		<input type=\"text\" placeholder=\"Ex :http://loremipsum.fr/exemple.mp3\" name=\"mp3\" id=\"mp3_id\" required/>
+		<input type=\"text\" placeholder=\"Ex :http://loremipsum.fr/exemple.mp3\" name=\"mp3\" id=\"mp3_id\" />
 		
 		<label for=\"nom_id\">Nom</label> :
 		<input type=\"text\" placeholder=\"Ex :Developpement des écoles\" name=\"nom\" id=\"nom_id\" required/>
@@ -69,7 +69,7 @@
 		
 		
 		<input type='hidden' name='action' value='created'>
-		<input type='hidden' name='controller' value='admin'>
+		<input type='hidden' name='controller' value='event'>
 
 	</p>
 	<p>

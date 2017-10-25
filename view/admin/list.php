@@ -1,6 +1,14 @@
 <?php
-    foreach ($tab_v as $v) // Display of the cars stored in $tab_v
-    echo "User <a href=http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=read&immatriculation=".rawurlencode($v->getImm()).">".htmlspecialchars($v->getImm())."</a> <a href=http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=delete&immatriculation=".rawurlencode($v->getImm()).">Delete Car</a> <br>";
-//rawurlencode() permet d'eviter URL injection, htmlspecialchars permet d'éviter SQL injection
+    foreach ($tab_v as $v){
+        echo
+            "<p>Login: <a href=index.php?controller=admin&action=read&"
+            .ModelAdmin::getPrimary ()
+            ."="
+            .rawurlencode($v->getLogin())
+            .">"
+            .htmlspecialchars($v->getLogin())
+            ."</a></p>";
+    }
 ?>
-<a href="http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=create">Créer Utilisateur</a>
+<br>
+<a href="index.php?controller=admin&action=update">Créer Admin</a>

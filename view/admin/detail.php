@@ -1,3 +1,19 @@
 <?php
-    echo "User ".htmlspecialchars($v->getImm())." of make ".htmlspecialchars($v->getMarque())." (color ".htmlspecialchars($v->getCouleur()).") <a href=http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=update&immatriculation=".rawurlencode($_GET['immatriculation']).">Update Car</a> <a href=http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=delete&immatriculation=".rawurlencode($_GET['immatriculation']).">Delete Car</a> <br>";
+    if ($v !== FALSE) {
+        echo "<p>Login:"
+            . $v->getLogin()
+            . "<br> MDP:"
+            . $v->getMdp()
+            ."<br><a href=index.php?controller=admin&action=update&"
+            .ModelAdmin::getPrimary ()
+            .'='
+            . rawurlencode ( $v -> getLogin () )
+            .">Update</a> <a href=index.php?controller=admin&action=delete&"
+            .ModelAdmin::getPrimary ()
+            .'='
+            . rawurlencode ( $v -> getLogin () )
+            .">Delete</a> <br>";
+} else {
+    require File::build_path(array('view', 'admin', 'error.php'));
+}
 ?>

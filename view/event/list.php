@@ -6,12 +6,11 @@ foreach ( $tab_v as $v ) {
         .'='
         . rawurlencode ( $v -> getId () )
         . '\'>'
-        . htmlspecialchars ( $v -> getId () ) . '</a>&nbsp'. $v->getNom()
-        .'   [<a href=\'./index.php?controller=event&action=delete&'
-        . ModelEvent ::getPrimary ()
-        . '='
-        . rawurlencode ( $v -> getId () )
-        . '\'>DELETE</a>]</p>';
+        . htmlspecialchars ( $v -> getId () )
+        . '</a>&nbsp'
+        . $v->getNom();
+
 }
-//<a href="http://webinfo.iutmontp.univ-montp2.fr/~sonettir/PHP/TD2/index.php?action=create">Créer Event</a>
 ?>
+<br>
+<a href="index.php?controller=event&action=update">Créer event</a>

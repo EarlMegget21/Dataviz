@@ -29,7 +29,7 @@
 		<input type=\"text\" placeholder=\"Ex : XxDarkSasukeDu69KiDefonceToutxX\" name=\"login\" id=\"login_id\" required/>
 		
 		<label for=\"marque_id\">Mot de passe</label> :
-		<input type=\"password\" placeholder=\"Ex : Gh;]Yv<ZKM_87^%E\" name=\"marque\" id=\"marque_id\" required/>
+		<input type=\"password\" placeholder=\"Ex : Gh;]Yv<ZKM_87^%E\" name=\"mdp\" id=\"marque_id\" required/>
 		
 		<input type='hidden' name='action' value='created'>
 		<input type='hidden' name='controller' value='admin'>

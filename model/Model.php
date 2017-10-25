@@ -146,7 +146,6 @@
 		 */
 		public static function update ( $data )
 		{
-
 			$table_name = [ "name" => static ::$object , "primary" => static ::$primary , ];
 			$class_name = 'Model' . ucfirst ( static ::$object );
 			$sql = "UPDATE " . $table_name[ "name" ] . " SET ";
@@ -155,11 +154,13 @@
 					$sql = $sql . " " . $cle . "= :" . $cle . " ,";
 				}
 			}
-			$sql = rtrim ( $sql , "," ) . " WHERE " . $table_name[ "primary" ] . " =:" . $table_name[ "primary" ];
 
+			$sql = rtrim ( $sql , "," ) . " WHERE " . $table_name[ "primary" ] . " =:" . $table_name[ "primary" ];
 			$req_prep = Model ::$pdo -> prepare ( $sql );
 			$req_prep -> execute ( $data );
 		}
+
+
 	}
 
 	Model ::Init ();

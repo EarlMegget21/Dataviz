@@ -6,10 +6,6 @@
 	 */
 	class ModelEvent extends Model
 	{
-		/**
-		 * @var int
-		 */
-		private static $lastId = 0;
 
 		/**
 		 * @var int
@@ -135,10 +131,19 @@
 		/**
 		 * @return String
 		 */
-		public function getAdminLogin ()
+		public function getLogin ()
 		{
-			return $this -> adminLogin;
+			return $this -> login;
 		}
+
+        /**
+         * @return String
+         */
+        public function getMP3()
+        {
+            return $this->MP3;
+        }
+
 
         /**
          * @return string
@@ -147,7 +152,6 @@
         {
             return self::$primary;
         }
-
 	}
 
 ?>
