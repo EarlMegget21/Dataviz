@@ -1,5 +1,5 @@
 <?php
-require_once File::build_path(array('Model', 'ModelEvent.php')); // chargement du modèle
+require_once File::build_path(array('model', 'ModelEvent.php')); // chargement du modèle
 class ControllerEvent
 {
 
