@@ -204,6 +204,7 @@ class ModelEvent extends Model
 
     //TODO Refaire la fonction ci dessous.
 
+
     private static function pointInPolygon($point, $listEdges)
     {
     }
