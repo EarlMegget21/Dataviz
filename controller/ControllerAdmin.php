@@ -1,6 +1,6 @@
 <?php
 //Ctrl+H permet de remplacer les mots par un autre event->admin
-require_once File::build_path(array('Model','ModelAdmin.php')); // chargement du modèle
+require_once File::build_path(array('model','ModelAdmin.php')); // chargement du modèle
 class ControllerAdmin {
 
 
