@@ -47,6 +47,13 @@
                         }
                         $controller_class ::updated ( $data );
                         break;
+                    case "search":
+                        $A = array($_GET['coordonneeX1'], $_GET['coordonneeX2']);
+                        $B = array($_GET['coordonneeX1'], $_GET['coordonneeX2']);
+                        $C = array($_GET['coordonneeX1'], $_GET['coordonneeX2']);
+                        $D = array($_GET['coordonneeX1'], $_GET['coordonneeX2']);
+                        ControllerEvent::search($_GET['date1'], $_GET['date2'], $A, $B, $C, $D);
+                        break;
                     default:
                         require File::build_path(array('view','main','error.php'));
                         break;

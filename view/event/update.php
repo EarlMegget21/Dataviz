@@ -7,7 +7,7 @@
 	<legend>Mon formulaire :</legend>
 	<p>
 		<label for=\"id\">id</label> :
-		<input type=\"text\" placeholder=\"Ex : 1\" name=\"id\" id=\"id\" value=\"" . $v -> getId () . "\" readonly/>
+		<input type=\"number\" placeholder=\"Ex : 1\" name=\"id\" id=\"id\" value=\"" . $v->getId() . "\" readonly/>
 		
 		<label for=\"date_id\">Date</label> :
 		<input type=\"date\" placeholder=\"Ex :00/00/00\" name=\"date\" id=\"date_id\" value=\"" . $v -> getDate () . "\" required/>

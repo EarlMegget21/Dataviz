@@ -11,7 +11,7 @@
 		/**
 		 * @var PDO
 		 */
-		static private $pdo;
+        static public $pdo;
 
 		/**
 		 * @var String

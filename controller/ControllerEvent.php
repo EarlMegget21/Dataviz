@@ -65,4 +65,13 @@ class ControllerEvent
         require(File::build_path(['view', 'view.php']));
     }
 
+    public static function search($date1, $date2, $A, $B, $C, $D)
+    {
+        $tab_v = ModelEvent::searchEventPosDate($date1, $date2, $A, $B, $C, $D);
+        $object = 'event';
+        $view = 'list';
+        $pagetitle = 'Liste de la recherche';
+        require(File::build_path(['view', 'view.php']));
+    }
+
 }
