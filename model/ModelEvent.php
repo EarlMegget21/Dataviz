@@ -194,11 +194,12 @@ class ModelEvent extends Model
     public static function searchEventPosDate($date1, $date2, $A, $B, $C, $D)
     {
         $filteredQuery = self::getEventListDateCriteria($date1, $date2);
-        $Quadri = array($A, $B, $C, $D);
+        /*$Quadri = array($A, $B, $C, $D);
 
         return array_filter($filteredQuery, function ($n) use (&$Quadri) {
             return self::pointInPolygon(array($n->getCoordonneeX(), $n->getCoordonneeY()), $Quadri);
-        });
+        });*/
+        return $filteredQuery;
     }
 
 
