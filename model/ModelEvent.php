@@ -194,59 +194,39 @@ class ModelEvent extends Model
     public static function searchEventPosDate($date1, $date2, $A, $B, $C, $D)
     {
         $filteredQuery = self::getEventListDateCriteria($date1, $date2);
-        /*$Quadri = array($A, $B, $C, $D);
+        $Quadri = array($A, $B, $C, $D);
 
+        /*Un quadrilataire est représenté par 4 points
+         * ZY
+         * WX
+         *
+         * Dans le cas présent  avec les points ABCD que nous avons ça donnera
+         * DC
+         * AB
+         * TODO Mettre dans l'emplacement 0 de Quadri le point le plus bas à gauche
+         * TODO Mettre dans l'emplacement 1 de Quadri le point le plus bas à droite
+         * TODO Mettre dans l'emplacement 2 de Quadri le point le plus haut à droite
+         * TODO Mettre dans l'emplacement 3 de Quadri le point le plus haut à gauche
+         *
+         */
         return array_filter($filteredQuery, function ($n) use (&$Quadri) {
             return self::pointInPolygon(array($n->getCoordonneeX(), $n->getCoordonneeY()), $Quadri);
-        });*/
+        });
         return $filteredQuery;
     }
 
 
-    //TODO Refaire la fonction ci dessous.
-
-
-    private static function pointInPolygon($point, $listEdges)
+    private static function pointInPolygon($point, $poly)
     {
-    }
-    /*
-            if (self::pointOnPolygonEdges($point, $listEdges) == true) {
-                return true;
+        $num = count($poly);
+        $c = FALSE;
+        for ($i = 0, $j = $num - 1; $i < $num; $j = $i, ++$i) {
+            if ((($poly[$i][1] > $point[1]) != ($poly[$j][1] > $point[1])) && ($point[0] < ($poly[$j][0] - $poly[$i][0]) * ($point[1] - $poly[$i][1]) / ($poly[$j][1] - $poly[$i][1]) + $poly[$i][0])) {
+                $c = !$c;
             }
-
-            $inter = 0;
-            $edges_count = count($listEdges);
-
-            for ($i=1; $i < $edges_count; $i++) {
-                $A = $listEdges[$i-1];
-                $B = $listEdges[$i];
-                $minX=min($A[0], $B[0]);
-                $maxX=max($A[0], $B[0]);
-                $minY=min($A[1], $B[1]);
-                $maxY=max($A[1], $B[1]);
-                if ($A[1] == $B[1] and $A[1] == $point[1] and $point[0] > $minX and $point[0] <  $maxX){
-                    return true;
-                }
-                if ($point[1] > $minY and $point[1] <= $maxY and $point[0] <= $maxX and $A[1] != $B[1]) {
-                    $e = ($point[1] - $A[1]) * ($B[0] - $A[0]) / ($B[1] - $A[1]) + $A[0];
-                    if ($e == $point[0]) {
-                        return true;
-                    }
-                    else if ($A[0] == $B[0] || $point[0] <= $e) {
-                        $inter++;
-                    }
-                }
-            }
-            return $inter % 2 != 0;
         }
-
-        private static function pointOnPolygonEdges($point, $points) {
-            foreach($points as $ptsPoly) {
-                if ($point[0] == $ptsPoly[0]&&$point[1]==$ptsPoly[1]) {
-                    return true;
-                }
-            }
-        }*/
+        return $c;
+    }
 }
 
 ?>

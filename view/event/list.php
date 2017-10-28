@@ -13,6 +13,8 @@ foreach ($tab_v as $v) {
 }
 ?>
 <p>
+<h1>Organisation des coordonées</h1>
+<p>P4P3<br>P1P2</p>
 <form method="get" action="index.php">
 
     <label for="date1_id">Minimum date</label> :
