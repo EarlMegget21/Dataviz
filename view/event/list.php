@@ -1,5 +1,5 @@
 <?php
-// Display of the cars stored in $tab_v
+// Display of the events stored in $tab_v
 foreach ($tab_v as $v) {
     echo '<p><a href=\'./index.php?controller=event&action=read&'
         . ModelEvent::getPrimary()

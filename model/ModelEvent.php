@@ -196,7 +196,7 @@ class ModelEvent extends Model
         $filteredQuery = self::getEventListDateCriteria($date1, $date2);
         $Quadri = array($A, $B, $C, $D);
 
-        /*Un quadrilataire est représenté par 4 points
+        /*Un quadrilatère est représenté par 4 points
          * ZY
          * WX
          *
