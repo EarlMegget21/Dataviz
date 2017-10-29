@@ -191,33 +191,44 @@ class ModelEvent extends Model
         return $req_prep->fetchAll();
     }
 
-    public static function searchEventPosDate($date1, $date2, $A, $B, $C, $D)
+    public static function searchEventPosDate($date1, $date2, $A, $B)
     {
         $filteredQuery = self::getEventListDateCriteria($date1, $date2);
-        $Quadri = array($A, $B, $C, $D);
+        //L'emplacement 0 du point est X et l'emplacement 1 du point est Y
+        $Quadri = array();
+        if ($A[0] > $B[0]) {
+            if ($A[1] > $B[1]) {
+                $Quadri = [$B, [$A[0], $B[1]], $A, [$B[0], $A[1]]];
+            } else {
+                $Quadri = [[$B[0], $A[1]], $A, [$A[0], $B[1]], $B];
+            }
+        } else {
+            if ($A[1] > $B[1]) {
+                $Quadri = [[$A[0], $B[1]], $B, [$B[0], $A[1]], $A];
+            } else {
+                $Quadri = [$A, [$B[0], $A[1]], $B, [$A[0], $B[1]]];
+            }
+        }
 
-        /*Un quadrilatère est représenté par 4 points
-         * ZY
-         * WX
-         *
-         * Dans le cas présent  avec les points ABCD que nous avons ça donnera
-         * DC
-         * AB
-         * TODO Mettre dans l'emplacement 0 de Quadri le point le plus bas à gauche
-         * TODO Mettre dans l'emplacement 1 de Quadri le point le plus bas à droite
-         * TODO Mettre dans l'emplacement 2 de Quadri le point le plus haut à droite
-         * TODO Mettre dans l'emplacement 3 de Quadri le point le plus haut à gauche
-         *
+
+        /*Le code suivant correspond au return.
+         *$array = [];
+         *foreach ($filteredQuery as $k){
+         * $array[]=self::pointInPolygon(array($n->getCoordonneeX(), $n->getCoordonneeY()), $Quadri);
+         *}
+         *return $array;
          */
         return array_filter($filteredQuery, function ($n) use (&$Quadri) {
             return self::pointInPolygon(array($n->getCoordonneeX(), $n->getCoordonneeY()), $Quadri);
         });
-        return $filteredQuery;
+
+
     }
 
 
     private static function pointInPolygon($point, $poly)
     {
+        //Regarder https://en.wikipedia.org/wiki/Even–odd_rule
         $num = count($poly);
         $c = FALSE;
         for ($i = 0, $j = $num - 1; $i < $num; $j = $i, ++$i) {

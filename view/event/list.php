@@ -12,9 +12,6 @@ foreach ($tab_v as $v) {
 
 }
 ?>
-<p>
-<h1>Organisation des coordonées</h1>
-<p>P4P3<br>P1P2</p>
 <form method="get" action="index.php">
 
     <label for="date1_id">Minimum date</label> :
@@ -36,20 +33,7 @@ foreach ($tab_v as $v) {
 
     <label for="coordonneeY2_id">Coordonee Y2</label> :
     <input type="number" placeholder="Ex :256" name="coordonneeY2" id="coordonneeY_id2" value="0" required/>
-    <br/>
-
-    <label for="coordonneeX3_id">Coordonee X3</label> :
-    <input type="number" placeholder="Ex :128" name="coordonneeX3" id="coordonneeX_id3" value="0" required/>
-
-    <label for="coordonneeY3_id">Coordonee Y3</label> :
-    <input type="number" placeholder="Ex :256" name="coordonneeY3" id="coordonneeY_id3" value="0" required/>
-    <br/>
-
-    <label for="coordonneeX4_id">Coordonee X4</label> :
-    <input type="number" placeholder="Ex :128" name="coordonneeX4" id="coordonneeX_id4" value="0" required/>
-
-    <label for="coordonneeY4_id">Coordonee Y4</label> :
-    <input type="number" placeholder="Ex :256" name="coordonneeY4" id="coordonneeY_id4" value="0" required/>
+    <br
     <br/>
     <input type='hidden' name='controller' value='event'>
     <input type='hidden' name='action' value='search'>

@@ -50,9 +50,7 @@
                     case "search":
                         $A = array($_GET['coordonneeX1'], $_GET['coordonneeY1']);
                         $B = array($_GET['coordonneeX2'], $_GET['coordonneeY2']);
-                        $C = array($_GET['coordonneeX3'], $_GET['coordonneeY3']);
-                        $D = array($_GET['coordonneeX4'], $_GET['coordonneeY4']);
-                        ControllerEvent::search($_GET['date1'], $_GET['date2'], $A, $B, $C, $D);
+                        ControllerEvent::search($_GET['date1'], $_GET['date2'], $A, $B);
                         break;
                     default:
                         require File::build_path(array('view','main','error.php'));
