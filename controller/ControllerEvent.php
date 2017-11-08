@@ -67,7 +67,7 @@ class ControllerEvent
 
     public static function search($date1, $date2, $A, $B)
     {
-        $tab_v = ModelEvent::searchEventPosDate($date1, $date2, $A, $B);
+	    $tab_v = ModelEvent ::searchEvent ( $date1 , $date2 , $A , $B );
         $object = 'event';
         $view = 'list';
         $pagetitle = 'Liste de la recherche';

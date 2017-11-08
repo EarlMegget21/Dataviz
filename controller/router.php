@@ -48,9 +48,35 @@
                         $controller_class ::updated ( $data );
                         break;
                     case "search":
-                        $A = array($_GET['coordonneeX1'], $_GET['coordonneeY1']);
-                        $B = array($_GET['coordonneeX2'], $_GET['coordonneeY2']);
-                        ControllerEvent::search($_GET['date1'], $_GET['date2'], $A, $B);
+	                    //Enlever les commentaires ainsi que les conditions
+	                    //quand on aura les coordonnées en fonction de googlemap
+
+	                    //Ces conditions permettent d'ordonner les coordonnées pour que le trie marche sans vraiment
+	                    //se préoccuper de l'ordre des coordonnées.
+
+	                    //$A = array($_GET['coordonneeX1'], $_GET['coordonneeY1']);
+	                    //$B = array($_GET['coordonneeX2'], $_GET['coordonneeY2']);
+	                    if ( $_GET[ 'coordonneeX1' ] > $_GET[ 'coordonneeX2' ] ) {
+		                    if ( $_GET[ 'coordonneeY1' ] > $_GET[ 'coordonneeY2' ] ) {
+			                    $A = [ $_GET[ 'coordonneeX2' ] , $_GET[ 'coordonneeY2' ] ];
+			                    $B = [ $_GET[ 'coordonneeX1' ] , $_GET[ 'coordonneeY1' ] ];
+		                    }
+		                    else {
+			                    $A = [ $_GET[ 'coordonneeX2' ] , $_GET[ 'coordonneeY1' ] ];
+			                    $B = [ $_GET[ 'coordonneeX1' ] , $_GET[ 'coordonneeY2' ] ];
+		                    }
+	                    }
+	                    else {
+		                    if ( $_GET[ 'coordonneeY1' ] > $_GET[ 'coordonneeY2' ] ) {
+			                    $A = [ $_GET[ 'coordonneeX1' ] , $_GET[ 'coordonneeY2' ] ];
+			                    $B = [ $_GET[ 'coordonneeX2' ] , $_GET[ 'coordonneeY1' ] ];
+		                    }
+		                    else {
+			                    $A = [ $_GET[ 'coordonneeX1' ] , $_GET[ 'coordonneeY1' ] ];
+			                    $B = [ $_GET[ 'coordonneeX2' ] , $_GET[ 'coordonneeY2' ] ];
+		                    }
+	                    }
+	                    ControllerEvent ::search($_GET['date1'], $_GET['date2'], $A, $B);
                         break;
                     default:
                         require File::build_path(array('view','main','error.php'));
