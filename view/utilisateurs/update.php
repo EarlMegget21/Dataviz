@@ -1,7 +1,7 @@
 <?php
 	echo "<form method=\"get\" action=\"index.php\">"; //TODO: Une fois finis changer le get en post
-	if ( isset($_GET[ModelAdmin	::getPrimary () ]) ) {
-		$v = ModelAdmin ::select ( $_GET[ModelAdmin::getPrimary () ] );
+	if ( isset($_GET[ModelUtilisateurs	::getPrimary () ]) ) {
+		$v = ModelUtilisateurs ::select ( $_GET[ModelUtilisateurs::getPrimary () ] );
 
 		echo "<fieldset>
 	<legend>Mon formulaire :</legend>
@@ -13,7 +13,7 @@
 		<input type=\"password\" placeholder=\"Ex :Gh;]Yv<ZKM_87^%E\" name=\"mdp\" id=\"mdp_id\" value=\"" . $v -> getMdp () . "\" required/>
 		
 		<input type='hidden' name='action' value='updated'>
-		<input type='hidden' name='controller' value='admin'>
+		<input type='hidden' name='controller' value='utilisateurs'>
 	</p>
 	<p>
 		<input type=\"submit\" value=\"Envoyer\"/>
@@ -32,7 +32,7 @@
 		<input type=\"password\" placeholder=\"Ex : Gh;]Yv<ZKM_87^%E\" name=\"mdp\" id=\"marque_id\" required/>
 		
 		<input type='hidden' name='action' value='created'>
-		<input type='hidden' name='controller' value='admin'>
+		<input type='hidden' name='controller' value='utilisateurs'>
 
 	</p>
 	<p>

@@ -6,8 +6,6 @@
 		echo "<fieldset>
 	<legend>Mon formulaire :</legend>
 	<p>
-		<label for=\"id\">id</label> :
-		<input type=\"number\" placeholder=\"Ex : 1\" name=\"id\" id=\"id\" value=\"" . $v->getId() . "\" readonly/>
 		
 		<label for=\"date_id\">Date</label> :
 		<input type=\"date\" placeholder=\"Ex :00/00/00\" name=\"date\" id=\"date_id\" value=\"" . $v -> getDate () . "\" required/>
@@ -28,9 +26,8 @@
 		<input type=\"text\" placeholder=\"Ex :Developpement des écoles\" name=\"nom\" id=\"nom_id\" value=\"" . $v -> getNom () . "\" required/>
 		
 		
-		<label for=\"login_id\">Login du créateur</label> :
-		<input type=\"text\" placeholder=\"Ex :XxDarkSasukeDu69KiDefonceToutxX\" name=\"login\" id=\"login_id\" value=\"" . $v -> getLogin () . "\" readonly/>
-		
+		<input type='hidden' name='login' value='".$v->getLogin()."'>
+		<input type='hidden' name='id' value='".$v->getId()."'>
 		<input type='hidden' name='action' value='updated'>
 		<input type='hidden' name='controller' value='event'>
 	</p>
@@ -64,10 +61,8 @@
 		<input type=\"text\" placeholder=\"Ex :Developpement des écoles\" name=\"nom\" id=\"nom_id\" required/>
 		
 		
-		<label for=\"login_id\">Login du créateur</label> :
-		<input type=\"text\" placeholder=\"Ex :XxDarkSasukeDu69KiDefonceToutxX\" name=\"login\" id=\"login_id\"  required/>
 		
-		
+		<input type='hidden' name='login' value='".$_SESSION["login"]."'>
 		<input type='hidden' name='action' value='created'>
 		<input type='hidden' name='controller' value='event'>
 

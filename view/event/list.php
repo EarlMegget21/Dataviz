@@ -6,12 +6,14 @@ foreach ($tab_v as $v) {
         . '='
         . rawurlencode($v->getId())
         . '\'>'
-        . htmlspecialchars($v->getId())
-        . '</a>&nbsp'
-        . $v->getNom();
+        . $v->getNom()
+        ."</a>";
 
 }
-?>
+	if (isset( $_SESSION[ "login" ] )&&$_SESSION["isAdmin"]==1) {
+		echo "<br>\n<br>\n<a href=\"index.php?controller=event&action=update\">Créer évenement</a>
+";
+	}?>
 <form method="get" action="index.php">
 
     <label for="date1_id">Minimum date</label> :
@@ -42,4 +44,3 @@ foreach ($tab_v as $v) {
 </form>
 </p>
 <br>
-<a href="index.php?controller=event&action=update">Créer évenement</a>
