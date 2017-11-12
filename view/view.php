@@ -115,7 +115,13 @@
                         url: 'retrievePoints.php',
                         data: 'SO_Lt='+slt+'&SO_lg='+slg+'&NE_lt='+nlt+'&NE_lg='+nlg,
                         success: handleResponse
-                });*/
+                });
+
+                 //  Cette fonction est sensée retourner un ensemble de points à afficher sur la carte
+                function handleResponse(){
+                    TRAITEMENT DE LA REPONSE AJAX:
+                        "sendAjax.responseText" OU "sendAjax.responseXML";
+                }*/
 
                 google.maps.event.addListenerOnce(map, 'idle', function(){ //met à jour la valeur des coins si on fait rien (au chargement de la map)
                     /* On récupère les coordonnées des coins de la map */
