@@ -131,9 +131,9 @@
 			}
 		}
 
-		public static function search ($date1, $date2, $A, $B)
+		public static function search ($date1, $date2, $A, $B, $mot=NULL)
 		{
-			$tab_v = ModelEvent ::searchEvent( $date1, $date2, $A, $B );
+			$tab_v = ModelEvent ::searchEvent( $date1, $date2, $A, $B, $mot);
             $lat=($B[1]+$A[1]+10)/2; //on centre la map là où elle était centrée lors de la recherche (on doit ajouter 10 parceque Google Map enlevait 10 je ne sais pas pourquoi)
             $lng=($A[0]+$B[0])/2; //pareil que pour la latitude sauf que là Google Map mettait les bonnes valeurs
 			$object = 'event';

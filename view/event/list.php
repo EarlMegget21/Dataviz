@@ -22,6 +22,9 @@ foreach ($tab_v as $v) {
     <label for="date2_id">Maximum date</label> :
     <input type="date" placeholder="Ex :00/00/00" name="date2" id="date2_id" value="3000-01-01" required/>
 
+    <label for="motCle_id">Mots-Clés</label> :
+    <input type="text" placeholder="Une ville, un nom..." name="motCle" id="date2_id"/>
+
     <input type="hidden" name="longitude1" id="longitude_id1" required/> <!-- envoie le Get de x1 en fonction de la position de la map-->
 
     <input type="hidden" name="latitude1" id="latitude_id1" required/> <!-- envoie le Get de y1 -->

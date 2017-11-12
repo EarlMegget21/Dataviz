@@ -181,11 +181,14 @@
 		}
 
 		//Recherche d'events en fonction de la date et de la position
-		private static function getEventList ( $lowest , $highest , $A , $B )
+		private static function getEventList ( $lowest , $highest , $A , $B, $mot)
 		{
 			$sql = "SELECT * 
 					FROM Event 
-					WHERE date>=:low and date<=:high and longitude>=:xA and latitude>=:yA and longitude<=:xB and latitude<=:yB ;";
+					WHERE date>=:low and date<=:high and longitude>=:xA and latitude>=:yA and longitude<=:xB and latitude<=:yB";
+			if(!is_null($mot)){
+			    $sql = $sql." AND description LIKE CONCAT('%',:mot,'%') AND nom LIKE CONCAT('%',:mot,'%')";
+            }
 			$req_prep = Model ::$pdo -> prepare ( $sql );
 
 			$match = [
@@ -195,6 +198,7 @@
 				"yA"   => $A[ 1 ] ,
 				"xB"   => $B[ 0 ] ,
 				"yB"   => $B[ 1 ] ,
+                "mot"  => $mot,
 			];
 
 			$req_prep -> execute ( $match );
@@ -212,9 +216,9 @@
 		 *
 		 * La fonction est coupé en deux pour rendre la fonction plus lisible.
 		 */
-		public static function searchEvent ( $date1 , $date2 , $A , $B )
+		public static function searchEvent ( $date1 , $date2 , $A , $B, $mot)
 		{
-			$filter = self ::getEventList ( $date1 , $date2 , $A , $B );
+			$filter = self ::getEventList ( $date1 , $date2 , $A , $B, $mot);
 
 			//TODO: Filtrer keywords (Rajouter un paramètre pour les mots)
 
