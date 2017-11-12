@@ -187,7 +187,7 @@
 					FROM Event 
 					WHERE date>=:low and date<=:high and longitude>=:xA and latitude>=:yA and longitude<=:xB and latitude<=:yB";
 			if(!is_null($mot)){
-			    $sql = $sql." AND description LIKE CONCAT('%',:mot,'%') AND nom LIKE CONCAT('%',:mot,'%')";
+			    $sql = $sql." AND (description LIKE CONCAT('%',:mot,'%') OR nom LIKE CONCAT('%',:mot,'%'))";
             }
 			$req_prep = Model ::$pdo -> prepare ( $sql );
 
