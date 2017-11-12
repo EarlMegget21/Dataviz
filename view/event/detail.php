@@ -4,9 +4,9 @@
 		. "<br>Date: "
 		. htmlspecialchars( $v -> getDate() )
 		. "<br>Coordonnée:<br>&nbsp&nbspx:"
-		. htmlspecialchars( $v -> getCoordonneeX() )
+		. htmlspecialchars( $v -> getLongitude() )
 		. "<br>&nbsp&nbspy:"
-		. htmlspecialchars( $v -> getCoordonneeY() )
+		. htmlspecialchars( $v -> getLatitude() )
 		. "<br>Description:<br><br>"
 		. htmlspecialchars( $v -> getDescription() )
 		. "<br><br>Autheur :"

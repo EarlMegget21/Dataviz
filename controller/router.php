@@ -44,30 +44,16 @@
 						$controller_class ::updated( $data );
 						break;
 					case "search":
-						//Enlever les commentaires ainsi que les conditions
-						//quand on aura les coordonnées en fonction de googlemap
 
 						//Ces conditions permettent d'ordonner les coordonnées pour que le trie marche sans vraiment
-						//se préoccuper de l'ordre des coordonnées.
+						//se préoccuper de l'ordre des coordonnées car si on se trouve de l'autre côté de la Terre, les coordonnées longitude sont inversées
 
-						//$A = array($_GET['coordonneeX1'], $_GET['coordonneeY1']);
-						//$B = array($_GET['coordonneeX2'], $_GET['coordonneeY2']);
-						if ($_GET[ 'coordonneeX1' ] > $_GET[ 'coordonneeX2' ]) {
-							if ($_GET[ 'coordonneeY1' ] > $_GET[ 'coordonneeY2' ]) {
-								$A = [ $_GET[ 'coordonneeX2' ], $_GET[ 'coordonneeY2' ] ];
-								$B = [ $_GET[ 'coordonneeX1' ], $_GET[ 'coordonneeY1' ] ];
-							} else {
-								$A = [ $_GET[ 'coordonneeX2' ], $_GET[ 'coordonneeY1' ] ];
-								$B = [ $_GET[ 'coordonneeX1' ], $_GET[ 'coordonneeY2' ] ];
-							}
+						if ($_GET[ 'longitude1' ] > $_GET[ 'longitude2' ]) {
+                            $A = [ $_GET[ 'longitude2' ], $_GET[ 'latitude2' ] ];
+                            $B = [ $_GET[ 'longitude1' ], $_GET[ 'latitude1' ] ];
 						} else {
-							if ($_GET[ 'coordonneeY1' ] > $_GET[ 'coordonneeY2' ]) {
-								$A = [ $_GET[ 'coordonneeX1' ], $_GET[ 'coordonneeY2' ] ];
-								$B = [ $_GET[ 'coordonneeX2' ], $_GET[ 'coordonneeY1' ] ];
-							} else {
-								$A = [ $_GET[ 'coordonneeX1' ], $_GET[ 'coordonneeY1' ] ];
-								$B = [ $_GET[ 'coordonneeX2' ], $_GET[ 'coordonneeY2' ] ];
-							}
+                            $A = [ $_GET[ 'longitude1' ], $_GET[ 'latitude2' ] ];
+                            $B = [ $_GET[ 'longitude2' ], $_GET[ 'latitude1' ] ];
 						}
 						ControllerEvent ::search( $_GET[ 'date1' ], $_GET[ 'date2' ], $A, $B );
 						break;

@@ -1,5 +1,5 @@
 <?php
-// Display of the events stored in $tab_v
+// Affiche les events stockés dans $tab_v
 foreach ($tab_v as $v) {
     echo '<p><a href=\'./index.php?controller=event&action=read&'
         . ModelEvent::getPrimary()
@@ -11,9 +11,9 @@ foreach ($tab_v as $v) {
 
 }
 	if (isset( $_SESSION[ "login" ] )&&$_SESSION["isAdmin"]==1) {
-		echo "<br>\n<br>\n<a href=\"index.php?controller=event&action=update\">Créer évenement</a>
-";
-	}?>
+		echo "<br>\n<br>\n<a href=\"index.php?controller=event&action=update\">Créer évenement</a>";
+	}
+?>
 <form method="get" action="index.php">
 
     <label for="date1_id">Minimum date</label> :
@@ -22,25 +22,20 @@ foreach ($tab_v as $v) {
     <label for="date2_id">Maximum date</label> :
     <input type="date" placeholder="Ex :00/00/00" name="date2" id="date2_id" value="3000-01-01" required/>
 
-    <br/>
-    <label for="coordonneeX1_id">Coordonee X1</label> :
-    <input type="number" placeholder="Ex :128" name="coordonneeX1" id="coordonneeX_id1" value="0" required/>
+    <input type="hidden" name="longitude1" id="longitude_id1" required/> <!-- envoie le Get de x1 en fonction de la position de la map-->
 
-    <label for="coordonneeY1_id">Coordonee Y1</label> :
-    <input type="number" placeholder="Ex :256" name="coordonneeY1" id="coordonneeY_id1" value="0" required/>
-    <br/>
+    <input type="hidden" name="latitude1" id="latitude_id1" required/> <!-- envoie le Get de y1 -->
 
-    <label for="coordonneeX2_id">Coordonee X2</label> :
-    <input type="number" placeholder="Ex :128" name="coordonneeX2" id="coordonneeX_id2" value="0" required/>
+    <input type="hidden" name="longitude2" id="longitude_id2" required/> <!-- envoie le Get de x2 -->
 
-    <label for="coordonneeY2_id">Coordonee Y2</label> :
-    <input type="number" placeholder="Ex :256" name="coordonneeY2" id="coordonneeY_id2" value="0" required/>
-    <br
-    <br/>
-    <input type='hidden' name='controller' value='event'>
-    <input type='hidden' name='action' value='search'>
-    <input type="submit" value="Envoyer"/>
+    <input type="hidden" name="latitude2" id="latitude_id2" required/> <!-- envoie le Get de y2 -->
+
+    <input type='hidden' name='controller' value='event'> <!-- envoie le Get du controller event -->
+
+    <input type='hidden' name='action' value='search'> <!-- envoie le Get de l'action search -->
+
+    <input type="submit" value="Rechercher" id="sub"/>
+
+
 
 </form>
-</p>
-<br>

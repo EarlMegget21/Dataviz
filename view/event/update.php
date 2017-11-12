@@ -10,11 +10,11 @@
 		<label for=\"date_id\">Date</label> :
 		<input type=\"date\" placeholder=\"Ex :00/00/00\" name=\"date\" id=\"date_id\" value=\"" . $v -> getDate () . "\" required/>
 		
-		<label for=\"coordonneeX_id\">Coordonee X</label> :
-		<input type=\"text\" placeholder=\"Ex :128\" name=\"coordonneeX\" id=\"coordonneeX_id\" value=\"" . $v -> getCoordonneeX () . "\" required/>
+		<label for=\"longitude_id\">Coordonee X</label> :
+		<input type=\"text\" placeholder=\"Ex :128\" name=\"longitude\" id=\"longitude_id\" value=\"" . $v -> getLongitude () . "\" required/>
 		
-		<label for=\"coordonneeY_id\">Coordonee Y</label> :
-		<input type=\"text\" placeholder=\"Ex :256\" name=\"coordonneeY\" id=\"coordonneeY_id\" value=\"" . $v -> getCoordonneeY () . "\" required/>
+		<label for=\"latitude_id\">Coordonee Y</label> :
+		<input type=\"text\" placeholder=\"Ex :256\" name=\"latitude\" id=\"latitude_id\" value=\"" . $v -> getLatitude () . "\" required/>
 		
 		<label for=\"description_id\">Description</label></label> :
 		<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\" value=\"" . $v -> getDescription () . "\" />
@@ -45,11 +45,11 @@
 		<label for=\"date_id\">Date</label> :
 		<input type=\"date\" placeholder=\"Ex :00/00/00\" name=\"date\" id=\"date_id\" required/>
 		
-		<label for=\"coordonneeX_id\">Coordonee X</label> :
-		<input type=\"text\" placeholder=\"Ex :128\" name=\"coordonneeX\" id=\"coordonneeX_id\"  required/>
+		<label for=\"longitude_id\">Coordonee X</label> :
+		<input type=\"text\" placeholder=\"Ex :128\" name=\"longitude\" id=\"longitude_id\"  required/>
 		
-		<label for=\"coordonneeY_id\">Coordonee Y</label> :
-		<input type=\"text\" placeholder=\"Ex :256\" name=\"coordonneeY\" id=\"coordonneeY_id\" required/>
+		<label for=\"latitude_id\">Coordonee Y</label> :
+		<input type=\"text\" placeholder=\"Ex :256\" name=\"latitude\" id=\"latitude_id\" required/>
 		
 		<label for=\"description_id\">Description</label></label> :
 		<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\"  />

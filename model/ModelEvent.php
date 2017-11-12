@@ -21,12 +21,12 @@
 		/**
 		 * @var float
 		 */
-		private $coordonneeX;
+		private $longitude;
 
 		/**
 		 * @var float
 		 */
-		private $coordonneeY;
+		private $latitude;
 
 		/**
 		 * @var String
@@ -73,8 +73,8 @@
 				$this -> id = $i;
 				$this -> nom = $n;
 				$this -> date = $d;
-				$this -> coordonneX = $x;
-				$this -> coordonneY = $y;
+				$this -> longitude = $x;
+				$this -> latitude = $y;
 				$this -> description = $de;
 				$this -> login = $l;
 				$this -> MP3 = $m;
@@ -100,17 +100,17 @@
 		/**
 		 * @return float
 		 */
-		public function getCoordonneeX ()
+		public function getLongitude ()
 		{
-			return $this -> coordonneeX;
+			return $this -> longitude;
 		}
 
 		/**
 		 * @return float
 		 */
-		public function getCoordonneeY ()
+		public function getLatitude ()
 		{
-			return $this -> coordonneeY;
+			return $this -> latitude;
 		}
 
 		/**
@@ -185,7 +185,7 @@
 		{
 			$sql = "SELECT * 
 					FROM Event 
-					WHERE date>=:low and date<=:high and coordonneeX>=:xA and coordonneeY>=:yA and coordonneeX<=:xB and coordonneeY<=:yB ;";
+					WHERE date>=:low and date<=:high and longitude>=:xA and latitude>=:yA and longitude<=:xB and latitude<=:yB ;";
 			$req_prep = Model ::$pdo -> prepare ( $sql );
 
 			$match = [
