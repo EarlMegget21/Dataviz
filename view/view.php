@@ -174,7 +174,7 @@
 		</script>
 
 		<script async defer
-		        src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCuog5LlTmtUH8-wB5IjxdJMY_Cq-CqhVU&language=fr&callback=initMap"> // include l'API Javascript grâce à notre Clé
+		        src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCuog5LlTmtUH8-wB5IjxdJMY_Cq-CqhVU&language=ja&callback=initMap"> // include l'API Javascript grâce à notre Clé
 		</script>
 
         <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script> <!-- importe la bibliotèque JQuery -->
