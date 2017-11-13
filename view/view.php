@@ -52,7 +52,7 @@
                 });
                 //map.getStreetView().setVisible(false);
                 var infoWindow = new google.maps.InfoWindow; //créer une mini fenetre qui s'affichera avec les infos de l'event
-                downloadUrl('dataviz.yvesdaniel.fr/Dataviz/xml/points.xml', function(data) { //appel pour récupérer les infos dans le XML et créer des points
+                downloadUrl('http://dataviz.yvesdaniel.fr/xml/points.xml', function(data) { //appel pour récupérer les infos dans le XML et créer des points
                     var xml = data.responseXML; //récupère le doc XML
                     var markers = xml.documentElement.getElementsByTagName('marker'); //récupère les tags XML 'marker' pour les mettre dans un tableau
                     Array.prototype.forEach.call(markers, function (markerElem) { //pour chaque tag marker dans le tableau
