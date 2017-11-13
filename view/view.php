@@ -52,7 +52,7 @@
                 });
                 //map.getStreetView().setVisible(false);
                 var infoWindow = new google.maps.InfoWindow; //créer une mini fenetre qui s'affichera avec les infos de l'event
-                downloadUrl('http://localhost/Dataviz/xml/points.xml', function(data) { //appel pour récupérer les infos dans le XML et créer des points
+                downloadUrl('dataviz.yvesdaniel.fr/Dataviz/xml/points.xml', function(data) { //appel pour récupérer les infos dans le XML et créer des points
                     var xml = data.responseXML; //récupère le doc XML
                     var markers = xml.documentElement.getElementsByTagName('marker'); //récupère les tags XML 'marker' pour les mettre dans un tableau
                     Array.prototype.forEach.call(markers, function (markerElem) { //pour chaque tag marker dans le tableau
@@ -174,7 +174,7 @@
 		</script>
 
 		<script async defer
-		        src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCuog5LlTmtUH8-wB5IjxdJMY_Cq-CqhVU&language=ja&callback=initMap"> // include l'API Javascript grâce à notre Clé
+		        src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCuog5LlTmtUH8-wB5IjxdJMY_Cq-CqhVU&language=fr&callback=initMap"> // include l'API Javascript grâce à notre Clé
 		</script>
 
         <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script> <!-- importe la bibliotèque JQuery -->
