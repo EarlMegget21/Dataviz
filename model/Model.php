@@ -29,7 +29,7 @@
 			$login = Conf ::getLogin ();
 			$password = Conf ::getPassword ();
 			$database = Conf ::getDatabase ();
-            $port=Conf::getPort();
+			$port=Conf::getPort();
 			try {
 				self ::$pdo = new PDO( "mysql:host=$hostname;port=".$port.";dbname=$database" , $login , $password , [ PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8" ] );
 				self ::$pdo -> setAttribute ( PDO::ATTR_ERRMODE , PDO::ERRMODE_EXCEPTION );

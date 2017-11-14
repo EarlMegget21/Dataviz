@@ -43,17 +43,8 @@
 						$controller_class ::updated( $data );
 						break;
 					case "search":
-
-						//Ces conditions permettent d'ordonner les coordonnées pour que le trie marche sans vraiment
-						//se préoccuper de l'ordre des coordonnées car si on se trouve de l'autre côté de la Terre, les coordonnées longitude sont inversées
-
-						if ($_GET[ 'longitude1' ] > $_GET[ 'longitude2' ]) {
-                            $A = [ $_GET[ 'longitude2' ], $_GET[ 'latitude2' ] ];
-                            $B = [ $_GET[ 'longitude1' ], $_GET[ 'latitude1' ] ];
-						} else {
-                            $A = [ $_GET[ 'longitude1' ], $_GET[ 'latitude2' ] ];
-                            $B = [ $_GET[ 'longitude2' ], $_GET[ 'latitude1' ] ];
-						}
+                            			$A = [ $_GET[ 'longitude1' ], $_GET[ 'latitude2' ] ];
+                           			$B = [ $_GET[ 'longitude2' ], $_GET[ 'latitude1' ] ];
 						if(isset($_GET['motCle'])){
                             ControllerEvent ::search( $_GET[ 'date1' ], $_GET[ 'date2' ], $A, $B, $_GET['motCle']);
                         }else{
