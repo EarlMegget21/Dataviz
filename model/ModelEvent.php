@@ -185,7 +185,12 @@
 		{
 			$sql = "SELECT * 
 					FROM Event 
-					WHERE date>=:low and date<=:high and longitude>=:xA and latitude>=:yA and longitude<=:xB and latitude<=:yB";
+					WHERE date>=:low and date<=:high and latitude>=:yA and latitude<=:yB and ";
+			if($A[ 0 ]>$B[ 0 ]){ //si on est de l'autre côté de la Terre (x1>x2)
+			    $sql=$sql.'(longitude>=:xA or longitude<=:xB)';
+            }else{
+                $sql=$sql.'longitude>=:xA and longitude<=:xB';
+            }
 			if(!is_null($mot)){
 			    $sql = $sql." AND (description LIKE CONCAT('%',:mot,'%') OR nom LIKE CONCAT('%',:mot,'%'))";
             }

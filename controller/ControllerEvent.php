@@ -88,7 +88,7 @@
 				$object = 'event';
 				require( File ::build_path( [ 'view', 'view.php' ] ) );
 			} elseif (!isset($_SESSION["login"])) {
-				$object = 'utilisateurs';
+				$object = 'main';
 				$view = 'connect';
 				$pagetitle = 'Connection à la page utilisateur';
 				require( File ::build_path( [ 'view', 'view.php' ] ) );
@@ -119,7 +119,7 @@
 				$pagetitle = 'Event supprimé';
 				require( File ::build_path( [ 'view', 'view.php' ] ) );
 			} else if (!$isLogged) {
-				$object = 'utilisateurs';
+				$object = 'main';
 				$view = 'connect';
 				$pagetitle = 'Connection à la page utilisateur';
 				require( File ::build_path( [ 'view', 'view.php' ] ) );
@@ -131,8 +131,21 @@
 		public static function search ($date1, $date2, $A, $B, $mot=NULL)
 		{
 			$tab_v = ModelEvent ::searchEvent( $date1, $date2, $A, $B, $mot);
-            $lat=($B[1]+$A[1])/2; //on centre la map là où elle était centrée lors de la recherche
-            $lng=($A[0]+$B[0])/2;
+            $lat=($B[1]+$A[1])/2; //on centre la map là où elle était centrée lors de la recherche en latitude
+            if($A[0]>$B[0]){ //pareil mais si on est de l'autre côté de la Terre x1>x2 alors:
+                $dif1=180-$A[0]; //on calcule les deux différences entre le x1 et 180 et x2 et -180
+                $dif2=180+$B[0];
+                $ctr=($dif1+$dif2)/2; //on définit où est le centre de la carte par rapport à cette différence
+                $pt1=$A[0]+$ctr; //on calcule où serait ce centre par rapport au x1 et par rapport au x2
+                $pt2=$B[0]-$ctr;
+                if($pt1>=180){ //on garde le centre qui se trouve dans le monde donc -180<ctr<180
+                    $lng=$pt2;
+                }else{
+                    $lng=$pt1;
+                }
+            }else{ //si les deux points sont du même côté de la carte alors on fait le calcule normal
+                $lng = ($A[0] + $B[0]) / 2;
+            }
             $zoom=$_GET['zoom']; //affecte le dernier zoom
 			$object = 'event';
 			$view = 'list';
