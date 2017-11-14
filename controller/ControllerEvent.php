@@ -87,7 +87,7 @@
 			} elseif (!isset($_SESSION["login"])) {
                 $lat=40;
                 $lng=10;
-				$object = 'main';
+				$object = 'utilisateurs';
 				$view = 'connect';
 				$pagetitle = 'Connection à la page utilisateur';
 				require( File ::build_path( [ 'view', 'view.php' ] ) );
@@ -122,7 +122,7 @@
 			} else if (!$isLogged) {
                 $lat=40;
                 $lng=10;
-				$object = 'main';
+				$object = 'utilisateurs';
 				$view = 'connect';
 				$pagetitle = 'Connection à la page utilisateur';
 				require( File ::build_path( [ 'view', 'view.php' ] ) );

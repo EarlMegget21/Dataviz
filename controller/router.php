@@ -2,16 +2,15 @@
 	session_start();
 	require_once File ::build_path( array ( 'controller', 'ControllerEvent.php' ) );
 	require_once File ::build_path( array ( 'controller', 'ControllerUtilisateurs.php' ) );
-	if (isset( $_GET[ 'action' ] )) {
-		$action = $_GET[ "action" ];
+	if (isset( $_GET[ 'controller' ] )) {
 
+		$controller = $_GET[ 'controller' ];
+		$model_class = 'Model' . ucfirst( $controller );
+		$controller_class = 'Controller' . ucfirst( $controller );
+		if (class_exists( $controller_class )) {
 
-		if (isset( $_GET[ 'controller' ] )) {
-			$controller = $_GET[ 'controller' ];
-			$model_class = 'Model' . ucfirst( $controller );
-			$controller_class = 'Controller' . ucfirst( $controller );
-
-			if (class_exists( $controller_class )) {
+			if (isset( $_GET[ 'action' ] )) {
+				$action = $_GET[ "action" ];
 				switch ($action) {
 					case "readAll":
 						$controller_class ::readAll();
@@ -61,9 +60,16 @@
                             ControllerEvent ::search( $_GET[ 'date1' ], $_GET[ 'date2' ], $A, $B );
                         }
 						break;
-
+					case "connect":
+						$controller_class::connect();
+						break;
+					case "connected":
+						$controller_class::connected($_GET["login"],$_GET["mdp"]);
+						break;
+					case "disconnect":
+						$controller_class::disconnect();
+						break;
 					default:
-
 						$object = 'main';
 						$view = 'error';
 						$pagetitle = 'Erreur';
@@ -71,52 +77,10 @@
 						break;
 				}
 			} else {
-				require File ::build_path( array ( 'view', 'main', 'error.php' ) );
+				$controller_class::readAll();
 			}
 		} else {
-
-			//Switch pour les actions en dehors des objets ControllerUtilisateurs et ControllerEvent
-			//TODO: Mettre la connection et déconnection dans le ControllerUtilisateur
-
-			switch ($action) {
-				case "connect":
-					//Cette action a 2 rôles: Rediriger sur la page connect, et de verification de connection.
-					//Pour l'instant la connection se fait seulement avec le login
-					//Vérifie que l'utilisateur est connecté: Si oui il ne peut pas se reconnecter autrement il peut se connecter.
-					if (!isset( $_SESSION[ "login" ] )) {
-						//Ici il vérifie si l'accès à cette action viens d'une page quelconque ou de la page connect.
-						if (isset( $_GET[ "login" ] )) {
-							$g = ModelUtilisateurs ::select( $_GET[ "login" ] );
-							if ($g !== FALSE) {
-								$_SESSION[ "login" ] = $g -> getLogin();
-								$_SESSION[ "isAdmin" ] = $g -> getIsAdmin();
-
-							}
-							ControllerEvent ::readAll();
-						} else {
-
-							$object = 'main';
-							$view = 'connect';
-							$pagetitle = 'Connection à la page utilisateur';
-							require( File ::build_path( [ 'view', 'view.php' ] ) );
-						}
-					} else {
-						ControllerEvent ::readAll();
-					}
-					break;
-				case "disconnect":
-					if (isset( $_SESSION[ "login" ] )) {
-						session_unset();     // unset $_SESSION variable for the run-time
-						session_destroy();   // destroy session data in storage
-						// Il faut réappeler session_start() pour accéder de nouveau aux variables de session
-						setcookie( session_name(), '', time() - 1 ); // deletes the session cookie containing the session ID
-					}
-					ControllerEvent ::readAll();
-					break;
-				default:
-
-					break;
-			}
+			require File ::build_path( array ( 'view', 'main', 'error.php' ) );
 		}
 	} else {
 		ControllerEvent ::readAll();

@@ -77,6 +77,26 @@
         {
             return self::$primary;
         }
+
+		public static function checkPassword($login,$mot_de_passe_chiffre){
+			$sql = "SELECT * 
+					FROM Utilisateurs 
+					WHERE mdp=:mdp and login=:login";
+
+			$req_prep = Model ::$pdo -> prepare ( $sql );
+
+			$match = [
+				"login"  => $login ,
+				"mdp" => Security::chiffrer ($mot_de_passe_chiffre)
+			];
+			$req_prep -> execute ( $match );
+			$req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelUtilisateurs' );
+			$tab=$req_prep->fetchAll ();
+			if(empty($tab)){
+				return FALSE;
+			}
+			return $tab[0];
+		}
 	}
 
 ?>

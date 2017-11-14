@@ -1,6 +1,6 @@
 <?php
 	echo "<form method=\"get\" action=\"index.php\">"; //TODO: Une fois finis changer le get en post
-	if ( isset($_GET[ModelEvent::getPrimary () ]) ) {
+	if ( isset($_GET[ModelEvent::getPrimary () ])) {
 		$v = ModelEvent ::select ( $_GET[ModelEvent::getPrimary () ] );
 
 		echo "<fieldset>

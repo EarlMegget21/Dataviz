@@ -14,13 +14,13 @@
 	<body>
 		<header>
 			<nav>
-				<a href = "index.php?action=readAll&controller=event">Event</a>
-				<a href = "index.php?action=readAll&controller=utilisateurs">Admin</a>
+				<a href = "index.php?controller=event">Event</a>
+				<a href = "index.php?controller=utilisateurs">Admin</a>
 				<?php
 					if (!isset( $_SESSION[ "login" ] )) {
-						echo "<a href=\"index.php?action=connect\">Connect</a>";
+						echo "<a href=\"index.php?action=connect&controller=utilisateurs\">Connect</a>";
 					} else {
-                        echo "<a href=\"index.php?action=disconnect\">Disconnect</a>";
+                        echo "<a href=\"index.php?action=disconnect&controller=utilisateurs\">Disconnect</a>";
 					}
 				?>
 			</nav>
