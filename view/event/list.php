@@ -25,13 +25,15 @@ foreach ($tab_v as $v) {
     <label for="motCle_id">Mots-Clés</label> :
     <input type="text" placeholder="Une ville, un nom..." name="motCle" id="date2_id"/>
 
-    <input type="hidden" name="longitude1" id="longitude_id1" required/> <!-- envoie le Get de x1 en fonction de la position de la map-->
+    <input type="hidden" name="longitude1" id="longitude_id1" value="-20" required/> <!-- envoie le Get de x1 en fonction de la position de la map-->
 
-    <input type="hidden" name="latitude1" id="latitude_id1" required/> <!-- envoie le Get de y1 -->
+    <input type="hidden" name="latitude1" id="latitude_id1" value="-50" required/> <!-- envoie le Get de y1 -->
 
-    <input type="hidden" name="longitude2" id="longitude_id2" required/> <!-- envoie le Get de x2 -->
+    <input type="hidden" name="longitude2" id="longitude_id2" value="0" required/> <!-- envoie le Get de x2 -->
 
-    <input type="hidden" name="latitude2" id="latitude_id2" required/> <!-- envoie le Get de y2 -->
+    <input type="hidden" name="latitude2" id="latitude_id2" value="-70" required/> <!-- envoie le Get de y2 -->
+
+    <input type="hidden" name="zoom" id="zoom" value="3" required>
 
     <input type='hidden' name='controller' value='event'> <!-- envoie le Get du controller event -->
 
