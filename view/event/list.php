@@ -16,11 +16,9 @@ foreach ($tab_v as $v) {
 ?>
 <form method="get" action="index.php">
 
-    <label for="date1_id">Minimum date</label> :
-    <input type="date" placeholder="Ex :00/00/00" name="date1" id="date1_id" value="0001-01-01" required/>
+    <input type="hidden" placeholder="Ex :00/00/00" name="date1" id="date1_id" required/>
 
-    <label for="date2_id">Maximum date</label> :
-    <input type="date" placeholder="Ex :00/00/00" name="date2" id="date2_id" value="3000-01-01" required/>
+    <input type="hidden" placeholder="Ex :00/00/00" name="date2" id="date2_id" required/>
 
     <label for="motCle_id">Mots-Clés</label> :
     <input type="text" placeholder="Une ville, un nom..." name="motCle" id="date2_id"/>

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset = "UTF-8">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 		<title><?php echo $pagetitle; ?></title>
 		<!-- CSS temporel pour redimensionner la map -->
 		<style>
@@ -9,13 +10,41 @@
 				height: 400px;
 				width: 100%;
 			}
-		</style>
+
+            .ui-slider-range {
+                background-color: yellow;
+            }
+
+            .ui-slider-handle {
+                background-color: blue;
+            }
+        </style>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#slider").slider({
+                    range: true,
+                    min: 1900,
+                    max: 2017,
+                    values: [1900, 2017],
+                    slide: function (event, ui) {
+                        $("#date1_id").val(ui.values[0] + "-01-01");
+                        $("#date2_id").val(ui.values[1] + "-31-12");
+                        $("#date").val("Du 01/01/"+ui.values[0] +" au 31/12/"+ui.values[1]);
+                    }
+                });
+                $("#date1_id").val($("#slider").slider("values", 0)+"-01-01");
+                $("#date2_id").val($("#slider").slider("values", 1)+"-31-12");
+                $("#date").val("Du 01/01/"+$("#slider").slider("values", 0)+" au 31/12/"+$("#slider").slider("values", 1));
+            });
+        </script>
 	</head>
 	<body>
 		<header>
 			<nav>
-
-
 				<a href="index.php?controller=event">Event</a>
 				<a href="index.php?controller=utilisateurs">Admin</a>
 				<?php
@@ -38,7 +67,13 @@
 
 		<div id = "map">
 			<!-- affiche la map ici -->
-		</div>
+		</div> <br>
+
+        <input type="text" id="date" style="border:0; width: 200px; font-weight:bold;"> <br>
+
+        <div id="slider">
+            <!-- afficher le slider ici -->
+        </div> <br>
 
         <div id="detail">
             <!-- affiche détails de l'event ici -->
@@ -180,11 +215,14 @@
             function doNothing() {} //fonction qui fait rien
 		</script>
 
+
+
 		<script async defer
 		        src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCuog5LlTmtUH8-wB5IjxdJMY_Cq-CqhVU&language=fr&callback=initMap"> // include l'API Javascript grâce à notre Clé
 		</script>
 
-        <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script> <!-- importe la bibliotèque JQuery -->
+
+        <!--<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script> <!-- importe la bibliotèque JQuery -->
 
 		<footer>
 			<p style = "border: 1px solid black;text-align:right;padding-right:1em;">Copyright</p>
