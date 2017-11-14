@@ -3,9 +3,9 @@
 		. htmlspecialchars( $v -> getNom() )
 		. "<br>Date: "
 		. htmlspecialchars( $v -> getDate() )
-		. "<br>Coordonnée:<br>&nbsp&nbspx:"
+		. "<br>Coordonnée:<br>&nbsp&nbspLongitude:" //&nbsp fait une tabulation
 		. htmlspecialchars( $v -> getLongitude() )
-		. "<br>&nbsp&nbspy:"
+		. "<br>&nbsp&nbspLatitude:"
 		. htmlspecialchars( $v -> getLatitude() )
 		. "<br>Description:<br><br>"
 		. htmlspecialchars( $v -> getDescription() )

@@ -17,6 +17,7 @@
 				<a href = "index.php?controller=event">Event</a>
 				<a href = "index.php?controller=utilisateurs">Admin</a>
 				<?php
+                echo $zoom;
 					if (!isset( $_SESSION[ "login" ] )) {
 						echo "<a href=\"index.php?action=connect&controller=utilisateurs\">Connect</a>";
 					} else {
@@ -45,14 +46,15 @@
             function initMap() { //fonction qui créer la map
                 var lat=<?php echo $lat;?>; //récupère la latitude donnée dans le controller
                 var lng=<?php echo $lng;?>; //récupère la longitude donnée dans le controller
+                var zoom=<?php echo $zoom; ?>;
                 var centre = {lat: lat , lng: lng}; //créer un tableau de x y pour le centre
                 var map = new google.maps.Map(document.getElementById('map'), { //créer une map
-                    zoom: 3,
+                    zoom: zoom,
                     center: centre
                 });
                 //map.getStreetView().setVisible(false);
                 var infoWindow = new google.maps.InfoWindow; //créer une mini fenetre qui s'affichera avec les infos de l'event
-                downloadUrl('http://dataviz.yvesdaniel.fr/xml/points.xml', function(data) { //appel pour récupérer les infos dans le XML et créer des points
+                downloadUrl('http://localhost/Dataviz/xml/points.xml', function(data) { //appel pour récupérer les infos dans le XML et créer des points
                     var xml = data.responseXML; //récupère le doc XML
                     var markers = xml.documentElement.getElementsByTagName('marker'); //récupère les tags XML 'marker' pour les mettre dans un tableau
                     Array.prototype.forEach.call(markers, function (markerElem) { //pour chaque tag marker dans le tableau
@@ -105,6 +107,7 @@
                         $("#longitude_id2").val(x2);
                         $("#latitude_id1").val(y1);
                         $("#latitude_id2").val(y2);
+                        $('#zoom').val(map.getZoom());
                     });
                     //callAjax(South_Lat,South_Lng,North_Lat,North_Lng);
                 });
@@ -135,6 +138,7 @@
                         $("#longitude_id2").val(x2);
                         $("#latitude_id1").val(y1);
                         $("#latitude_id2").val(y2);
+                        $('#zoom').val(map.getZoom());
                     });
                 });
 
@@ -150,6 +154,7 @@
                         $("#longitude_id2").val(x2);
                         $("#latitude_id1").val(y1);
                         $("#latitude_id2").val(y2);
+                        $('#zoom').val(map.getZoom());
                     });
                 });
             }
