@@ -14,6 +14,23 @@ foreach ($tab_v as $v) {
 		echo "<br>\n<br>\n<a href=\"index.php?controller=event&action=update\">Créer évenement</a>";
 	}
 ?>
+
+<form method="get" action="index.php">
+	<fieldset>
+		<legend>Generate events:</legend>
+		<p>
+			<label for="n_id">Number</label> :
+			<input type="number"  name="n" id="n_id" required/>
+
+			<input type='hidden' name='action' value='generate'>
+			<input type='hidden' name='controller' value='event'>
+		</p>
+		<p>
+			<input type="submit" value="Generate"/>
+		</p>
+	</fieldset>
+</form>
+
 <form method="get" action="index.php">
 
     <input type="hidden" placeholder="Ex :00/00/00" name="date1" id="date1_id" required/>
