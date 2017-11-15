@@ -170,7 +170,7 @@
 				$end = strtotime("31 December 2017");
 				$date = date("Y-m-d", mt_rand($start, $end));
 				$longitude = rand ( -180 , 180 );
-				$latitude = rand ( 0 , 90 );
+				$latitude = rand ( -90 , 90 );
 				$mp3 = "";
 				$nom = self ::generateRandomString ();
 				$login = $users[ rand ( 0 , count ( $users ) - 1 ) ]->getLogin();
