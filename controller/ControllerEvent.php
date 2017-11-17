@@ -204,4 +204,9 @@ Aliquam lectus nunc, varius eget sagittis viverra, pharetra ut sapien. Phasellus
 			return $randomString;
 		}
 
+		/*public static function comment(){
+		    $idEvent = $_GET['id'];
+
+        }*/
+
 	}
