@@ -41,13 +41,27 @@ if(empty($comments)){
 }
 
 if(isset($_SESSION["login"])){  //Bouton pour commenter
-    //TODO: Changer ce bouton en form intégré au reste des infos
-    echo "<a href=index.php?controller=event&action=comment&"
-        . ModelEvent::getPrimary()
-        .'='
-        .rawurldecode($v -> getId())
-        .">Commenter et noter</a> <br>";
-    //TODO: Faire en sorte de noter et de laisser un commentaire concernant un event
+    echo
+        "<form method=\"get\" action=\"index.php\">
+            <fieldset>
+	<legend>Commenter :</legend>
+	<p>
+		<label for=\"note_id\">Note</label> :
+		<input type=\"number\" step=\"1\" min=\"0\" max=\"5\" name=\"note\" id=\"mdp_id\" value=\"0\" required/>
+		
+		<label for='commentaire_id'>Votre Message</label>
+		<textarea placeholder='Laissez votre message ici !' name='commentaire' id='commentaire_id' rows='2' cols='30' required/></textarea>
+		
+		<input type='hidden' name='login' value='".rawurlencode($_SESSION[ "login" ])."'>
+		<input type='hidden' name='action' value='comment'>
+		<input type='hidden' name='id' value='".rawurlencode($v->getId())."'>
+		<input type='hidden' name='controller' value='event'>
+	</p>
+	<p>
+		<input type=\"submit\" value=\"Envoyer\"/>
+	</p>
+</fieldset><br>";
+
 }
 
 

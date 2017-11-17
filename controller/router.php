@@ -63,6 +63,8 @@
 					case "generate":
 						$controller_class::generate($_GET["n"]);
 						break;
+					case "comment":
+						$controller_class::comment();
 					default:
 						$object = 'main';
 						$view = 'error';

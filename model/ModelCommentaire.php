@@ -8,7 +8,6 @@
 
 class ModelCommentaire
 {
-    private $idCommentaire;
     private $idEvent;
     private $login;
     private $texte;
@@ -24,10 +23,9 @@ class ModelCommentaire
      * @param $login
      * @param $texte
      */
-    public function __construct($id=NULL, $idEvent=NULL, $login=NULL, $texte=NULL, $note=NULL)
+    public function __construct($idEvent=NULL, $login=NULL, $texte=NULL, $note=NULL)
     {
-        if ( !is_null ( $id ) && !is_null ( $idEvent ) && !is_null ( $login ) && !is_null ( $texte ) && !is_null($note)) {
-            $this->idCommentaire = $id;
+        if ( !is_null ( $idEvent ) && !is_null ( $login ) && !is_null ( $texte ) && !is_null($note)) {
             $this->idEvent = $idEvent;
             $this->login = $login;
             $this->texte = $texte;
@@ -82,6 +80,18 @@ class ModelCommentaire
         $req_prep -> execute ( $match );
         $req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelCommentaire' );
         return $req_prep -> fetchAll ();
+    }
+
+    public function save(){
+        $sql = "INSERT INTO Commentaire(idEvent, login, texte, note) VALUES(:id, :login, :texte, :note)";
+        $req_prep = Model::$pdo->prepare($sql);
+        $values = array(
+            "id"=>$this->idEvent,
+            "login"=>$this->login,
+            "texte"=>$this->texte,
+            "note"=>$this->note,
+        );
+        $req_prep->execute($values);
     }
 
 }

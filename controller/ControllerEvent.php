@@ -204,9 +204,15 @@ Aliquam lectus nunc, varius eget sagittis viverra, pharetra ut sapien. Phasellus
 			return $randomString;
 		}
 
-		/*public static function comment(){
+		public static function comment(){
 		    $idEvent = $_GET['id'];
-
-        }*/
+		    $login = $_GET['login'];
+		    $note = $_GET['note'];
+		    $commentaire = $_GET['commentaire'];
+		    require_once File::build_path(array('model', 'ModelCommentaire.php'));
+		    $c = new ModelCommentaire($idEvent, $login, $commentaire, $note);
+		    $c->save();
+		    self::read($idEvent);
+		}
 
 	}
