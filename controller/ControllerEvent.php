@@ -140,4 +140,9 @@
 			require( File ::build_path( [ 'view', 'view.php' ] ) );
 		}
 
+		/*public static function comment(){
+		    $idEvent = $_GET['id'];
+
+        }*/
+
 	}
