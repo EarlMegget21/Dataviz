@@ -32,7 +32,7 @@ function initMap() { //fonction qui créer la map
             infowincontent.appendChild(document.createElement('br'));//y ajoute une enfant <br>
 
             var lien = document.createElement('a'); //créer un <a> menant aux details
-            lien.setAttribute("href", "http://localhost/Dataviz/index.php?controller=event&action=read&id="+id);
+            lien.setAttribute("href", "http://dataviz.yvesdaniel.fr/index.php?controller=event&action=read&id="+id);
             lien.textContent = 'en savoir plus';
             infowincontent.appendChild(lien);
             infowincontent.appendChild(document.createElement('br'));
