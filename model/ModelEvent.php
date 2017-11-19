@@ -208,8 +208,32 @@
 
 			$req_prep -> execute ( $match );
 			$req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelEvent' );
+			$tab_v=$req_prep -> fetchAll ();
 
-			return $req_prep -> fetchAll ();
+            if(static::$object=="Event") { //si la classe appelante c'est ModelEvent alors auvegarde dans un XML avant de retourner
+                if (file_exists("./xml/points.xml")) { //si le fichier XML existe déjà
+                    unlink("./xml/points.xml"); //supprime le fichier XML
+                }
+                $doc = new DOMDocument("1.0", "UTF-8"); //créer un objet de type document DOM(format de balises comme XML, html, ...)
+                $node = $doc->createElement("markers"); //créer une balise <markers> contenant tous les points
+                $parnode = $doc->appendChild($node); //ajoute cette balise au document
+                foreach ($tab_v as $event) { //pour chaque event retourné par la requête
+                    // Add to XML document node
+                    $node = $doc->createElement("marker"); //créer une balise <marker> représentant un point
+                    $newnode = $parnode->appendChild($node); //ajoute cette balise en enfant à <markers>
+
+                    $newnode->setAttribute("id", $event->getId()); //ajoute chaque attribut
+                    $newnode->setAttribute("nom", $event->getNom());
+                    $newnode->setAttribute("description", $event->getDescription());
+                    $newnode->setAttribute("lat", $event->getLatitude());
+                    $newnode->setAttribute("lng", $event->getLongitude());
+                    $newnode->setAttribute("date", $event->getDate());
+                    $newnode->setAttribute("login", $event->getLogin());
+                    $newnode->setAttribute("mp3", $event->getMP3());
+                }
+                $xmlfile = $doc->save("./xml/points.xml"); //sauvegarde le document en fichier physique à l'adresse suivante et sous le nom points.xml sur le seveur
+            }
+            return $tab_v;
 		}
 
 		/*
@@ -232,7 +256,13 @@
 		}
 
 		public static function getMinMax($tab_event){   //Retourne un tableau contenant les min/max des coordonnées et des dates des events issus d'une recherche
-		    foreach($tab_event as $key => $event){
+            $minLat = 0;
+            $maxLat = 40;
+            $minLong = 0;
+            $maxLong = 40;
+            $minDate = "1900-01-01";
+            $maxDate = "2017-31-12";
+            foreach($tab_event as $key => $event){
 		        $currLat = $event->getLatitude();
 		        $currLong = $event->getLongitude();
 		        $currDate = $event->getDate();
@@ -267,7 +297,7 @@
                 "minLong" => $minLong,
                 "maxLong" => $maxLong,
                 "minDate" => $minDate,
-                "maxDate" => $maxDate,
+                "maxDate" => $maxDate
             ];
             return $tab_minmax;
         }

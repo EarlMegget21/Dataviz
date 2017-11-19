@@ -43,8 +43,8 @@
 						$controller_class ::updated( $data );
 						break;
 					case "search":
-                            			$A = [ $_GET[ 'longitude1' ], $_GET[ 'latitude2' ] ];
-                           			$B = [ $_GET[ 'longitude2' ], $_GET[ 'latitude1' ] ];
+                        $A = [ $_GET[ 'longitude1' ], $_GET[ 'latitude2' ] ];
+                        $B = [ $_GET[ 'longitude2' ], $_GET[ 'latitude1' ] ];
 						if(isset($_GET['motCle'])){
                             ControllerEvent ::search( $_GET[ 'date1' ], $_GET[ 'date2' ], $A, $B, $_GET['motCle']);
                         }else{
