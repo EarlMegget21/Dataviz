@@ -11,7 +11,7 @@ function initMap() { //fonction qui créer la map
     map.fitBounds(bounds);
 
     var infoWindow = new google.maps.InfoWindow; //créer une mini fenetre qui s'affichera avec les infos de l'event
-    downloadUrl('http://localhost/dataviz/xml/points.xml', function(data) { //appel pour récupérer les infos dans le XML et créer des points
+    downloadUrl('http://dataviz.yvesdaniel.fr/xml/points.xml', function(data) { //appel pour récupérer les infos dans le XML et créer des points
         var xml = data.responseXML; //récupère le doc XML
         var markers = xml.documentElement.getElementsByTagName('marker'); //récupère les tags XML 'marker' pour les mettre dans un tableau
         Array.prototype.forEach.call(markers, function (markerElem) { //pour chaque tag marker dans le tableau
@@ -32,7 +32,7 @@ function initMap() { //fonction qui créer la map
             infowincontent.appendChild(document.createElement('br'));//y ajoute une enfant <br>
 
             var lien = document.createElement('a'); //créer un <a> menant aux details
-            lien.setAttribute("href", "http://localhost/Dataviz/index.php?controller=event&action=read&id="+id);
+            lien.setAttribute("href", "http://dataviz.yvesdaniel.fr/index.php?controller=event&action=read&id="+id);
             lien.textContent = 'en savoir plus';
             infowincontent.appendChild(lien);
             infowincontent.appendChild(document.createElement('br'));
