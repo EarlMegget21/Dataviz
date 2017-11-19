@@ -1,5 +1,5 @@
 <?php
-	if ($v !== FALSE && isset( $_SESSION[ "login" ] ) &&  strcmp( $v -> getLogin(), $_SESSION[ "login" ] ) == 0 ) {
+	if ($v !== FALSE && isset( $_SESSION[ "login" ] ) &&  ( ($_SESSION[ "isAdmin" ] == 1 ) || ($_SESSION["login"] == $v -> getLogin()) ) ) {
 		{
 			echo "<p>Login:" .
 				$v -> getLogin()

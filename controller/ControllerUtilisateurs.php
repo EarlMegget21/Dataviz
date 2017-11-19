@@ -18,7 +18,7 @@
 
 		public static function read ( $primary )
 		{
-			if ( isset( $_SESSION[ "login" ] ) && strcmp ( $primary , $_SESSION[ "login" ] ) == 0 ) {
+			if ( isset( $_SESSION[ "login" ] ) && (($_SESSION[ "isAdmin" ] == 1 ) || ($_SESSION["login"] == $primary)) ) {    //Il fau être un admin connecté pour accéder aux détails des utilisateurs
 				$v = ModelUtilisateurs ::select ( $primary );
 				$object = 'utilisateurs';
 				$view = 'detail';
@@ -26,7 +26,10 @@
 				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );  //"redirige" vers la vue
 			}
 			else {
-				self ::readAll ();
+			    $object = 'utilisateurs';
+			    $view = "error";
+			    $pagetitle = "Accès interdit";
+                require File ::build_path( array ( 'view', 'view.php' ) );
 			}
 		}
 
