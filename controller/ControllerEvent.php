@@ -138,6 +138,7 @@
 		public static function search ( $date1 , $date2 , $A , $B , $mot = NULL )
 		{
 			$tab_v = ModelEvent ::searchEvent ( $date1 , $date2 , $A , $B , $mot );
+			$tab_minmax = ModelEvent::getMinMax($tab_v);    //$tab_minmax("minLat", "maxLat", "minLong", "maxLong", "minDate"n "maxDate")
 			$lat = ( $B[ 1 ] + $A[ 1 ] ) / 2; //on centre la map là où elle était centrée lors de la recherche en latitude
 			if ( $A[ 0 ] > $B[ 0 ] ) { //pareil mais si on est de l'autre côté de la Terre x1>x2 alors:
 				$dif1 = 180 - $A[ 0 ]; //on calcule les deux différences entre le x1 et 180 et x2 et -180

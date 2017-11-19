@@ -231,6 +231,47 @@
 
 		}
 
+		public static function getMinMax($tab_event){   //Retourne un tableau contenant les min/max des coordonnées et des dates des events issus d'une recherche
+		    foreach($tab_event as $key => $event){
+		        $currLat = $event->getLatitude();
+		        $currLong = $event->getLongitude();
+		        $currDate = $event->getDate();
+                if($key == 0){
+                    $minLat = $currLat;
+                    $maxLat = $currLat;
+                    $minLong = $currLong;
+                    $maxLong = $currLong;
+                    $minDate = $currDate;
+                    $maxDate = $currDate;
+                }else{
+                    if($currLat < $minLat){
+                        $minLat =$currLat;
+                    }else if($currLat > $maxLat){
+                        $maxLat = $currLat;
+                    }
+                    if($currLong < $minLong){
+                        $minLong = $currLong;
+                    } else if($currLong > $maxLong){
+                        $maxLong = $currLong;
+                    }
+                    if($currDate < $minDate){
+                        $minDate = $currDate;
+                    }else if($currDate > $maxDate){
+                        $maxDate = $currDate;
+                    }
+                }
+            }
+            $tab_minmax = [
+                "minLat" => $minLat,
+                "maxLat" => $maxLat,
+                "minLong" => $minLong,
+                "maxLong" => $maxLong,
+                "minDate" => $minDate,
+                "maxDate" => $maxDate,
+            ];
+            return $tab_minmax;
+        }
+
 	}
 
 ?>
