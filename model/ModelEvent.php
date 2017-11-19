@@ -291,14 +291,25 @@
                     }
                 }
             }
-            $tab_minmax = [
-                "minLat" => $minLat,
-                "maxLat" => $maxLat,
-                "minLong" => $minLong,
-                "maxLong" => $maxLong,
-                "minDate" => $minDate,
-                "maxDate" => $maxDate
-            ];
+            if($minLat==$maxLat&&$minLong==$maxLong) {
+                $tab_minmax = [
+                    "minLat" => $minLat-10,
+                    "maxLat" => $maxLat+10,
+                    "minLong" => $minLong-10,
+                    "maxLong" => $maxLong+10,
+                    "minDate" => $minDate,
+                    "maxDate" => $maxDate
+                ];
+            }else{
+                $tab_minmax = [
+                    "minLat" => $minLat,
+                    "maxLat" => $maxLat,
+                    "minLong" => $minLong,
+                    "maxLong" => $maxLong,
+                    "minDate" => $minDate,
+                    "maxDate" => $maxDate
+                ];
+            }
             return $tab_minmax;
         }
 
