@@ -1,8 +1,9 @@
 <?php
 	require_once File ::build_path ( [ 'model' , 'ModelEvent.php' ] ); // chargement du modèle
 
-	class ControllerEvent
-	{
+	class ControllerEvent {
+
+        protected static $controller="Event";
 
 		public static function readAll ()
 		{
@@ -13,25 +14,6 @@
 			$pagetitle = 'Liste des events';
 			require ( File ::build_path ( [ 'view' , 'view.php' ] ) );  //"redirige" vers la vue
 		}
-
-
-		public static function read ( $primary )
-		{
-			$v = ModelEvent ::select ( $primary );
-            $tab_minmax = [
-                "minLat" => $v->getLatitude()-10,
-                "maxLat" => $v->getLatitude()+10,
-                "minLong" => $v->getLongitude()-10,
-                "maxLong" => $v->getLongitude()+10,
-                "minDate" => $v->getDate(),
-                "maxDate" => $v->getDate()
-            ];
-			$object = 'event';
-			$view = 'detail';
-			$pagetitle = 'Détail de l\'event.';
-			require ( File ::build_path ( [ 'view' , 'view.php' ] ) );  //"redirige" vers la vue
-		}
-
 
 		public static function created ( $data )
 		{

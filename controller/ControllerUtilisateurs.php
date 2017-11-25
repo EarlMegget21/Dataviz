@@ -1,13 +1,13 @@
 <?php
 	//Ctrl+H permet de remplacer les mots par un autre event->utilisateurs
 	require_once File ::build_path ( [ 'model' , 'ModelUtilisateurs.php' ] ); // chargement du modèle
-	class ControllerUtilisateurs
-	{
 
+    class ControllerUtilisateurs{
+
+        protected static $controller="Utilisateurs";
 
 		public static function readAll ()
 		{
-
 			$tab_v = ModelUtilisateurs ::selectAll ();     //appel au modèle pour gerer la BD
 			$object = 'utilisateurs';
 			$view = 'list';
@@ -142,7 +142,6 @@
 			}
 			else {
 				ControllerEvent ::readAll ();
-
 			}
 		}
 

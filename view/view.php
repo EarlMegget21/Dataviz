@@ -16,7 +16,7 @@
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
         <?php
-            if(isset($_GET['controller'])&&$_GET['controller']=='event') {
+            if(static::$controller=="Event") {
                 //echo '<script src="/Dataviz/script/sliderScript.js"> //script pour le slider </script>
                     echo '<script async defer
                         src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyCuog5LlTmtUH8-wB5IjxdJMY_Cq-CqhVU&language=fr&callback=initMap"></script>'; // include l'API Javascript grâce à notre Clé
@@ -235,10 +235,13 @@
                     min: 1900, //valeur minimale
                     max: 2017, //valeur maximale
                     values: [1900, 2017], //valeurs de départ (à la création)
-                    slide: function (event, ui) { //genre de listener lors du slide (se lance tout au long du slide en temps réél)
+                    stop: function (event, ui) {
                         Observable.dates[0]=ui.values[0]; //on modifie l'intervalle de dates dans les attributs de l'observable
                         Observable.dates[1]=ui.values[1];
                         search(); //on fait un recherche pour voir les points et la liste se mettre à jour en temps réél (pas obligatoire, à modifier peut-être pour de l'optimisation)
+                    },
+                    slide: function (event, ui) { //genre de listener lors du slide (se lance tout au long du slide en temps réél)
+
                         $("#date").html("Du 01/01/"+ui.values[0] +" au 31/12/"+ui.values[1]); //mise à jour de l'affichage des dates
                     }
                 });
@@ -322,7 +325,14 @@
                     for(var i in markers){ //on affiche le nom de chaque marker avec un bouton pour voir les details
                         $('#detail').append('<li>'+markers[i].nom+' <input type="button" id="list'+markers[i].id+'" value="Voir>>" style="padding:0px 1px;"></li>');
                         $('#list'+markers[i].id).click(function(){ //définition du listener de chaque bouton
-                            $('#detail').html('<h5>'+markers[i].nom+'</h5>'+ //affiche les details en cas de click
+                            <?php
+                            if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1) {
+                                echo "$('#detail').html('<a href=\"index.php?controller=event&action=update&id='+markers[i].id+'\">Modifier</a><br><a href=\"index.php?controller=event&action=delete&id='+markers[i].id+'\">Supprimer</a>');";
+                            }else{
+                                echo "$('#detail').html('');";
+                            }
+                            ?>
+                            $('#detail').append('<h5>'+markers[i].nom+'</h5>'+ //affiche les details en cas de click
                                 '<div><p>Date: '+markers[i].date+'</p>'+
                                 '<p>Auteur: '+markers[i].login+'</p>'+
                                 '<p>Latitude: '+markers[i].getPosition().lat()+'</p>'+
@@ -337,7 +347,14 @@
                         for(var i in markers){ //on affiche le nom et le bouton pour voir les details
                             $('#detail').append('<li>'+markers[i].nom+' <input type="button" id="list'+markers[i].id+'" value="Voir>>" style="padding:0px 1px;"></li>');
                             $('#list'+markers[i].id).click(function(){ //listener du bouton "Voir>>"
-                                $('#detail').html('<h5>'+markers[i].nom+'</h5>'+
+                                <?php
+                                if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1) {
+                                    echo "$('#detail').html('<a href=\"index.php?controller=event&action=update&id='+markers[i].id+'\">Modifier</a><br><a href=\"index.php?controller=event&action=delete&id='+markers[i].id+'\">Supprimer</a>');";
+                                }else{
+                                    echo "$('#detail').html('');";
+                                }
+                                ?>
+                                $('#detail').append('<h5>'+markers[i].nom+'</h5>'+
                                     '<div><p>Date: '+markers[i].date+'</p>'+
                                     '<p>Auteur: '+markers[i].login+'</p>'+
                                     '<p>Latitude: '+markers[i].getPosition().lat()+'</p>'+
@@ -349,9 +366,7 @@
                         $('#retour').css("display", "none"); //des qu'on click sur "<<Retour" on doit donc faire disparaitre le bouton
                     });
                 };
-
             }
-
         </script>
 	</head>
 	<body>
@@ -371,41 +386,44 @@
 		</header>
 
 <?php
-    if(isset($_GET['controller'])&&$_GET['controller']=='event') { //que sur la page des events
-		echo '<div>
-            <div id="button"> <!-- bouton <<Retour -->
-                <input type="button" id="retour" value="<<Retour" style="display:none; padding:0px 1px;">
+    if(static::$controller=="Event") { //que sur la page des events
+		echo '<div id="main">
+            <div id="contenu">
+                <div id="button"> <!-- bouton <<Retour -->
+                    <input type="button" id="retour" value="<<Retour" style="display:none; padding:0px 1px;">
+                </div>
+                <div id="detail">
+                    <!-- affiche détails de l\'event ici -->
+                </div>
+            
+           
+                <form method="get" action="index.php"> <!-- formulaire pour générer les events -->
+                    <fieldset>
+                        <legend>Generate events:</legend>
+                        <p>
+                            <label for="n_id">Number</label> :
+                            <input type="number"  name="n" id="n_id" required/>
+                
+                            <input type=\'hidden\' name=\'action\' value=\'generate\'>
+                            <input type=\'hidden\' name=\'controller\' value=\'event\'>
+                        </p>
+                        <p>
+                            <input type="submit" value="Generate"/>
+                        </p>
+                    </fieldset>
+                </form>
             </div>
-            <div id="detail">
-                <!-- affiche détails de l\'event ici -->
+            <div id="mapslider">
+                <div id = "map">
+                    <!-- affiche la map ici -->
+                </div> <br>
+        
+                <p id="date"><!-- affiche les bornes du curseur en temps reel(map) --></p><br>
+        
+                <div id="slider">
+                    <!-- afficher le slider ici -->
+                </div>
             </div>
-        </div>
-       
-        <form method="get" action="index.php"> <!-- formulaire pour générer les events -->
-	        <fieldset>
-                <legend>Generate events:</legend>
-                <p>
-                    <label for="n_id">Number</label> :
-                    <input type="number"  name="n" id="n_id" required/>
-        
-                    <input type=\'hidden\' name=\'action\' value=\'generate\'>
-                    <input type=\'hidden\' name=\'controller\' value=\'event\'>
-                </p>
-                <p>
-                    <input type="submit" value="Generate"/>
-                </p>
-	        </fieldset>
-        </form>
-        <br>
-        
-        <div id = "map">
-			<!-- affiche la map ici -->
-		</div> <br>
-
-        <p id="date"><!-- affiche les bornes du curseur en temps reel(map) --></p><br>
-
-        <div id="slider">
-            <!-- afficher le slider ici -->
         </div>';
     }else{
         //sur les autres pages on affiche la vue correspondante
