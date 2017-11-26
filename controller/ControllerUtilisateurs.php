@@ -4,7 +4,7 @@
 
     class ControllerUtilisateurs{
 
-        protected static $controller="Utilisateurs";
+        protected static $controller="utilisateurs";
 
 		public static function readAll ()
 		{
@@ -195,4 +195,11 @@
 			}
 			return $randomString;
 		}
+
+        public static function error(){
+            $object = 'main';
+            $view = 'error';
+            $pagetitle = 'Erreur';
+            require( File ::build_path( [ 'view', 'view.php' ] ) );
+        }
 	}

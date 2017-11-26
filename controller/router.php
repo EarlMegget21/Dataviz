@@ -66,10 +66,7 @@
 					case "comment":
 						$controller_class::comment();
 					default:
-						$object = 'main';
-						$view = 'error';
-						$pagetitle = 'Erreur';
-						require( File ::build_path( [ 'view', 'view.php' ] ) );
+						ControllerUtilisateurs::error();
 						break;
 				}
 			} else {

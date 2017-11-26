@@ -1,61 +1,39 @@
 <?php
-// Affiche les events stockés dans $tab_v
-foreach ($tab_v as $v) {
-    echo '<p><a href=\'./index.php?controller=event&action=read&'
-        . ModelEvent::getPrimary()
-        . '='
-        . rawurlencode($v->getId())
-        . '\'>'
-        . $v->getNom()
-        ."</a>";
-
-}
-	if (isset( $_SESSION[ "login" ] )&&$_SESSION["isAdmin"]==1) {
-		echo "<br>\n<br>\n<a href=\"index.php?controller=event&action=update\">Créer évenement</a>";
-	}
-?>
-
-<form method="get" action="index.php">
-	<fieldset>
-		<legend>Generate events:</legend>
-		<p>
-			<label for="n_id">Number</label> :
-			<input type="number"  name="n" id="n_id" required/>
-
-			<input type='hidden' name='action' value='generate'>
-			<input type='hidden' name='controller' value='event'>
-		</p>
-		<p>
-			<input type="submit" value="Generate"/>
-		</p>
-	</fieldset>
-</form>
-
-<form method="get" action="index.php">
-
-    <input type="hidden" placeholder="Ex :00/00/00" name="date1" id="date1_id" required/>
-
-    <input type="hidden" placeholder="Ex :00/00/00" name="date2" id="date2_id" required/>
-
-    <label for="motCle_id">Mots-Clés</label> :
-    <input type="text" placeholder="Une ville, un nom..." name="motCle" id="date2_id"/>
-
-    <input type="hidden" name="longitude1" id="longitude_id1" value="-20" required/> <!-- envoie le Get de x1 en fonction de la position de la map-->
-
-    <input type="hidden" name="latitude1" id="latitude_id1" value="-50" required/> <!-- envoie le Get de y1 -->
-
-    <input type="hidden" name="longitude2" id="longitude_id2" value="0" required/> <!-- envoie le Get de x2 -->
-
-    <input type="hidden" name="latitude2" id="latitude_id2" value="-70" required/> <!-- envoie le Get de y2 -->
-
-    <input type="hidden" name="zoom" id="zoom" value="3" required>
-
-    <input type='hidden' name='controller' value='event'> <!-- envoie le Get du controller event -->
-
-    <input type='hidden' name='action' value='search'> <!-- envoie le Get de l'action search -->
-
-    <input type="submit" value="Rechercher" id="sub"/>
-
-
-
-</form>
+echo '<div id="main">
+            <div id="contenu">
+                <div id="button"> <!-- bouton <<Retour -->
+                    <input type="button" id="retour" value="<<Retour" style="display:none; padding:0px 1px;">
+                </div>
+                <div id="detail">
+                    <!-- affiche détails de l\'event ici -->
+                </div>
+            
+           
+                <form method="get" action="index.php"> <!-- formulaire pour générer les events -->
+                    <fieldset>
+                        <legend>Generate events:</legend>
+                        <p>
+                            <label for="n_id">Number</label> :
+                            <input type="number"  name="n" id="n_id" required/>
+                
+                            <input type=\'hidden\' name=\'action\' value=\'generate\'>
+                            <input type=\'hidden\' name=\'controller\' value=\'event\'>
+                        </p>
+                        <p>
+                            <input type="submit" value="Generate"/>
+                        </p>
+                    </fieldset>
+                </form>
+            </div>
+            <div id="mapslider">
+                <div id = "map">
+                    <!-- affiche la map ici -->
+                </div> <br>
+        
+                <p id="date"><!-- affiche les bornes du curseur en temps reel(map) --></p><br>
+        
+                <div id="slider">
+                    <!-- afficher le slider ici -->
+                </div>
+            </div>
+        </div>';

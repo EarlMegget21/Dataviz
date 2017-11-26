@@ -3,10 +3,11 @@
 
 	class ControllerEvent {
 
-        protected static $controller="Event";
+        protected static $controller="event";
 
 		public static function readAll ()
 		{
+		    $affiche=true;
 			$tab_v = ModelEvent ::selectAll ();     //appel au modèle pour gerer la BD
             $tab_minmax = ModelEvent::getMinMax($tab_v);    //$tab_minmax("minLat", "maxLat", "minLong", "maxLong", "minDate", "maxDate")
 			$object = 'event';
@@ -20,19 +21,14 @@
 			if ( isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 ) {
 				ModelEvent ::save ( $data );
 			}
-			$tab_v = ModelEvent ::selectAll ();
-            $tab_minmax = ModelEvent::getMinMax($tab_v);
-			$object = 'event';
-			$view = 'created';
-			$pagetitle = 'Liste des events';
-			require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
+            self ::readAll ();
 		}
 
 
 		public static function update ()
 		{
 			if ( isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 ) {
-				if ( isset( $_GET[ "id" ] ) ) {
+				if ( isset( $_GET[ "id" ] ) ) { //cas où on update
 					$l = ModelEvent ::select ( $_GET[ "id" ] );
 					if ( strcmp ( $l -> getLogin () , $_SESSION[ "login" ] ) == 0 ) {
 						$object = 'event';
@@ -44,7 +40,7 @@
 						self ::readAll ();
 					}
 				}
-				else {
+				else { //cas où on créer
 					$object = 'event';
 					$view = 'update';
 					$pagetitle = 'Créer Event';
@@ -61,12 +57,7 @@
 		{
 			if ( isset( $_SESSION[ "login" ] ) && isset( $data[ "login" ] ) && ( $_SESSION[ "isAdmin" ] == 1 && strcmp ( $data[ "login" ] , $_SESSION[ "login" ] ) == 0 ) ) {
 				ModelEvent ::update ( $data );
-				$tab_v = ModelEvent ::selectAll ();
-                $tab_minmax = ModelEvent::getMinMax($tab_v);
-				$view = 'updated';
-				$pagetitle = 'Event updated';
-				$object = 'event';
-				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
+                ControllerEvent::readAll(); //afficher "evenement mis à jour"
 			}
 			elseif ( !isset( $_SESSION[ "login" ] ) ) {
 				$object = 'main';
@@ -75,12 +66,7 @@
 				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
 			}
 			else {
-				$tab_v = ModelEvent ::selectAll ();
-                $tab_minmax = ModelEvent::getMinMax($tab_v);
-				$view = "list";
-				$pagetitle = "Liste des events";
-				$object = 'event';
-				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
+                self::readAll();
 			}
 
 		}
@@ -92,12 +78,7 @@
 			$isLogged = isset( $_SESSION[ "login" ] );
 			if ( $isLogged && ( $_SESSION[ "isAdmin" ] == 1 && strcmp ( $l -> getLogin () , $_SESSION[ "login" ] ) == 0 ) ) {
 				ModelEvent ::delete ( $primary );
-				$tab_v = ModelEvent ::selectAll ();
-                $tab_minmax = ModelEvent::getMinMax($tab_v);
-				$object = 'event';
-				$view = 'delete';
-				$pagetitle = 'Event supprimé';
-				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
+				self::readAll(); //afficher "evenement supprimé"
 			}
 			elseif ( !$isLogged ) {
 				$object = 'main';
@@ -108,34 +89,6 @@
 			else {
 				self ::readAll ();
 			}
-		}
-
-		public static function search ( $date1 , $date2 , $A , $B , $mot = NULL )
-		{
-			$tab_v = ModelEvent ::searchEvent ( $date1 , $date2 , $A , $B , $mot );
-			$tab_minmax = ModelEvent::getMinMax($tab_v);    //$tab_minmax("minLat", "maxLat", "minLong", "maxLong", "minDate", "maxDate")
-			$lat = ( $B[ 1 ] + $A[ 1 ] ) / 2; //on centre la map là où elle était centrée lors de la recherche en latitude
-			if ( $A[ 0 ] > $B[ 0 ] ) { //pareil mais si on est de l'autre côté de la Terre x1>x2 alors:
-				$dif1 = 180 - $A[ 0 ]; //on calcule les deux différences entre le x1 et 180 et x2 et -180
-				$dif2 = 180 + $B[ 0 ];
-				$ctr = ( $dif1 + $dif2 ) / 2; //on définit où est le centre de la carte par rapport à cette différence
-				$pt1 = $A[ 0 ] + $ctr; //on calcule où serait ce centre par rapport au x1 et par rapport au x2
-				$pt2 = $B[ 0 ] - $ctr;
-				if ( $pt1 >= 180 ) { //on garde le centre qui se trouve dans le monde donc -180<ctr<180
-					$lng = $pt2;
-				}
-				else {
-					$lng = $pt1;
-				}
-			}
-			else { //si les deux points sont du même côté de la carte alors on fait le calcule normal
-				$lng = ( $A[ 0 ] + $B[ 0 ] ) / 2;
-			}
-			$zoom = $_GET[ 'zoom' ]; //affecte le dernier zoom
-			$object = 'event';
-			$view = 'list';
-			$pagetitle = 'Liste de la recherche';
-			require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
 		}
 
 		public static function generate ( $n )
