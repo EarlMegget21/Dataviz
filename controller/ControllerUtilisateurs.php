@@ -49,7 +49,7 @@
 				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
 			}
 			else {
-				echo "Vous êtes déjà connecté ou le mot de passe que vous avez rentré n'est pas le bon !";
+				echo "<p>Vous êtes déjà connecté ou le mot de passe que vous avez rentré n'est pas le bon !</p>";
 				self ::readAll ();
 			}
 		}
@@ -135,7 +135,7 @@
 		{
 			if ( !isset( $_SESSION[ "login" ] ) ) {
 
-				$object = 'utilisateurs';
+				$object = 'main';
 				$view = 'connect';
 				$pagetitle = 'Connection à la page utilisateur';
 				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
@@ -156,7 +156,7 @@
 				}
 				else {
 					echo "Mauvais mot de passe.";
-					$object = 'utilisateurs';
+					$object = 'main';
 					$view = 'connect';
 					$pagetitle = 'Connection à la page utilisateur';
 					require ( File ::build_path ( [ 'view' , 'view.php' ] ) );

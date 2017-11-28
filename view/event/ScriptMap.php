@@ -11,7 +11,8 @@
     var tab_marker=[]; //déclaration du tableau qui contiendra tous les event pour les stocker dans tab_search quand ils correspondront
     var map; //déclaration de la map
     var Observable=new Subject(); //déclaration de l'observable
-    var login=<?php if(isset($_SESSION['login'])){echo "\"".$_SESSION['login']."\"";}else{echo "\"none\"";}?>;
+    var login=<?php if(isset($_SESSION['login'])){echo "\"".$_SESSION['login']."\"";}else{echo "\"none\"";}?>; //variable qui stock le login de la personne connectée
+    var tab_comment=[];
 
     function initMap() { //fonction qui créer la map
         map = new google.maps.Map(document.getElementById('map'), { //créer une map
@@ -181,19 +182,6 @@
         Observable.Notify(tab_search); //enfin avec le tableau de resultats et les marker affichés, on indique à l'observable de mettre à jour tous ses observeurs
     }
 
-    function Point(id, nom, description, login, point, date, map) { //classe héritant de google.maps.Marker en lui ajoutant des attributs
-        /* On appelle le constructeur de " google.maps.Marker " par le biais de la méthode
-         call() afin qu'il affecte de nouvelles propriétés à " Point " */
-        google.maps.Marker.call(this,{map: map, position: point}); // call(obj, parametres du constructeur pere) similaire à super(parametres) en java
-
-        // Une fois le constructeur parent appelé, l'initialisation de notre objet peut continuer
-        this.id = id;
-        this.nom = nom;
-        this.description = description;
-        this.login = login;
-        this.date = date;
-    }
-
     $(function () { //diminutif JQuery de la fonction javascript de base document.ready(function{...}); s'appel donc une fois dès que la page est prète (genre de main() )
         //on ajoute les observeurs qui seront mit à jour
         Observable.AddObserver(new MapOberver());
@@ -221,9 +209,49 @@
         $(".ui-widget-content").css("background", "#dddddd");
         $(".ui-state-default").css("background-color", "#5E5DFF");
 
+        downloadUrl('http://localhost/dataviz/xml/comments.xml', function(data) { //appel pour récupérer les infos dans le XML et créer des points
+            var xml = data.responseXML; //récupère le doc XML
+            var comments = xml.documentElement.getElementsByTagName('comment'); //récupère les tags XML 'comment' pour les mettre dans un tableau
+
+            Array.prototype.forEach.call(comments, function (commentElem) { //pour chaque tag comment dans le tableau
+                var idCommentaire = commentElem.getAttribute('idCommentaire');
+                var idEvent = commentElem.getAttribute('idEvent'); //on récupère les attributs dans des variables
+                var login = commentElem.getAttribute('login');
+                var texte = commentElem.getAttribute('texte');
+                var note = commentElem.getAttribute('note');
+
+                var comment=new Comment(idCommentaire,idEvent,login,texte,note);
+
+                tab_comment.push(comment);
+            });
+        });
     });
 
-    //Création des classes
+        //Création des classes:
+
+    //Classes des objets extraits du XML
+    function Point(id, nom, description, login, point, date, map) { //classe héritant de google.maps.Marker en lui ajoutant des attributs
+        /* On appelle le constructeur de " google.maps.Marker " par le biais de la méthode
+         call() afin qu'il affecte de nouvelles propriétés à " Point " */
+        google.maps.Marker.call(this,{map: map, position: point}); // call(obj, parametres du constructeur pere) similaire à super(parametres) en java
+
+        // Une fois le constructeur parent appelé, l'initialisation de notre objet peut continuer
+        this.id = id;
+        this.nom = nom;
+        this.description = description;
+        this.login = login;
+        this.date = date;
+    }
+
+    function Comment(idCommentaire, idEvent, login, texte, note) { //objets qui stockeront nos commentaires
+        this.idCommentaire=idCommentaire;
+        this.idEvent = idEvent;
+        this.login = login;
+        this.texte = texte;
+        this.note = note;
+    }
+
+    //Classes du pattern Observable/Observer
     function ObserverList(){  //création de la classe de l'attribut de l'observable contenant la liste des observeurs
         this.observerList = [];
     }
@@ -292,57 +320,8 @@
 
         this.Update = function(markers){ //met à jour la liste des events
             <?php
-            if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 && isset( $_SESSION[ "action" ] )) {
-                switch ($_SESSION[ "action" ]) {
-                    case "updated": //ne s'affiche pas??
-                        echo "$('#detail').html('<p>L\'evenement à bien été mis à jour</p>');";
-                        break;
-                    case "delete":
-                        echo "$('#detail').html('<p>L\'evenement à bien été supprimé</p>');";
-                        break;
-                    default:
-                        echo "$('#detail').html('');";
-                        break;
-                }
-            }else{
-                echo "$('#detail').html('');";
-            }
-            ?>
-            $('#detail').append('<ul>'); //création d'une liste
-            for(var i in markers){ //on affiche le nom de chaque marker avec un bouton pour voir les details
-                $('#detail').append('<li>'+markers[i].nom+' <input type="button" id="list'+markers[i].id+'" value="Voir>>" style="padding:0px 1px;"></li>');
-                $('#list'+markers[i].id).click(function(){ //définition du listener de chaque bouton
-                    <?php
-                    if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1) {
-                        echo "if(login==markers[i].login){
-                                        $('#detail').html('<a href=\"index.php?controller=event&action=update&id='+markers[i].id+'\">Modifier</a><br>'+
-                                        '<a href=\"index.php?controller=event&action=delete&id='+markers[i].id+'\">Supprimer</a>');
-                                      }else{
-                                            $('#detail').html('');
-                                      }";
-                    }else{
-                        echo "$('#detail').html('');";
-                    }
-                    ?>
-                    $('#detail').append('<h5>'+markers[i].nom+'</h5>'+ //affiche les details en cas de click
-                        '<div><p>Date: '+markers[i].date+'</p>'+
-                        '<p>Auteur: '+markers[i].login+'</p>'+
-                        '<p>Latitude: '+markers[i].getPosition().lat()+'</p>'+
-                        '<p>Longitude: '+markers[i].getPosition().lng()+'</p>'+
-                        '<p>Description: '+markers[i].description+'</p></div>');
-                    $('#retour').css("display", "block"); //apparition du bouton retour
-                });
-            }
-            $('#detail').append('</ul>'); //fin de la liste
-            <?php
-            if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1) {
-                echo "$('#detail').append('<a href=\"index.php?controller=event&action=update\">Créer Evenement</a>');"; //création d'une liste
-            }
-            ?>
-            $('#retour').click(function(){ //listener du boutton retour
-                <?php
-                if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 && isset( $_SESSION[ "action" ] )) {
-                    switch ($_SESSION[ "action" ]) {
+                if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 && isset( $_GET[ "action" ] )) {
+                    switch ($_GET[ "action" ]) {
                         case "updated":
                             echo "$('#detail').html('<p>L\'evenement à bien été mis à jour</p>');";
                             break;
@@ -356,36 +335,116 @@
                 }else{
                     echo "$('#detail').html('');";
                 }
+            ?>
+            $('#detail').append('<ul>'); //création d'une liste
+            for(var i=0;i<markers.length;i++){ //on affiche le nom de chaque marker avec un bouton pour voir les details
+                $('#detail').append('<li>'+markers[i].nom+' <input type="button" id="list'+markers[i].id+'" value="Voir>>" style="padding:0px 1px;"></li>');
+                $('#list'+markers[i].id).click(function(markers, i){ //utilisation de closure (bien se renseigner sur le fonctionnement) car sinon l'index i dans le handler était égale au dernier i comme si les listener de chaque bouton se créaient après la boucle entière. J'aurais pu aussi mettre l'id du bouton = à l'index de l'event en queton puis récupérer cet id avec target (comme e.source en java)
+                    return function(){ //la fonction en parametre de click(), doit être fonction() pour se lancer à chaque event sinon se lance juste à la creation du listener. Ici, vu qu'on lui passe des paramêtres, on doit renvoyer une function() qui se lancera donc à chaque event
+                        voirHandler(markers, i) //les parametres passés sont bel et bien connu car on se trouve à l'interieur de l'autre fonction, on récupère donc ses parametres
+                    }
+                }(markers,i)); //permet de passer markers et i en parametre (notez la couleur de i)
+            }
+            $('#detail').append('</ul>'); //fin de la liste
+            <?php
+                if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1) {
+                    echo "$('#detail').append('<a href=\"index.php?controller=event&action=update\">Créer Evenement</a>');"; //création d'un evenement
+                }
+            ?>
+            //on refait tout pour le listener du boutton retour
+            $('#retour').click(function(){
+                <?php
+                    if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 && isset( $_GET[ "action" ] )) {
+                        switch ($_GET[ "action" ]) {
+                            case "updated":
+                                echo "$('#detail').html('<p>L\'evenement à bien été mis à jour</p>');";
+                                break;
+                            case "delete":
+                                echo "$('#detail').html('<p>L\'evenement à bien été supprimé</p>');";
+                                break;
+                            default:
+                                echo "$('#detail').html('');";
+                                break;
+                        }
+                    }else{
+                        echo "$('#detail').html('');";
+                    }
                 ?>
                 $('#detail').append('<ul>'); //on recréer la liste des events
-                for(var i in markers){ //on affiche le nom et le bouton pour voir les details
+                for(var i=0;i<markers.length;i++){ //on affiche le nom et le bouton pour voir les details
                     $('#detail').append('<li>'+markers[i].nom+' <input type="button" id="list'+markers[i].id+'" value="Voir>>" style="padding:0px 1px;"></li>');
-                    $('#list'+markers[i].id).click(function(){ //listener du bouton "Voir>>"
-                        <?php
-                        if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1) {
-                            echo "if(login==markers[i].login){
-                                        $('#detail').html('<a href=\"index.php?controller=event&action=update&id='+markers[i].id+'\">Modifier</a><br>'+
-                                        '<a href=\"index.php?controller=event&action=delete&id='+markers[i].id+'\">Supprimer</a>');
-                                      }else{
-                                            $('#detail').html('');
-                                      }";
-                        }else{
-                            echo "$('#detail').html('');";
+                    $('#list'+markers[i].id).click(function(markers, i){ //utilisation de closure (bien se renseigner sur le fonctionnement) car sinon l'index i dans le handler était égale au dernier i comme si les listener de chaque bouton se créaient après la boucle entière. J'aurais pu aussi mettre l'id du bouton = à l'index de l'event en queton puis récupérer cet id avec target (comme e.source en java)
+                        return function(){ //la fonction en parametre de click(), doit être fonction() pour se lancer à chaque event sinon se lance juste à la creation du listener. Ici, vu qu'on lui passe des paramêtres, on doit renvoyer une function() qui se lancera donc à chaque event
+                            voirHandler(markers, i) //les parametres passés sont bel et bien connu car on se trouve à l'interieur de l'autre fonction, on récupère donc ses parametres
                         }
-                        ?>
-                        $('#detail').append('<h5>'+markers[i].nom+'</h5>'+
-                            '<div><p>Date: '+markers[i].date+'</p>'+
-                            '<p>Auteur: '+markers[i].login+'</p>'+
-                            '<p>Latitude: '+markers[i].getPosition().lat()+'</p>'+
-                            '<p>Longitude: '+markers[i].getPosition().lng()+'</p>'+
-                            '<p>Description: '+markers[i].description+'</p></div>');
-                        $('#retour').css("display", "block"); //réaparition du bouton "<<Retour" si on click sur "Voir>>"
-                    });
+                    }(markers,i));
                 }
                 $('#detail').append('</ul>'); //fin de la liste
-                $('#detail').append('<a href="index.php?controller=event&action=update">Créer Evenement</a>'); //création d'une liste
+                <?php
+                    if (isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1) {
+                        echo "$('#detail').append('<a href=\"index.php?controller=event&action=update\">Créer Evenement</a>');"; //création d'un evenement
+                    }
+                ?>
                 $('#retour').css("display", "none"); //des qu'on click sur "<<Retour" on doit donc faire disparaitre le bouton
             });
         };
+    }
+
+    function voirHandler(markers, i) { //fonction du handler pour les boutons Voir>>
+        <?php
+            if (isset($_SESSION["login"]) && $_SESSION["isAdmin"] == 1) {
+                echo "if(login==markers[i].login){
+                                                $('#detail').html('<a href=\"index.php?controller=event&action=update&id='+markers[i].id+'\">Modifier</a><br>'+
+                                                '<a href=\"index.php?controller=event&action=delete&model=ModelEvent&id='+markers[i].id+'\">Supprimer</a>');
+                                              }else{
+                                                    $('#detail').html('');
+                                              }";
+            } else {
+                echo "$('#detail').html('');";
+            }
+        ?>
+        $('#detail').append('<h5>' + markers[i].nom + '</h5>' + //affiche les details en cas de click
+            '<div><p>Date: ' + markers[i].date + '</p>' +
+            '<p>Auteur: ' + markers[i].login + '</p>' +
+            '<p>Latitude: ' + markers[i].getPosition().lat() + '</p>' +
+            '<p>Longitude: ' + markers[i].getPosition().lng() + '</p>' +
+            '<p>Description: ' + markers[i].description + '</p></div>');
+        var com = false; //booleen pour savoir si il y a des commentaires
+        $('#detail').append('<div style="border: solid;">'); //si on veut mettre les com dedans il faut lui mettre un id et faire append
+        for (var y in tab_comment) { //on affiche les commentaires
+            if(markers[i].id==tab_comment[y].idEvent) {
+                $('#detail').append('<p>Note:' + tab_comment[y].note + '/5</p>' +
+                    '<p>Commentaire:' + tab_comment[y].texte + '</p>' +
+                    '<p>Publié par:' + tab_comment[y].login + '</p>');
+                if (login == tab_comment[y].login) {
+
+                    $('#detail').append('<a href="index.php?controller=event&action=delete&model=ModelCommentaire&idCommentaire=' + tab_comment[y].idCommentaire + '">Supprimer Commentaire</a>');
+                }
+                com = true;
+            }
+        }
+        if (!com) { //si il n'y en a pas, on affiche aucun
+            $('#detail').append('<p>Aucun Commentaire</p>');
+        }
+        <?php
+            if (isset($_SESSION["login"])) {
+                echo "$('#detail').append('<form method=\"get\" action=\"index.php\">'+
+                                                '<fieldset>'+
+                                                    '<legend>Commenter :</legend>'+
+                                                    '<p><label for=\"note_id\">Note</label> :'+
+                                                        '<input type=\"number\" step=\"1\" min=\"0\" max=\"5\" name=\"note\" id=\"note_id\" value=\"0\" required/>'+
+                                                        
+                                                        '<label for=\"texte_id\">Votre Message</label>'+
+                                                        '<textarea placeholder=\"Laissez votre message ici !\" name=\"texte\" id=\"texte_id\" rows=\"2\" cols=\"30\" required/></textarea>'+
+                                                        
+                                                        '<input type=\"hidden\" name=\"login\" value=\"" . $_SESSION["login"] . "\">'+
+                                                        '<input type=\"hidden\" name=\"action\" value=\"comment\">'+
+                                                        '<input type=\"hidden\" name=\"idEvent\" value='+markers[i].id+'>'+
+                                                        '<input type=\"hidden\" name=\"controller\" value=\"event\"></p>'+
+                                                    '<p><input type=\"submit\" value=\"Poster\"/></p>'+
+                                                '</fieldset>');";
+            }
+        ?>
+        $('#retour').css("display", "block"); //apparition du bouton retour
     }
 </script>

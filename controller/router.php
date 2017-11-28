@@ -5,7 +5,6 @@
 	if (isset( $_GET[ 'controller' ] )) {
 
 		$controller = $_GET[ 'controller' ];
-		$model_class = 'Model' . ucfirst( $controller );
 		$controller_class = 'Controller' . ucfirst( $controller );
 		if (class_exists( $controller_class )) {
 
@@ -14,9 +13,6 @@
 				switch ($action) {
 					case "readAll":
 						$controller_class ::readAll();
-						break;
-					case "read":
-						$controller_class ::read( $_GET[ $model_class ::getPrimary() ] );
 						break;
 					case "created":
 						$data = array ();
@@ -28,7 +24,8 @@
 						$controller_class ::created( $data );
 						break;
 					case "delete":
-						$controller_class ::delete( $_GET[ $model_class ::getPrimary() ] );
+                        $model=$_GET['model'];
+						$controller_class ::delete( $_GET[ $model ::getPrimary() ],$model );
 						break;
 					case "update":
 						$controller_class ::update();
@@ -64,7 +61,14 @@
 						$controller_class::generate($_GET["n"]);
 						break;
 					case "comment":
-						$controller_class::comment();
+                        $data = array ();
+                        foreach ($_GET as $k => $v) {
+                            if (strcmp( $k, "action" ) != 0 && strcmp( $k, "controller" ) != 0) {
+                                $data += [ $k => $v ];
+                            }
+                        }
+						$controller_class::comment($data);
+                        break;
 					default:
 						ControllerUtilisateurs::error();
 						break;
@@ -73,7 +77,7 @@
 				$controller_class::readAll();
 			}
 		} else {
-			require File ::build_path( array ( 'view', 'main', 'error.php' ) );
+            ControllerUtilisateurs::error();
 		}
 	} else {
 		ControllerEvent ::readAll();

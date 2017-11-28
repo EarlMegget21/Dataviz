@@ -1,5 +1,6 @@
 <?php
 	require_once File ::build_path ( [ 'model' , 'ModelEvent.php' ] ); // chargement du modèle
+    require_once File ::build_path ( [ 'model' , 'ModelCommentaire.php' ] ); // chargement du modèle
 
 	class ControllerEvent {
 
@@ -9,7 +10,7 @@
 		{
 		    $affiche=true;
 			$tab_v = ModelEvent ::selectAll ();     //appel au modèle pour gerer la BD
-            $tab_minmax = ModelEvent::getMinMax($tab_v);    //$tab_minmax("minLat", "maxLat", "minLong", "maxLong", "minDate", "maxDate")
+            $comments = ModelCommentaire::getAllComments();
 			$object = 'event';
 			$view = 'list';
 			$pagetitle = 'Liste des events';
@@ -23,7 +24,6 @@
 			}
             self ::readAll ();
 		}
-
 
 		public static function update ()
 		{
@@ -57,7 +57,7 @@
 		{
 			if ( isset( $_SESSION[ "login" ] ) && isset( $data[ "login" ] ) && ( $_SESSION[ "isAdmin" ] == 1 && strcmp ( $data[ "login" ] , $_SESSION[ "login" ] ) == 0 ) ) {
 				ModelEvent ::update ( $data );
-                ControllerEvent::readAll(); //afficher "evenement mis à jour"
+                ControllerEvent::readAll();
 			}
 			elseif ( !isset( $_SESSION[ "login" ] ) ) {
 				$object = 'main';
@@ -72,24 +72,23 @@
 		}
 
 
-		public static function delete ( $primary )
-		{
-			$l = ModelEvent ::select ( $primary );
-			$isLogged = isset( $_SESSION[ "login" ] );
-			if ( $isLogged && ( $_SESSION[ "isAdmin" ] == 1 && strcmp ( $l -> getLogin () , $_SESSION[ "login" ] ) == 0 ) ) {
-				ModelEvent ::delete ( $primary );
-				self::readAll(); //afficher "evenement supprimé"
-			}
-			elseif ( !$isLogged ) {
-				$object = 'main';
-				$view = 'connect';
-				$pagetitle = 'Connection à la page utilisateur';
-				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-			}
-			else {
-				self ::readAll ();
-			}
-		}
+        public static function delete ( $primary,$model ){
+            $l = $model ::select ( $primary );
+            $isLogged = isset( $_SESSION[ "login" ] );
+            if ( $isLogged && ( $_SESSION[ "isAdmin" ] == 1 && strcmp ( $l -> getLogin () , $_SESSION[ "login" ] ) == 0 ) ) {
+                $model ::delete ( $primary );
+                self::readAll();
+            }
+            elseif ( !$isLogged ) {
+                $object = 'main';
+                $view = 'connect';
+                $pagetitle = 'Connection à la page utilisateur';
+                require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
+            }
+            else {
+                self ::readAll ();
+            }
+        }
 
 		public static function generate ( $n )
 		{
@@ -133,15 +132,12 @@ Aliquam lectus nunc, varius eget sagittis viverra, pharetra ut sapien. Phasellus
 			return $randomString;
 		}
 
-		public static function comment(){
-		    $idEvent = $_GET['id'];
-		    $login = $_GET['login'];
-		    $note = $_GET['note'];
-		    $commentaire = $_GET['commentaire'];
-		    require_once File::build_path(array('model', 'ModelCommentaire.php'));
-		    $c = new ModelCommentaire($idEvent, $login, $commentaire, $note);
-		    $c->save();
-		    self::read($idEvent);
+		public static function comment($data){
+            if ( isset( $_SESSION[ "login" ] ) ) {
+                ModelCommentaire ::save ( $data );
+                ControllerEvent::readAll();
+            }else {
+                self::readAll();
+            }
 		}
-
 	}
