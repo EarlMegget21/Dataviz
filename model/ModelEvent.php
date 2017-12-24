@@ -5,70 +5,20 @@
 	/**
 	 *
 	 */
-	class ModelEvent extends Model
-	{
+	class ModelEvent extends Model {
 
-		/**
-		 * @var int
-		 */
 		private $id;
-
-		/**
-		 * @var Date
-		 */
 		private $date;
-
-		/**
-		 * @var float
-		 */
 		private $longitude;
-
-		/**
-		 * @var float
-		 */
 		private $latitude;
-
-		/**
-		 * @var String
-		 */
 		private $description;
-
-		/**
-		 * @var String
-		 */
 		private $MP3;
-		/**
-		 * @var String
-		 */
 		private $nom;
-
-		/**
-		 * @var String
-		 */
 		private $login;
-
-		/**
-		 * @var string
-		 */
 		static protected $object = "Event";
-
-		/**
-		 * @var string
-		 */
 		static protected $primary = "id";
 
-		/**
-		 * ModelEvent constructor.
-		 *
-		 * @param null $n
-		 * @param null $d
-		 * @param null $x
-		 * @param null $y
-		 * @param null $de
-		 * @param null $al
-		 */
-		public function __construct ( $i = NULL , $d = NULL , $x = NULL , $y = NULL , $de = NULL , $m = NULL , $n = NULL , $l = NULL )
-		{
+		public function __construct ( $i = NULL , $d = NULL , $x = NULL , $y = NULL , $de = NULL , $m = NULL , $n = NULL , $l = NULL ) {
 			if ( !is_null ( $i ) && !is_null ( $n ) && !is_null ( $d ) && !is_null ( $x ) && !is_null ( $y ) && !is_null ( $de ) && !is_null ( al ) ) {
 				$this -> id = $i;
 				$this -> nom = $n;
@@ -81,112 +31,57 @@
 			}
 		}
 
-		/**
-		 * @return int
-		 */
 		public function getId ()
 		{
 			return $this -> id;
 		}
 
-		/**
-		 * @return Date
-		 */
 		public function getDate ()
 		{
 			return $this -> date;
 		}
 
-		/**
-		 * @return float
-		 */
 		public function getLongitude ()
 		{
 			return $this -> longitude;
 		}
 
-		/**
-		 * @return float
-		 */
 		public function getLatitude ()
 		{
 			return $this -> latitude;
 		}
 
-		/**
-		 * @return String
-		 */
 		public function getDescription ()
 		{
 			return $this -> description;
 		}
 
-		/**
-		 * @return String
-		 */
 		public function getNom ()
 		{
 			return $this -> nom;
 		}
 
-		/**
-		 * @return String
-		 */
 		public function getLogin ()
 		{
 			return $this -> login;
 		}
 
-		/**
-		 * @return String
-		 */
 		public function getMP3 ()
 		{
 			return $this -> MP3;
 		}
 
-
-		/**
-		 * @return string
-		 */
 		public static function getPrimary ()
 		{
 			return self ::$primary;
 		}
 
-		public static function getLowestDate ()
-		{
-			$sql = "SELECT MIN(date) FROM Event;";
-			$req_prep = Model ::$pdo -> prepare ( $sql );
-			$req_prep -> execute ();
-			$tab_obj = $req_prep -> fetchAll ( PDO::FETCH_OBJ );
-			if ( empty( $tab_rep ) ) {
-				return FALSE;
-			}
-
-			return $tab_rep[ 0 ];
-		}
-
-		public static function getHighestDate ()
-		{
-			$sql = "SELECT MAX(date) FROM Event;";
-			$req_prep = Model ::$pdo -> prepare ( $sql );
-			$req_prep -> execute ();
-			$tab_obj = $req_prep -> fetchAll ( PDO::FETCH_OBJ );
-			if ( empty( $tab_rep ) ) {
-				return FALSE;
-			}
-
-			return $tab_rep[ 0 ];
-		}
-
 		//Recherche d'events en fonction de la date et de la position
-		private static function getEventList ( $lowest , $highest , $A , $B, $mot)
-		{
+		public static function getEventList ( $lowest , $highest , $xa, $ya , $xb, $yb, $mot) {
 			$sql = "SELECT * 
 					FROM Event 
 					WHERE date>=:low and date<=:high and latitude>=:yA and latitude<=:yB and ";
-			if($A[ 0 ]>$B[ 0 ]){ //si on est de l'autre côté de la Terre (x1>x2)
+			if($xa>$xb){ //si on est de l'autre côté de la Terre (x1>x2)
 			    $sql=$sql.'(longitude>=:xA or longitude<=:xB)';
             }else{
                 $sql=$sql.'longitude>=:xA and longitude<=:xB';
@@ -194,26 +89,24 @@
 			if(!is_null($mot)){
 			    $sql = $sql." AND (description LIKE CONCAT('%',:mot,'%') OR nom LIKE CONCAT('%',:mot,'%'))";
             }
-			$req_prep = Model ::$pdo -> prepare ( $sql );
+            try{
+                $req_prep = Model ::$pdo -> prepare ( $sql );
 
-			$match = [
-				"low"  => $lowest ,
-				"high" => $highest ,
-				"xA"   => $A[ 0 ] ,
-				"yA"   => $A[ 1 ] ,
-				"xB"   => $B[ 0 ] ,
-				"yB"   => $B[ 1 ] ,
-                "mot"  => $mot,
-			];
+                $match = [
+                    "low"  => $lowest ,
+                    "high" => $highest ,
+                    "xA"   => $xa ,
+                    "yA"   => $ya ,
+                    "xB"   => $xb ,
+                    "yB"   => $yb ,
+                    //"mot"  => $mot,
+                ];
 
-			$req_prep -> execute ( $match );
-			$req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelEvent' );
-			$tab_v=$req_prep -> fetchAll ();
+                $req_prep -> execute ( $match );
+                $req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelEvent' );
+                $tab_v=$req_prep -> fetchAll ();
 
-            if(static::$object=="Event") { //si la classe appelante c'est ModelEvent alors auvegarde dans un XML avant de retourner
-                if (file_exists("./xml/points.xml")) { //si le fichier XML existe déjà
-                    unlink("./xml/points.xml"); //supprime le fichier XML
-                }
+                //création du doc XML(virtuel)
                 $doc = new DOMDocument("1.0", "UTF-8"); //créer un objet de type document DOM(format de balises comme XML, html, ...)
                 $node = $doc->createElement("markers"); //créer une balise <markers> contenant tous les points
                 $parnode = $doc->appendChild($node); //ajoute cette balise au document
@@ -231,9 +124,15 @@
                     $newnode->setAttribute("login", $event->getLogin());
                     $newnode->setAttribute("mp3", $event->getMP3());
                 }
-                $xmlfile = $doc->save("./xml/points.xml"); //sauvegarde le document en fichier physique à l'adresse suivante et sous le nom points.xml sur le seveur
+                return $doc;
+            } catch(PDOException $e){
+                if ( Conf ::getDebug () ) {
+                    echo $e -> getMessage (); // affiche un message d'erreur
+                } else {
+                    echo 'Une erreur est survenue <a href="#"> retour a la page d\'accueil </a>';
+                }
+                die(); //supprimer equilvalent à System.exit(1); en java
             }
-            return $tab_v;
 		}
 
 		/*
@@ -254,64 +153,6 @@
 			return $filter;
 
 		}
-
-		public static function getMinMax($tab_event){   //Retourne un tableau contenant les min/max des coordonnées et des dates des events issus d'une recherche
-            $minLat = 0;
-            $maxLat = 40;
-            $minLong = 0;
-            $maxLong = 40;
-            $minDate = "1900-01-01";
-            $maxDate = "2017-31-12";
-            foreach($tab_event as $key => $event){
-		        $currLat = $event->getLatitude();
-		        $currLong = $event->getLongitude();
-		        $currDate = $event->getDate();
-                if($key == 0){
-                    $minLat = $currLat;
-                    $maxLat = $currLat;
-                    $minLong = $currLong;
-                    $maxLong = $currLong;
-                    $minDate = $currDate;
-                    $maxDate = $currDate;
-                }else{
-                    if($currLat < $minLat){
-                        $minLat =$currLat;
-                    }else if($currLat > $maxLat){
-                        $maxLat = $currLat;
-                    }
-                    if($currLong < $minLong){
-                        $minLong = $currLong;
-                    } else if($currLong > $maxLong){
-                        $maxLong = $currLong;
-                    }
-                    if($currDate < $minDate){
-                        $minDate = $currDate;
-                    }else if($currDate > $maxDate){
-                        $maxDate = $currDate;
-                    }
-                }
-            }
-            if($minLat==$maxLat&&$minLong==$maxLong) {
-                $tab_minmax = [
-                    "minLat" => $minLat-10,
-                    "maxLat" => $maxLat+10,
-                    "minLong" => $minLong-10,
-                    "maxLong" => $maxLong+10,
-                    "minDate" => $minDate,
-                    "maxDate" => $maxDate
-                ];
-            }else{
-                $tab_minmax = [
-                    "minLat" => $minLat,
-                    "maxLat" => $maxLat,
-                    "minLong" => $minLong,
-                    "maxLong" => $maxLong,
-                    "minDate" => $minDate,
-                    "maxDate" => $maxDate
-                ];
-            }
-            return $tab_minmax;
-        }
 
 	}
 

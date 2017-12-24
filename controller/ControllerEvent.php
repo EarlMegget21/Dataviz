@@ -6,31 +6,40 @@
 
         protected static $controller="event";
 
-		public static function readAll ()
-		{
-		    $affiche=true;
-			$tab_v = ModelEvent ::selectAll ();     //appel au modèle pour gerer la BD
-            $comments = ModelCommentaire::getAllComments();
+		public static function readAll () {
+		    $affiche=true; //boolean pour indiquer au serveur d'envoyer les javascript
 			$object = 'event';
 			$view = 'list';
 			$pagetitle = 'Liste des events';
 			require ( File ::build_path ( [ 'view' , 'view.php' ] ) );  //"redirige" vers la vue
 		}
 
-		public static function created ( $data )
-		{
+		public static function created() {
+            $data = array ();
+            if ( Conf::getDebug() ) {
+                foreach ($_GET as $k => $v) {
+                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                        $data += [$k => $v];
+                    }
+                }
+            }else{
+                foreach ($_POST as $k => $v) {
+                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                        $data += [$k => $v];
+                    }
+                }
+            }
 			if ( isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 ) {
 				ModelEvent ::save ( $data );
 			}
             self ::readAll ();
 		}
 
-		public static function update ()
-		{
+		public static function update () {
 			if ( isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 ) {
 				if ( isset( $_GET[ "id" ] ) ) { //cas où on update
-					$l = ModelEvent ::select ( $_GET[ "id" ] );
-					if ( strcmp ( $l -> getLogin () , $_SESSION[ "login" ] ) == 0 ) {
+					$v = ModelEvent ::select ( $_GET[ "id" ] );
+					if ( strcmp ( $v -> getLogin () , $_SESSION[ "login" ] ) == 0 ) {
 						$object = 'event';
 						$view = 'update';
 						$pagetitle = 'Update Event';
@@ -53,8 +62,21 @@
 		}
 
 
-		public static function updated ( $data )
-		{
+		public static function updated () {
+            $data = array ();
+            if ( Conf::getDebug() ) {
+                foreach ($_GET as $k => $v) {
+                    if (strcmp( $k, "action" ) != 0 && strcmp( $k, "controller" ) != 0) {
+                        $data += [ $k => $v ];
+                    }
+                }
+            }else{
+                foreach ($_POST as $k => $v) {
+                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                        $data += [$k => $v];
+                    }
+                }
+            }
 			if ( isset( $_SESSION[ "login" ] ) && isset( $data[ "login" ] ) && ( $_SESSION[ "isAdmin" ] == 1 && strcmp ( $data[ "login" ] , $_SESSION[ "login" ] ) == 0 ) ) {
 				ModelEvent ::update ( $data );
                 ControllerEvent::readAll();
@@ -72,11 +94,13 @@
 		}
 
 
-        public static function delete ( $primary,$model ){
-            $l = $model ::select ( $primary );
-            $isLogged = isset( $_SESSION[ "login" ] );
-            if ( $isLogged && ( $_SESSION[ "isAdmin" ] == 1 && strcmp ( $l -> getLogin () , $_SESSION[ "login" ] ) == 0 ) ) {
-                $model ::delete ( $primary );
+        public static function delete () {
+            $model = $_GET['model'];
+            $primary = $_GET[$model::getPrimary()];
+            $l = $model::select($primary);
+            $isLogged = isset( $_SESSION["login"] );
+            if ( $isLogged && ( $_SESSION["isAdmin"] || strcmp( $l -> getLogin() , $_SESSION["login"] ) == 0 ) ) {
+                $model::delete ( $primary );
                 self::readAll();
             }
             elseif ( !$isLogged ) {
@@ -90,8 +114,8 @@
             }
         }
 
-		public static function generate ( $n )
-		{
+		public static function generate() {
+		    $n=$_GET["n"];
 			$users = ModelUtilisateurs ::selectAll ();
 			for ( $i = 0 ; $i < $n && count ( $users ) != 0 ; $i++ ) {
 				$start = strtotime("01 January 1950");
@@ -113,26 +137,37 @@ Morbi ut malesuada nisl. Etiam finibus aliquam enim non consequat. Aliquam et ip
 
 Aliquam lectus nunc, varius eget sagittis viverra, pharetra ut sapien. Phasellus hendrerit ex sapien, at vehicula ante dapibus non. Aenean quis neque ac lacus tristique volutpat nec vehicula sem. Sed et purus maximus, vulputate mi non, dictum leo. Sed consequat, ipsum imperdiet tempor placerat, tortor tortor blandit nisi, nec consequat augue turpis eu est. Vestibulum ac varius ante. Curabitur molestie mauris et suscipit rutrum. Quisque vel dictum quam. Sed vel nunc ante. Nam lacinia massa felis, sed lacinia risus volutpat et.";
 
-				ModelEvent ::save ( [ "date" => $date , "longitude" => $longitude , "latitude" => $latitude ,
+				ModelEvent::save( [ "date" => $date , "longitude" => $longitude , "latitude" => $latitude ,
 				                             "description" => $description , "mp3"=>$mp3 , "nom"=>$nom , "login"=>$login ] );
-
 			}
 			self::readAll ();
 		}
 
-		private static function generateRandomString ( $length = 10 )
-		{
+		private static function generateRandomString ( $length = 10 ) {
 			$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 			$charactersLength = strlen ( $characters );
 			$randomString = '';
 			for ( $i = 0 ; $i < $length ; $i++ ) {
 				$randomString .= $characters[ rand ( 0 , $charactersLength - 1 ) ];
 			}
-
 			return $randomString;
 		}
 
-		public static function comment($data){
+		public static function comment() {
+            $data = array ();
+            if ( Conf::getDebug() ) {
+                foreach ($_GET as $k => $v) {
+                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                        $data += [$k => $v];
+                    }
+                }
+            }else{
+                foreach ($_POST as $k => $v) {
+                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                        $data += [$k => $v];
+                    }
+                }
+            }
             if ( isset( $_SESSION[ "login" ] ) ) {
                 ModelCommentaire ::save ( $data );
                 ControllerEvent::readAll();
@@ -140,4 +175,23 @@ Aliquam lectus nunc, varius eget sagittis viverra, pharetra ut sapien. Phasellus
                 self::readAll();
             }
 		}
+
+        public static function searchEvents() { //fonction appelée par AJAX pour récupérer le XML des events
+		    $mindate=$_GET["mindate"];
+		    $maxdate=$_GET["maxdate"];
+		    $xa=$_GET["xa"];
+		    $ya=$_GET["ya"];
+		    $xb=$_GET["xb"];
+		    $yb=$_GET["yb"];
+            $doc = ModelEvent::getEventList ($mindate."-01-01", $maxdate."-12-31", $xa, $ya, $xb, $yb, NULL); //appel au modèle pour interroger la BD
+            header('Content-Type: text/xml');
+            echo $doc->saveXML();
+        }
+
+        public static function searchComments() { //fonction appelée par AJAX pour récupérer le XML des commentaires
+		    $idEvent=$_GET["idEvent"];
+            $doc = ModelCommentaire::getCommentList ($idEvent); //appel au modèle pour interroger la BD
+            header('Content-Type: text/xml');
+            echo $doc->saveXML();
+        }
 	}

@@ -4,40 +4,17 @@
 	/**
 	 *
 	 */
-	class ModelUtilisateurs extends Model
-	{
-		/**
-		 * @var String
-		 */
+	class ModelUtilisateurs extends Model {
+
 		private $login;
-
-		/**
-		 * @var String
-		 */
 		private $mdp;
-
-		/**
-		 * @var int
-		 */
 		private $isAdmin;
+        static protected $object = "Utilisateurs";
+        static protected $primary = "login";
 
-		/**
-		 * @return null
-		 */
-		public function getIsAdmin ()
-		{
+		public function getIsAdmin () {
 			return $this -> isAdmin;
 		}
-		/**
-		 * @var string
-		 */
-		static protected $object = "Utilisateurs";
-
-		/**
-		 * @var string
-		 */
-		static protected $primary = "login";
-
 
 		/**
 		 * ModelModerateur constructor.
@@ -54,25 +31,16 @@
 			}
 		}
 
-		/**
-		 * @return String
-		 */
 		public function getLogin ()
 		{
 			return $this -> login;
 		}
 
-		/**
-		 * @return String
-		 */
 		public function getMdp ()
 		{
 			return $this -> mdp;
 		}
 
-        /**
-         * @return string
-         */
         public static function getPrimary()
         {
             return self::$primary;

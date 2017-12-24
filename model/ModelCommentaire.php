@@ -63,44 +63,36 @@ class ModelCommentaire extends Model{
         return self ::$primary;
     }
 
-    public static function getAllComments(){
-        $sql = "SELECT * FROM Commentaire ORDER BY idEvent";
-        $req_prep = Model ::$pdo -> prepare ( $sql );
-        $req_prep -> execute ();
-        $req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelCommentaire' );
-        $tab_v=$req_prep -> fetchAll ();
+    public static function getCommentList($idEvent){
+        $sql = "SELECT * FROM Commentaire WHERE idEvent=?";
+        try{
+            $req_prep = Model::$pdo -> prepare ( $sql );
+            $req_prep -> execute (array($idEvent));
+            $req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelCommentaire' );
+            $tab_v=$req_prep -> fetchAll ();
 
-        if (file_exists("./xml/comments.xml")) { //si le fichier XML existe déjà
-            unlink("./xml/comments.xml"); //supprime le fichier XML
+            //création du doc XML(virtuel)
+            $doc = new DOMDocument("1.0", "UTF-8"); //créer un objet de type document DOM(format de balises comme XML, html, ...)
+            $node = $doc->createElement("comments"); //créer une balise <comments> contenant tous les points
+            $parnode = $doc->appendChild($node); //ajoute cette balise au document
+            foreach ($tab_v as $comment) { //pour chaque event retourné par la requête
+                // Add to XML document node
+                $node = $doc->createElement("comment"); //créer une balise <comment> représentant un point
+                $newnode = $parnode->appendChild($node); //ajoute cette balise en enfant à <comments>
+                $newnode->setAttribute("idCommentaire", $comment->getIdCommentaire());
+                $newnode->setAttribute("idEvent", $comment->getIdEvent()); //ajoute chaque attribut
+                $newnode->setAttribute("login", $comment->getLogin());
+                $newnode->setAttribute("texte", $comment->getTexte());
+                $newnode->setAttribute("note", $comment->getNote());
+            }
+            return $doc;
+        } catch(PDOException $e){
+            if ( Conf ::getDebug () ) {
+                echo $e -> getMessage (); // affiche un message d'erreur
+            } else {
+                echo 'Une erreur est survenue <a href="#"> retour a la page d\'accueil </a>';
+            }
+            die(); //supprimer equilvalent à System.exit(1); en java
         }
-        $doc = new DOMDocument("1.0", "UTF-8"); //créer un objet de type document DOM(format de balises comme XML, html, ...)
-        $node = $doc->createElement("comments"); //créer une balise <comments> contenant tous les points
-        $parnode = $doc->appendChild($node); //ajoute cette balise au document
-        foreach ($tab_v as $comment) { //pour chaque event retourné par la requête
-            // Add to XML document node
-            $node = $doc->createElement("comment"); //créer une balise <comment> représentant un point
-            $newnode = $parnode->appendChild($node); //ajoute cette balise en enfant à <comments>
-            $newnode->setAttribute("idCommentaire", $comment->getIdCommentaire());
-            $newnode->setAttribute("idEvent", $comment->getIdEvent()); //ajoute chaque attribut
-            $newnode->setAttribute("login", $comment->getLogin());
-            $newnode->setAttribute("texte", $comment->getTexte());
-            $newnode->setAttribute("note", $comment->getNote());
-        }
-        $xmlfile = $doc->save("./xml/comments.xml"); //sauvegarde le document en fichier physique à l'adresse suivante et sous le nom comments.xml sur le serveur
-
-        return $tab_v;
     }
-
-    /*public function save(){
-        $sql = "INSERT INTO Commentaire(idEvent, login, texte, note) VALUES(:id, :login, :texte, :note)";
-        $req_prep = Model::$pdo->prepare($sql);
-        $values = array(
-            "id"=>$this->idEvent,
-            "login"=>$this->login,
-            "texte"=>$this->texte,
-            "note"=>$this->note,
-        );
-        $req_prep->execute($values);
-    }*/
-
 }

@@ -29,15 +29,14 @@
 
 				<?php
 					if ( !isset( $_SESSION[ "login" ] ) ) {
-
-						echo "<a href=\"index.php?action=connect&controller=utilisateurs\">Connect</a>";
+						echo "<a href='index.php?action=connect&controller=utilisateurs'>Connect</a>";
 					}
 					else {
                         if ( $_SESSION[ "isAdmin" ]==1 ) {
                             echo "<a href=\"index.php?controller=utilisateurs\">Utilisateurs</a>";
                         }
-                        echo "<a href=\"index.php?controller=utilisateurs&action=read&login=".$_SESSION[ "login" ]."\">Mon Profil</a>";
-						echo "<a href=\"index.php?action=disconnect&controller=utilisateurs\">Disconnect</a>";
+                        echo "<a href='index.php?controller=utilisateurs&action=read&login=".$_SESSION[ "login" ]."'>Mon Profil</a>";
+						echo "<a href='index.php?action=disconnect&controller=utilisateurs'>Disconnect</a>";
 					}
 				?>
 			</nav>
