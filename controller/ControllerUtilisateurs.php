@@ -1,25 +1,26 @@
 <?php
-	//Ctrl+H permet de remplacer les mots par un autre event->utilisateurs
 	require_once File ::build_path ( [ 'model' , 'ModelUtilisateurs.php' ] ); // chargement du modèle
-	class ControllerUtilisateurs
-	{
 
+    class ControllerUtilisateurs{
 
-		public static function readAll ()
-		{
+        protected static $controller="utilisateurs";
 
-			$tab_v = ModelUtilisateurs ::selectAll ();     //appel au modèle pour gerer la BD
-			$object = 'utilisateurs';
-			$view = 'list';
-			$pagetitle = 'Liste des utilisateurs';
-			require ( File ::build_path ( [ 'view' , 'view.php' ] ) );  //"redirige" vers la vue
+		public static function readAll() {
+		    if( isset( $_SESSION[ "login" ] )) {
+                $tab_v = ModelUtilisateurs::selectAll();     //appel au modèle pour gerer la BD
+                $object = 'utilisateurs';
+                $view = 'list';
+                $pagetitle = 'Liste des utilisateurs';
+                require(File::build_path(['view', 'view.php']));  //"redirige" vers la vue
+            }else{
+		        self::connect();
+            }
 		}
 
 
-		public static function read ( $primary )
-		{
-			if ( isset( $_SESSION[ "login" ] ) && (($_SESSION[ "isAdmin" ] == 1 ) || ($_SESSION["login"] == $primary)) ) {    //Il fau être un admin connecté pour accéder aux détails des utilisateurs
-				$v = ModelUtilisateurs ::select ( $primary );
+		public static function read() {
+			if ( isset( $_SESSION[ "login" ] ) && (($_SESSION[ "isAdmin" ] == 1 ) || ($_SESSION["login"] == $_GET['login'])) ) {    //Il fau être un admin connecté pour accéder aux détails des utilisateurs
+				$v = ModelUtilisateurs ::select ( $_GET['login'] );
 				$object = 'utilisateurs';
 				$view = 'detail';
 				$pagetitle = 'Détail de l\'utilisateur.';
@@ -34,9 +35,21 @@
 		}
 
 
-		public static function created ( $data )
-		{
-
+		public static function created() {
+            $data = array ();
+            if ( Conf ::getDebug () ) {
+                foreach ($_GET as $k => $v) {
+                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                        $data += [$k => $v];
+                    }
+                }
+            }else{
+                foreach ($_POST as $k => $v) {
+                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                        $data += [$k => $v];
+                    }
+                }
+            }
 			if ( !isset( $_SESSION[ "login" ] ) && strcmp ( $data[ "mdp" ] , $data[ "mdp_conf" ] ) == 0 ) {
 				unset( $data[ "mdp_conf" ] );
 				$data[ "mdp" ] = Security ::chiffrer ( $data[ "mdp" ] );
@@ -49,14 +62,12 @@
 				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
 			}
 			else {
-				echo "Vous êtes déjà connecté ou le mot de passe que vous avez rentré n'est pas le bon !";
+				echo "<p>Vous êtes déjà connecté ou le mot de passe que vous avez rentré n'est pas le bon !</p>";
 				self ::readAll ();
 			}
 		}
 
-
-		public static function update ()
-		{
+		public static function update() {
 			if ( isset($_GET["login"])&&(Session ::is_user ( $_GET[ "login" ] ) || Session::is_admin ()) ) {
 				$object = 'utilisateurs';
 				$view = 'update';
@@ -77,8 +88,21 @@
 		}
 
 
-		public static function updated ( $data )
-		{
+		public static function updated() {
+            $data = array ();
+            if ( Conf::getDebug() ) {
+                foreach ($_GET as $k => $v) {
+                    if (strcmp( $k, "action" ) != 0 && strcmp( $k, "controller" ) != 0) {
+                        $data += [ $k => $v ];
+                    }
+                }
+            }else{
+                foreach ($_POST as $k => $v) {
+                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                        $data += [$k => $v];
+                    }
+                }
+            }
 			if ( isset( $data[ "login" ] ) && (Session ::is_user ( $data[ "login" ] ) || Session::is_admin ())&& strcmp ( $data[ "mdp" ] , $data[ "mdp_conf" ] ) == 0 ) {
 				unset( $data[ "mdp_conf" ] );
 				$data[ "mdp" ] = Security ::chiffrer ( $data[ "mdp" ] );
@@ -101,8 +125,9 @@
 		}
 
 
-		public static function delete ( $primary )
-		{
+		public static function delete() {
+            $model = $_GET['model'];
+            $primary = $_GET[$model::getPrimary()];
 			if ( Session ::is_user ( $primary ) ) {
 				$object = 'utilisateurs';
 
@@ -131,46 +156,47 @@
 
 		}
 
-		public static function connect ()
-		{
+		public static function connect() {
 			if ( !isset( $_SESSION[ "login" ] ) ) {
-
-				$object = 'utilisateurs';
+				$object = 'main';
 				$view = 'connect';
 				$pagetitle = 'Connection à la page utilisateur';
 				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
 			}
 			else {
 				ControllerEvent ::readAll ();
-
 			}
 		}
 
-		public static function connected ( $login , $mdp )
-		{
+		public static function connected() {
+            if ( Conf::getDebug() ) {
+                $login = $_GET["login"];
+                $mdp = $_GET["mdp"];
+            }else{
+                $login = $_POST["login"];
+                $mdp = $_POST["mdp"];
+            }
 			if ( !isset( $_SESSION[ "login" ] ) ) {
 				$g = ModelUtilisateurs ::checkPassword ( $login , $mdp );
 				if ( $g !== FALSE ) {
 					$_SESSION[ "login" ] = $g -> getLogin ();
 					$_SESSION[ "isAdmin" ] = $g -> getIsAdmin ();
-					ControllerEvent ::readAll ();
+					ControllerUtilisateurs ::read($_SESSION["login"]);
 				}
 				else {
 					echo "Mauvais mot de passe.";
-					$object = 'utilisateurs';
+					$object = 'main';
 					$view = 'connect';
 					$pagetitle = 'Connection à la page utilisateur';
 					require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
 				}
 			}
 			else {
-				ControllerEvent ::readAll ();
+				ControllerUtilisateurs ::connect();
 			}
 		}
 
-		public static function disconnect ()
-		{
-
+		public static function disconnect() {
 			if ( isset( $_SESSION[ "login" ] ) ) {
 				session_unset ();
 				session_destroy ();
@@ -196,4 +222,11 @@
 			}
 			return $randomString;
 		}
+
+        public static function error(){
+            $object = 'main';
+            $view = 'error';
+            $pagetitle = 'Erreur';
+            require( File ::build_path( [ 'view', 'view.php' ] ) );
+        }
 	}
