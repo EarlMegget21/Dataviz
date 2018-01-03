@@ -39,7 +39,7 @@
 			if ( isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 ) {
 				if ( isset( $_GET[ "id" ] ) ) { //cas où on update
 					$v = ModelEvent ::select ( $_GET[ "id" ] );
-					if ( strcmp ( $v -> getLogin () , $_SESSION[ "login" ] ) == 0 ) {
+					if ( strcmp ( $v -> getLogin () , $_SESSION[ "login" ] ) == 0 ) { //Un admin ne peut modifier que des event qu'il a créé
 						$object = 'event';
 						$view = 'update';
 						$pagetitle = 'Update Event';
@@ -50,6 +50,7 @@
 					}
 				}
 				else { //cas où on créer
+                    $affiche=true;
 					$object = 'event';
 					$view = 'update';
 					$pagetitle = 'Créer Event';
