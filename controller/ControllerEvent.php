@@ -183,7 +183,8 @@ Aliquam lectus nunc, varius eget sagittis viverra, pharetra ut sapien. Phasellus
 		    $ya=$_GET["ya"];
 		    $xb=$_GET["xb"];
 		    $yb=$_GET["yb"];
-            $doc = ModelEvent::getEventList ($mindate."-01-01", $maxdate."-12-31", $xa, $ya, $xb, $yb, NULL); //appel au modèle pour interroger la BD
+		    $keyword=$_GET["keyword"];
+            $doc = ModelEvent::getEventList ($mindate."-01-01", $maxdate."-12-31", $xa, $ya, $xb, $yb, $keyword); //appel au modèle pour interroger la BD
             header('Content-Type: text/xml');
             echo $doc->saveXML();
         }

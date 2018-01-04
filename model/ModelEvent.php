@@ -77,7 +77,7 @@
 		}
 
 		//Recherche d'events en fonction de la date et de la position
-		public static function getEventList ( $lowest , $highest , $xa, $ya , $xb, $yb, $mot) {
+		public static function getEventList ( $lowest , $highest , $xa, $ya , $xb, $yb, $keyword) {
 			$sql = "SELECT * 
 					FROM Event 
 					WHERE date>=:low and date<=:high and latitude>=:yA and latitude<=:yB and ";
@@ -86,21 +86,31 @@
             }else{
                 $sql=$sql.'longitude>=:xA and longitude<=:xB';
             }
-			if(!is_null($mot)){
-			    $sql = $sql." AND (description LIKE CONCAT('%',:mot,'%') OR nom LIKE CONCAT('%',:mot,'%'))";
+			if(!is_null($keyword)){ //Si on a un keyword alors on recherche
+			    $sql = $sql." AND (description LIKE CONCAT('%',:keyword,'%') OR nom LIKE CONCAT('%',:keyword,'%'))";
             }
             try{
                 $req_prep = Model ::$pdo -> prepare ( $sql );
-
-                $match = [
-                    "low"  => $lowest ,
-                    "high" => $highest ,
-                    "xA"   => $xa ,
-                    "yA"   => $ya ,
-                    "xB"   => $xb ,
-                    "yB"   => $yb ,
-                    //"mot"  => $mot,
-                ];
+                if(!is_null($keyword)) { //Si on a un keyword
+                    $match = [
+                        "low" => $lowest,
+                        "high" => $highest,
+                        "xA" => $xa,
+                        "yA" => $ya,
+                        "xB" => $xb,
+                        "yB" => $yb,
+                        "keyword" => $keyword,
+                    ];
+                }else{  //Pas de keyword
+                    $match = [
+                        "low" => $lowest,
+                        "high" => $highest,
+                        "xA" => $xa,
+                        "yA" => $ya,
+                        "xB" => $xb,
+                        "yB" => $yb,
+                    ];
+                }
 
                 $req_prep -> execute ( $match );
                 $req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelEvent' );
@@ -144,11 +154,9 @@
 		 *
 		 * La fonction est coupé en deux pour rendre la fonction plus lisible.
 		 */
-		public static function searchEvent ( $date1 , $date2 , $A , $B, $mot)
+		public static function searchEvent ( $date1 , $date2 , $A , $B, $keyword)
 		{
-			$filter = self ::getEventList ( $date1 , $date2 , $A , $B, $mot);
-
-			//TODO: Filtrer keywords (Rajouter un paramètre pour les mots)
+			$filter = self ::getEventList ( $date1 , $date2 , $A , $B, $keyword);
 
 			return $filter;
 

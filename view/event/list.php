@@ -24,6 +24,8 @@ echo '<div id="contenu">
             </fieldset>
         </form>
     </div>
+    <input type=\'text\' placeholder=\'Rentrez un mot-clé\' name=\'keyword\' id=\'keyword_id\'/>
+    <input id=\'keywordButton_id\' type="submit" value="Rechercher"/>
     <div id="mapslider">
         <div id = "map">
             <!-- affiche la map ici -->

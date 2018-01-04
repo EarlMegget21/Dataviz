@@ -29,9 +29,9 @@
     */
     $(function () { //diminutif JQuery de la fonction javascript de base document.ready(function{...}); s'appel donc une fois dès que la page est prète (genre de main() )
         //on ajoute les observeurs qui seront mit à jour
-        Observable.AddObserver(new MapOberver()); //la map doit être ajoutée en premier observeur!! car c'est dans sa fonction update que l'on met à jour le tableau de points qui sera parcouru par la liste
-        Observable.AddObserver(new SilderOberver());
-        Observable.AddObserver(new ListOberver());
+        Observable.AddObserver(new MapObserver()); //la map doit être ajoutée en premier observeur!! car c'est dans sa fonction update que l'on met à jour le tableau de points qui sera parcouru par la liste
+        Observable.AddObserver(new SilderObserver());
+        Observable.AddObserver(new ListObserver());
 
         $("#slider").slider({ //créer le slider à l'endroit prévu
             range: true, //deux curseurs
@@ -46,6 +46,11 @@
             slide: function (event, ui) { //genre de listener lors du slide (se lance tout au long du slide en temps réél)
                 $("#date").html("Du 01/01/"+ui.values[0] +" au 31/12/"+ui.values[1]); //mise à jour de l'affichage des dates en direct
             }
+        });
+
+        document.getElementById("keywordButton_id").addEventListener("click", function(){
+            Observable.keyword=document.getElementById("keyword_id").value;
+            Observable.Notify();
         });
 
         $("#date").html("Du 01/01/"+$("#slider").slider("values", 0)+" au 31/12/"+$("#slider").slider("values", 1)); //initialisation de l'affichage des date au démarrage
@@ -261,7 +266,7 @@
         return xhr
     }
 
-    function getEventXML(mindate,maxdate,xa,ya,xb,yb){ //fonction qui permet de récupérer le doc XML sur le serveur grâce à AJAX, les parametres de recherche
+    function getEventXML(mindate,maxdate,xa,ya,xb,yb,keyword){ //fonction qui permet de récupérer le doc XML sur le serveur grâce à AJAX, les parametres de recherche
         var xhr = getXhr(); //création de la requête
         xhr.onreadystatechange = function(){ // On défini ce qu'on va faire quand on aura la réponse (dès que l'état de la requête change)
             if(xhr.readyState == 4 && xhr.status == 200){ // On ne fait quelque chose que si on a tout reçu(code 4) et que le serveur est ok(200)
@@ -269,7 +274,7 @@
                 recupererPoints(xhr); //on recréer tous les points correspondants à la recherche et on rempli le tableau de recherche
             }
         };
-        var url="index.php?controller=event&action=searchEvents&mindate="+mindate+"&maxdate="+maxdate+"&xa="+xa+"&ya="+ya+"&xb="+xb+"&yb="+yb;
+        var url="index.php?controller=event&action=searchEvents&mindate="+mindate+"&maxdate="+maxdate+"&xa="+xa+"&ya="+ya+"&xb="+xb+"&yb="+yb+"&keyword="+keyword;
         xhr.open("GET",url,false); //créer une requête HTTP Get avec cet url en synchrone(false) donc s'effectue en parallèle(genre de thread) car sinon les Observer sont mis à jour avant le tableau de recherche donc ont un résultat obsolète
         xhr.send(null); //envoie la requete avec aucun paramêtre
     }
@@ -343,6 +348,7 @@
         this.observers = new ObserverList(); //liste des observeurs
         this.coordonnees = [-90,90,-180,180]; //stock les coordonnees de la carte en temps reel
         this.dates = [1900,2050]; //stock les dates min et max du slider en temps reel
+        this.keyword = "";
     }
 
     Subject.prototype.AddObserver = function( observer ){ //methode AddObserver(obj) pour ajouter un observeur
@@ -357,15 +363,15 @@
     };
 
     // Les Observeurs
-    function MapOberver(){ //map qui se centrera en fonction des mots clés (peut être du slider aussi)
+    function MapObserver(){ //map qui se centrera en fonction des mots clés (peut être du slider aussi)
 
         this.Update = function(){
-            getEventXML(Observable.dates[0],Observable.dates[1],Observable.coordonnees[2],Observable.coordonnees[0],Observable.coordonnees[3],Observable.coordonnees[1]); //envoie la requête avec les paramêtres de l'Observable
+            getEventXML(Observable.dates[0],Observable.dates[1],Observable.coordonnees[2],Observable.coordonnees[0],Observable.coordonnees[3],Observable.coordonnees[1], Observable.keyword); //envoie la requête avec les paramêtres de l'Observable
         };
 
     }
 
-    function SilderOberver(){ //slider
+    function SilderObserver(){ //slider
 
         this.Update = function(){ //on lui passe le tableau des résultats en parametre
             var minDate = parseInt(tab_minmax[0].slice(0, 4), 10);
@@ -382,7 +388,7 @@
         };
     }
 
-    function ListOberver(){ //liste
+    function ListObserver(){ //liste
 
         this.Update = function(){ //met à jour la liste des events
             <?php

@@ -4,10 +4,6 @@
     }
 </style>
 
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCuog5LlTmtUH8-wB5IjxdJMY_Cq-CqhVU&language=fr&callback=initMap">
-</script>
-
 <?php
 if ( isset($_GET[ModelEvent::getPrimary()])) {  //MàJ d'un event
     if(Conf::getDebug()) {
