@@ -49,8 +49,7 @@
 						self ::readAll ();
 					}
 				}
-				else { //cas où on créer
-                    $affiche=true;
+				else { //cas où on crée
 					$object = 'event';
 					$view = 'update';
 					$pagetitle = 'Créer Event';

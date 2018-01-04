@@ -36,8 +36,8 @@
         $("#slider").slider({ //créer le slider à l'endroit prévu
             range: true, //deux curseurs
             min: 1900, //valeur minimale
-            max: 2017, //valeur maximale
-            values: [1900, 2017], //valeurs de départ (à la création)
+            max: 2050, //valeur maximale
+            values: [1900, 2050], //valeurs de départ (à la création)
             stop: function (event, ui) { //listener qui se lance quand on drop le curseur du slider
                 Observable.dates[0]=ui.values[0]; //on modifie l'intervalle de dates dans les attributs de l'observable
                 Observable.dates[1]=ui.values[1];
@@ -342,7 +342,7 @@
     function Subject(){
         this.observers = new ObserverList(); //liste des observeurs
         this.coordonnees = [-90,90,-180,180]; //stock les coordonnees de la carte en temps reel
-        this.dates = [1900,2017]; //stock les dates min et max du slider en temps reel
+        this.dates = [1900,2050]; //stock les dates min et max du slider en temps reel
     }
 
     Subject.prototype.AddObserver = function( observer ){ //methode AddObserver(obj) pour ajouter un observeur
@@ -370,11 +370,11 @@
         this.Update = function(){ //on lui passe le tableau des résultats en parametre
             var minDate = parseInt(tab_minmax[0].slice(0, 4), 10);
             var maxDate = parseInt(tab_minmax[1].slice(0, 4), 10);
-            if(minDate>2017){ //si il n'y a aucun évènement
+            if(minDate>2050){ //si il n'y a aucun évènement
                 minDate=1900;
             }
             if(maxDate<1900){ //si il n'y a aucun évènement
-                maxDate=2017;
+                maxDate=2050;
             }
             $("#slider").slider('values',0,minDate); //set le curseur mini du slider
             $("#slider").slider('values',1,maxDate); //set le curseur maxi du slider
@@ -388,6 +388,9 @@
             <?php
                 if (isset( $_SESSION["login"] ) && isset( $_GET["action"] )) {
                     switch ($_GET[ "action" ]) {
+                        case "created":
+                            echo "$('#detail').html('<p>Evènement créé !</p>');";
+                            break;
                         case "updated":
                             echo "$('#detail').html('<p>L\'évènement a bien été mis à jour</p>');";
                             break;
