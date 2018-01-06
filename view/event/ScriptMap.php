@@ -162,6 +162,7 @@
         Array.prototype.forEach.call(markers, function (markerElem) { //pour chaque tag marker dans le tableau
             var id = markerElem.getAttribute('id'); //on récupère les attributs dans des variables
             var nom = markerElem.getAttribute('nom');
+            var MP3 = markerElem.getAttribute('MP3');
             var description = markerElem.getAttribute('description');
             var date = markerElem.getAttribute('date');
             var login = markerElem.getAttribute('login');
@@ -174,7 +175,7 @@
 
             var infowincontent = creerInfoWindow(nom,date,login); //rempli la petite fenetre avec les details du point
 
-            var marker = new Point(id,nom,description,login,point,date,map); //créer le point (hérite de google.map.marker)
+            var marker = new Point(id,nom,MP3,description,login,point,date,map); //créer le point (hérite de google.map.marker)
 
             tab_marker.push(marker); //on ajoute chaque point au tableau des points
 
@@ -299,7 +300,7 @@
     */
 
     /* Classes des objets extraits du XML */
-    function Point(id, nom, description, login, point, date, map) { //classe héritant de google.maps.Marker en lui ajoutant des attributs
+    function Point(id, nom, MP3, description, login, point, date, map) { //classe héritant de google.maps.Marker en lui ajoutant des attributs
         /* On appelle le constructeur de " google.maps.Marker " par le biais de la méthode
          call() afin qu'il affecte de nouvelles propriétés à " Point " */
         google.maps.Marker.call(this,{map: map, position: point}); // call(obj, parametres du constructeur pere) similaire à super(parametres) en java
@@ -307,6 +308,7 @@
         // Une fois le constructeur parent appelé, l'initialisation de notre objet peut continuer
         this.id = id;
         this.nom = nom;
+        this.MP3 = MP3;
         this.description = description;
         this.login = login;
         this.date = date;
@@ -392,67 +394,11 @@
 
         this.Update = function(){ //met à jour la liste des events
             <?php
-                if (isset( $_SESSION["login"] ) && isset( $_GET["action"] )) {
-                    switch ($_GET[ "action" ]) {
-                        case "created":
-                            echo "$('#detail').html('<p>Evènement créé !</p>');";
-                            break;
-                        case "updated":
-                            echo "$('#detail').html('<p>L\'évènement a bien été mis à jour</p>');";
-                            break;
-                        case "delete":
-                            if($_GET['model']=='ModelCommentaire'){
-                                echo "$('#detail').html('<p>Le commentaire a bien été supprimé</p>');";
-                            }else{
-
-                                echo "$('#detail').html('<p>L\'évènement a bien été supprimé</p>');";
-                            }
-                            break;
-                        default:
-                            echo "$('#detail').html('');";
-                            break;
-                    }
-                }else{
-                    echo "$('#detail').html('');";
-                }
-            ?>
-            if(tab_marker.length!=0) { //si il y a des évènements on affiche la liste
-                $('#detail').append('<ul>'); //création d'une liste
-                for (var i = 0; i < tab_marker.length; i++) { //on affiche le nom de chaque marker avec un bouton pour voir les details
-                    $('#detail').append('<li>' + tab_marker[i].nom + ' <input type="button" id="list' + tab_marker[i].id + '" value="Voir>>" style="padding:0px 1px;"></li>');
-                    $('#list' + tab_marker[i].id).click(function (tab_marker, i) { //utilisation de closure (bien se renseigner sur le fonctionnement) car sinon l'index i dans le handler était égale au dernier i comme si les listener de chaque bouton se créaient après la boucle entière. J'aurais pu aussi mettre l'id du bouton = à l'index de l'event en queton puis récupérer cet id avec target (comme e.source en java)
-                        return function () { //la fonction en parametre de click(), doit être fonction() pour se lancer à chaque event sinon se lance juste à la creation du listener. Ici, vu qu'on lui passe des paramêtres, on doit renvoyer une function() qui se lancera donc à chaque event
-                            voirHandler(tab_marker, i) //les parametres passés sont bel et bien connu car on se trouve à l'interieur de l'autre fonction, on récupère donc ses parametres
-                        }
-                    }(tab_marker, i)); //permet de passer tab_marker et i en parametre (notez la couleur de i)
-                }
-                $('#detail').append('</ul>'); //fin de la liste
-            }else{ //si il n'y a pas d'évènement, on l'indique à l'utilisateur
-                $('#detail').append('<p>Aucun évènement dans cette région à ce moment là...</p>');
-            }
-            <?php
-                if (isset( $_SESSION["login"] )) {
-                    echo "$('#detail').append('<a href=\"index.php?controller=event&action=update\">Créer Evenement</a>');"; //création d'un evenement
-                }
-            ?>
-            //on refait tout pour le listener du boutton retour
-            $('#retour').click(function(){
-                retourHandler(tab_marker);
-            });
-            $('#retour').css("display", "none"); //des qu'on click sur "<<Retour" on doit donc faire disparaitre le bouton
-        };
-    }
-
-    /*
-     *
-     Handlers
-     *
-    */
-    function retourHandler(markers){ //fonction du handler pour les boutons <<Retour
-        infoWindow.close(); //on ferme la petite fenetre au dessus du point
-        <?php
-            if (isset($_SESSION["login"] ) && isset( $_GET["action"] )) {
+            if (isset( $_SESSION["login"] ) && isset( $_GET["action"] )) {
                 switch ($_GET[ "action" ]) {
+                    case "created":
+                        echo "$('#detail').html('<p>Evènement créé !</p>');";
+                        break;
                     case "updated":
                         echo "$('#detail').html('<p>L\'évènement a bien été mis à jour</p>');";
                         break;
@@ -472,20 +418,76 @@
                 echo "$('#detail').html('');";
             }
             ?>
-            $('#detail').append('<ul>'); //on recréer la liste des events
-            for(var i=0;i<markers.length;i++){ //on affiche le nom et le bouton pour voir les details
-                $('#detail').append('<li>'+markers[i].nom+' <input type="button" id="list'+markers[i].id+'" value="Voir>>" style="padding:0px 1px;"></li>');
-                $('#list'+markers[i].id).click(function(markers, i){ //utilisation de closure (bien se renseigner sur le fonctionnement) car sinon l'index i dans le handler était égale au dernier i comme si les listener de chaque bouton se créaient après la boucle entière. J'aurais pu aussi mettre l'id du bouton = à l'index de l'event en queton puis récupérer cet id avec target (comme e.source en java)
-                    return function(){ //la fonction en parametre de click(), doit être fonction() pour se lancer à chaque event sinon se lance juste à la creation du listener. Ici, vu qu'on lui passe des paramêtres, on doit renvoyer une function() qui se lancera donc à chaque event
-                        voirHandler(markers, i) //les parametres passés sont bel et bien connu car on se trouve à l'interieur de l'autre fonction, on récupère donc ses parametres
-                    }
-                }(markers,i));
+            if(tab_marker.length!=0) { //si il y a des évènements on affiche la liste
+                $('#detail').append('<ul>'); //création d'une liste
+                for (var i = 0; i < tab_marker.length; i++) { //on affiche le nom de chaque marker avec un bouton pour voir les details
+                    $('#detail').append('<li>' + tab_marker[i].nom + ' <input type="button" id="list' + tab_marker[i].id + '" value="Voir>>" style="padding:0px 1px;"></li>');
+                    $('#list' + tab_marker[i].id).click(function (tab_marker, i) { //utilisation de closure (bien se renseigner sur le fonctionnement) car sinon l'index i dans le handler était égale au dernier i comme si les listener de chaque bouton se créaient après la boucle entière. J'aurais pu aussi mettre l'id du bouton = à l'index de l'event en queton puis récupérer cet id avec target (comme e.source en java)
+                        return function () { //la fonction en parametre de click(), doit être fonction() pour se lancer à chaque event sinon se lance juste à la creation du listener. Ici, vu qu'on lui passe des paramêtres, on doit renvoyer une function() qui se lancera donc à chaque event
+                            voirHandler(tab_marker, i) //les parametres passés sont bel et bien connu car on se trouve à l'interieur de l'autre fonction, on récupère donc ses parametres
+                        }
+                    }(tab_marker, i)); //permet de passer tab_marker et i en parametre (notez la couleur de i)
+                }
+                $('#detail').append('</ul>'); //fin de la liste
+            }else{ //si il n'y a pas d'évènement, on l'indique à l'utilisateur
+                $('#detail').append('<p>Aucun évènement dans cette région à ce moment là...</p>');
             }
-            $('#detail').append('</ul>'); //fin de la liste
             <?php
-            if (isset($_SESSION["login"] )) {
+            if (isset( $_SESSION["login"] )) {
                 echo "$('#detail').append('<a href=\"index.php?controller=event&action=update\">Créer Evenement</a>');"; //création d'un evenement
             }
+            ?>
+            //on refait tout pour le listener du boutton retour
+            $('#retour').click(function(){
+                retourHandler(tab_marker);
+            });
+            $('#retour').css("display", "none"); //des qu'on click sur "<<Retour" on doit donc faire disparaitre le bouton
+        };
+    }
+
+    /*
+     *
+     Handlers
+     *
+    */
+    function retourHandler(markers){ //fonction du handler pour les boutons <<Retour
+        infoWindow.close(); //on ferme la petite fenetre au dessus du point
+        <?php
+        if (isset($_SESSION["login"] ) && isset( $_GET["action"] )) {
+            switch ($_GET[ "action" ]) {
+                case "updated":
+                    echo "$('#detail').html('<p>L\'évènement a bien été mis à jour</p>');";
+                    break;
+                case "delete":
+                    if($_GET['model']=='ModelCommentaire'){
+                        echo "$('#detail').html('<p>Le commentaire a bien été supprimé</p>');";
+                    }else{
+
+                        echo "$('#detail').html('<p>L\'évènement a bien été supprimé</p>');";
+                    }
+                    break;
+                default:
+                    echo "$('#detail').html('');";
+                    break;
+            }
+        }else{
+            echo "$('#detail').html('');";
+        }
+        ?>
+        $('#detail').append('<ul>'); //on recréer la liste des events
+        for(var i=0;i<markers.length;i++){ //on affiche le nom et le bouton pour voir les details
+            $('#detail').append('<li>'+markers[i].nom+' <input type="button" id="list'+markers[i].id+'" value="Voir>>" style="padding:0px 1px;"></li>');
+            $('#list'+markers[i].id).click(function(markers, i){ //utilisation de closure (bien se renseigner sur le fonctionnement) car sinon l'index i dans le handler était égale au dernier i comme si les listener de chaque bouton se créaient après la boucle entière. J'aurais pu aussi mettre l'id du bouton = à l'index de l'event en queton puis récupérer cet id avec target (comme e.source en java)
+                return function(){ //la fonction en parametre de click(), doit être fonction() pour se lancer à chaque event sinon se lance juste à la creation du listener. Ici, vu qu'on lui passe des paramêtres, on doit renvoyer une function() qui se lancera donc à chaque event
+                    voirHandler(markers, i) //les parametres passés sont bel et bien connu car on se trouve à l'interieur de l'autre fonction, on récupère donc ses parametres
+                }
+            }(markers,i));
+        }
+        $('#detail').append('</ul>'); //fin de la liste
+        <?php
+        if (isset($_SESSION["login"] )) {
+            echo "$('#detail').append('<a href=\"index.php?controller=event&action=update\">Créer Evenement</a>');"; //création d'un evenement
+        }
         ?>
         $('#retour').css("display", "none"); //des qu'on click sur "<<Retour" on doit donc faire disparaitre le bouton
     }
@@ -496,23 +498,24 @@
         infoWindow.open(map, markers[i]); //ouvre cette mini fenêtre avec les details de l'event
 
         <?php
-            if (isset($_SESSION["login"])) {
-                echo "if(login==markers[i].login || isAdmin){
+        if (isset($_SESSION["login"])) {
+            echo "if(login==markers[i].login || isAdmin){
                         $('#detail').html('<a href=\"index.php?controller=event&action=update&id='+markers[i].id+'\">Modifier</a><br>'+
                         '<a href=\"index.php?controller=event&action=delete&model=ModelEvent&id='+markers[i].id+'\">Supprimer</a>');
                       }else{
                             $('#detail').html('');
                       }";
-            } else {
-                echo "$('#detail').html('');";
-            }
+        } else {
+            echo "$('#detail').html('');";
+        }
         ?>
         $('#detail').append('<h5>' + markers[i].nom + '</h5>' + //affiche les details en cas de click
             '<div><p>Date: ' + markers[i].date + '</p>' +
-            '<p>Auteur: ' + markers[i].login + '</p>' +
-            '<p>Latitude: ' + markers[i].getPosition().lat() + '</p>' +
-            '<p>Longitude: ' + markers[i].getPosition().lng() + '</p>' +
-            '<p>Description: ' + markers[i].description + '</p></div>');
+            '<p>Audio: </p><audio controls><source src=\"' + markers[i].MP3 + '\" type="audio/mpeg"/></audio>'+
+        '<p>Auteur: ' + markers[i].login + '</p>' +
+        '<p>Latitude: ' + markers[i].getPosition().lat() + '</p>' +
+        '<p>Longitude: ' + markers[i].getPosition().lng() + '</p>' +
+        '<p>Description: ' + markers[i].description + '</p></div>');
 
         getComXML(markers[i].id);
         var com = false; //booleen pour savoir si il y a des commentaires
@@ -531,14 +534,14 @@
             $('#detail').append('<p>Aucun Commentaire</p>');
         }
         <?php
-            if (isset($_SESSION["login"])) { //affiche le formulaire pour commenter si on est connecter
-                echo "$('#detail').append('<form ";
-                if(Conf::getDebug()) {
-                    echo "method=\"get\" action=\"index.php\">'+";
-                }else {
-                    echo "method=\"post\" action=\"index.php?controller=event&action=comment\">'+";
-                }
-                    echo "'<fieldset>'+
+        if (isset($_SESSION["login"])) { //affiche le formulaire pour commenter si on est connecter
+            echo "$('#detail').append('<form ";
+            if(Conf::getDebug()) {
+                echo "method=\"get\" action=\"index.php\">'+";
+            }else {
+                echo "method=\"post\" action=\"index.php?controller=event&action=comment\">'+";
+            }
+            echo "'<fieldset>'+
                                 '<legend>Commenter :</legend>'+
                                 '<p><label for=\"note_id\">Note</label>'+
                                     '<input type=\"number\" step=\"1\" min=\"0\" max=\"5\" name=\"note\" id=\"note_id\" value=\"0\" required/>'+
@@ -547,16 +550,16 @@
                                     '<textarea placeholder=\"Laissez votre message ici !\" name=\"texte\" id=\"texte_id\" rows=\"2\" cols=\"30\" required/></textarea>'+
                                     
                                     '<input type=\"hidden\" name=\"login\" value=\"" . $_SESSION["login"] . "\">'+";
-                if(Conf::getDebug()) {
-                    echo "'<input type=\"hidden\" name=\"action\" value=\"comment\">'+
+            if(Conf::getDebug()) {
+                echo "'<input type=\"hidden\" name=\"action\" value=\"comment\">'+
                           '<input type=\"hidden\" name=\"controller\" value=\"event\">'+";
-                }else {
-                    echo "";
-                }
-                    echo "'<input type=\"hidden\" name=\"idEvent\" value='+markers[i].id+'></p>'+
+            }else {
+                echo "";
+            }
+            echo "'<input type=\"hidden\" name=\"idEvent\" value='+markers[i].id+'></p>'+
                             '<p><input type=\"submit\" value=\"Poster\"/></p>'+
                         '</fieldset>');";
-            }
+        }
         ?>
         $('#retour').css("display", "block"); //apparition du bouton retour
     }
