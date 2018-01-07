@@ -38,7 +38,7 @@ if ( isset($_GET[ModelUtilisateurs	::getPrimary () ]) &&(Session::is_user ($_GET
 			</p>
 		</fieldset>
 		</form>";
-} else {
+} else if(Session::is_admin ()){
     if (Conf::getDebug()) {
         echo "<form method='get' action='index.php'>
                     <fieldset>
@@ -71,5 +71,7 @@ if ( isset($_GET[ModelUtilisateurs	::getPrimary () ]) &&(Session::is_user ($_GET
 			</p>
 		</fieldset>
 		</form>";
+} else{
+    echo "404 Not Found! :)";
 }
 ?>

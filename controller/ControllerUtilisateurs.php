@@ -107,9 +107,13 @@ class ControllerUtilisateurs{
                 if(strcmp($_GET["mdp"], $_GET["mdp_conf"]) == 0){   //mdp et confirmation de mdp OK
                     $data["mdp"] = Security::chiffrer($_GET["mdp"]);
                     $data["login"] = $_GET["login"];
-                    if (isset($_GET["isAdmin"])) {
-                        $data["isAdmin"] = $_GET["isAdmin"];
-                    } else {
+                    if(Session::is_admin ()) {
+                        if (isset($_GET["isAdmin"])) {
+                            $data["isAdmin"] = $_GET["isAdmin"];
+                        } else {
+                            $data["isAdmin"] = 0;
+                        }
+                    }else{
                         $data["isAdmin"] = 0;
                     }
                     ModelUtilisateurs::update($data);
@@ -191,11 +195,19 @@ class ControllerUtilisateurs{
 
     public static function connected() {
         if ( Conf::getDebug() ) {
-            $login = $_GET["login"];
-            $mdp = $_GET["mdp"];
+            if(isset( $_GET["login"])&& isset( $_GET["mdp"])) {
+                $login = $_GET["login"];
+                $mdp = $_GET["mdp"];
+            }else{
+                ControllerUtilisateurs ::connect();
+            }
         }else{
-            $login = $_POST["login"];
-            $mdp = $_POST["mdp"];
+            if(isset( $_POST["login"])&& isset( $_POST["mdp"])) {
+                $login = $_POST["login"];
+                $mdp = $_POST["mdp"];
+            }else{
+                ControllerUtilisateurs ::connect();
+            }
         }
         if ( !isset( $_SESSION[ "login" ] ) ) {
             $g = ModelUtilisateurs ::checkPassword ( $login , $mdp );
@@ -205,11 +217,7 @@ class ControllerUtilisateurs{
                 ControllerUtilisateurs ::read($_SESSION["login"]);
             }
             else {
-                echo "Mauvais mot de passe.";
-                $object = 'main';
-                $view = 'connect';
-                $pagetitle = 'Connection à la page utilisateur';
-                require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
+                ControllerUtilisateurs ::connect();
             }
         }
         else {

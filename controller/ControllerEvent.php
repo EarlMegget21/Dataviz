@@ -29,25 +29,35 @@
                     }
                 }
             }
-			if ( isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 ) {
+			if ( isset( $_SESSION[ "login" ] ) ) {
 				ModelEvent ::save ( $data );
 			}
             self ::readAll ();
 		}
 
 		public static function update () {
-			if ( isset( $_SESSION[ "login" ] ) && $_SESSION[ "isAdmin" ] == 1 ) {
+			if ( isset( $_SESSION[ "login" ] )) {
 				if ( isset( $_GET[ "id" ] ) ) { //cas où on update
 					$v = ModelEvent ::select ( $_GET[ "id" ] );
-					if ( strcmp ( $v -> getLogin () , $_SESSION[ "login" ] ) == 0 ) { //Un admin ne peut modifier que des event qu'il a créé
-						$object = 'event';
-						$view = 'update';
-						$pagetitle = 'Update Event';
-						require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-					}
-					else {
-						self ::readAll ();
-					}
+					if($v == null){
+                        self ::readAll ();
+                    }else{
+					    if(!Session::is_admin()){
+                            if ( strcmp ( $v -> getLogin () , $_SESSION[ "login" ] ) == 0 ) { //Un utilisateur ne peut modifier que des event qu'il a créé
+                                $object = 'event';
+                                $view = 'update';
+                                $pagetitle = 'Update Event';
+                                require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
+                            }else {
+                                self ::readAll ();
+                            }
+                        }else {
+                            $object = 'event';
+                            $view = 'update';
+                            $pagetitle = 'Update Event';
+                            require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
+                        }
+                    }
 				}
 				else { //cas où on crée
 					$object = 'event';
@@ -77,9 +87,11 @@
                     }
                 }
             }
-			if ( isset( $_SESSION[ "login" ] ) && isset( $data[ "login" ] ) && ( $_SESSION[ "isAdmin" ] == 1 && strcmp ( $data[ "login" ] , $_SESSION[ "login" ] ) == 0 ) ) {
-				ModelEvent ::update ( $data );
-                ControllerEvent::readAll();
+			if ( isset( $_SESSION[ "login" ] ) && isset( $data[ "login" ] )){
+                if(Session::is_admin() || strcmp ( $data[ "login" ] , $_SESSION[ "login" ] ) == 0 ) {//Admin ou utilisateur qui modif un evnet qu'il a lui-même créé
+                    ModelEvent::update($data);
+                    ControllerEvent::readAll();
+                }
 			}
 			elseif ( !isset( $_SESSION[ "login" ] ) ) {
 				$object = 'main';
