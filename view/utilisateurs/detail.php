@@ -1,10 +1,11 @@
 <?php
 	if ($v !== FALSE && isset( $_SESSION[ "login" ] ) &&  ( ($_SESSION[ "isAdmin" ] == 1 ) || ($_SESSION["login"] == $v -> getLogin()) ) ) {
 		{
-			echo "<p>Login:" .
+            if($v->getIsAdmin()){
+                echo "<p style='font-weight: bold'>Administrateur</p><br>";
+            }
+			echo "<p>Login: " .
 				$v -> getLogin()
-				. "<br> MDP:"
-				. $v -> getMdp()
 				."<br><a href=index.php?controller=utilisateurs&action=update&"
 				. ModelUtilisateurs ::getPrimary()
 				. '='

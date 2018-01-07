@@ -64,11 +64,6 @@ if ( isset($_GET[ModelUtilisateurs	::getPrimary () ]) &&(Session::is_user ($_GET
     if (Session::is_admin()) {
         echo "<label for='admin_id'>Administrateur </label>
                 <input type='checkbox' name='isAdmin' id='admin_id' ";
-        if ($v->getIsAdmin()) {
-            echo "checked/>";
-        } else {
-            echo "/>";
-        }
     }
 
     echo "<p>

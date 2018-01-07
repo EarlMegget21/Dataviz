@@ -65,8 +65,12 @@ class ControllerUtilisateurs{
             require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
         }
         else {
-            echo "<p>Vous êtes déjà connecté ou le mot de passe que vous avez rentré n'est pas le bon !</p>";
-            self ::readAll ();
+            $object = 'utilisateurs';
+            $tab_v = ModelUtilisateurs ::selectAll ();
+            $error = "mdp";
+            $view = 'error';
+            $pagetitle = 'Erreur';
+            require_once File ::build_path ( [ 'view' , 'view.php' ] );
         }
     }
 
