@@ -35,9 +35,15 @@ class ControllerUtilisateurs{
     }
 
     public static function create() {
-        $object = 'utilisateurs';
-        $pagetitle='Création d\'un utilisateur';
-        $view='update';
+        if(Session::is_admin ()){
+            $object = 'utilisateurs';
+            $pagetitle='Création d\'un utilisateur';
+            $view='update';
+            require File::build_path(array('view','view.php'));
+        }
+        $object = 'main';
+        $pagetitle='Erreur';
+        $view='error';
         require File::build_path(array('view','view.php'));
     }
 
