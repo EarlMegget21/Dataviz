@@ -134,6 +134,7 @@
                     $newnode->setAttribute("login", $event->getLogin());
                     $newnode->setAttribute("mp3", $event->getMP3());
                 }
+
                 return $doc;
             } catch(PDOException $e){
                 if ( Conf ::getDebug () ) {
