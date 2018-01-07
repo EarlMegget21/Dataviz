@@ -1,7 +1,11 @@
-<?php
-echo '
-    
-    <div id="mapcontent">
+<div id="searchKeyword">
+
+    <input type='text' placeholder='Rentrez un mot-clé' name='keyword' id='keyword_id'/>
+
+    <input id='keywordButton_id' type="submit" value="Rechercher"/>
+
+</div>
+<div id="mapcontent">
         <div id = "map">
             <!-- affiche la map ici -->
         </div>
@@ -9,16 +13,7 @@ echo '
         
         
         <div id="contenu">
-        
-            <div id="searchKeyword">
-            
-                <input type=\'text\' placeholder=\'Rentrez un mot-clé\' name=\'keyword\' id=\'keyword_id\'/>
-                
-                <input id=\'keywordButton_id\' type="submit" value="Rechercher"/>
-                
-			</div>
-			
-			
+
 			<div id="detail">
                 <!-- affiche détails de l\'event ici -->
             </div>
@@ -37,9 +32,9 @@ echo '
     
     
     <div id="sliderdate">
-        <p id="date"><!-- affiche les bornes du curseur en temps reel(map) --></p><br>
+        <p id="date"><!-- affiche les bornes du curseur en temps reel(map) --></p>
 
         <div id="slider">
             <!-- afficher le slider ici -->
         </div>
-	</div>';
+	</div>

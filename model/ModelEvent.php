@@ -12,14 +12,14 @@
 		private $longitude;
 		private $latitude;
 		private $description;
-		private $MP3;
+		private $mp3;
 		private $nom;
 		private $login;
 		static protected $object = "Event";
 		static protected $primary = "id";
 
 		public function __construct ( $i = NULL , $d = NULL , $x = NULL , $y = NULL , $de = NULL , $m = NULL , $n = NULL , $l = NULL ) {
-			if ( !is_null ( $i ) && !is_null ( $n ) && !is_null ( $d ) && !is_null ( $x ) && !is_null ( $y ) && !is_null ( $de ) && !is_null ( al ) ) {
+			if ( !is_null ( $i ) && !is_null ( $n ) && !is_null ( $d ) && !is_null ( $x ) && !is_null ( $y ) && !is_null ( $de ) && !is_null ( $l ) && !is_null ( $m ) ) {
 				$this -> id = $i;
 				$this -> nom = $n;
 				$this -> date = $d;
@@ -27,7 +27,7 @@
 				$this -> latitude = $y;
 				$this -> description = $de;
 				$this -> login = $l;
-				$this -> MP3 = $m;
+				$this -> mp3 = $m;
 			}
 		}
 
@@ -68,7 +68,7 @@
 
 		public function getMP3 ()
 		{
-			return $this -> MP3;
+			return $this -> mp3;
 		}
 
 		public static function getPrimary ()

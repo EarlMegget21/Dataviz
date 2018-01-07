@@ -8,6 +8,10 @@
     border-radius: 10px;
 
 }
+
+#searchKeyword{
+    padding-bottom: 10px;
+}
 #mapcontent{
     display:flex;
     flex-direction: row;
@@ -37,7 +41,7 @@
     top: 24px;
 }
 header{
-    height: 100px;
+    height: 70px;
 }
 .menu > a{
     color: white;
@@ -46,6 +50,10 @@ header{
     font-size: 24px;
     font-weight: bold;
     margin-left: 15px;
+}
+
+.menu > a:hover{
+    text-decoration: none;
 }
 
 footer.footer{

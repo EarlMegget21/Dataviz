@@ -26,7 +26,7 @@ public class Crawler {
 
 
 
-        //Contiendra toute le contenu de toute les pages HTML
+        //Contiendra tout le contenu de toutes les pages HTML
         ArrayList<String> htmlContent = new ArrayList<>();
 
         //Ajoute du contenue des 774 pages dans htmlContent
