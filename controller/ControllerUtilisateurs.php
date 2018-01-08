@@ -151,8 +151,7 @@ class ControllerUtilisateurs{
 
 
     public static function delete() {
-        $model = $_GET['model'];
-        $primary = $_GET[$model::getPrimary()];
+        $primary = $_GET["login"];
         if ( Session ::is_user ( $primary ) ) {
             $object = 'utilisateurs';
 
