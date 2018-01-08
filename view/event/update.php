@@ -3,7 +3,9 @@
         display: none;
     }
 </style>
-
+<div id="mapcontent">
+<div id="map"></div>
+<div id="contenu">
 <?php
 if ( isset($_GET[ModelEvent::getPrimary()])) {  //MàJ d'un event
     if(Conf::getDebug()) {
@@ -86,5 +88,6 @@ if ( isset($_GET[ModelEvent::getPrimary()])) {  //MàJ d'un event
 }
 require_once File::build_path(array("view", "event", "ScriptAjoutEvent.php"));
 ?>
-<div id="map"></div>
+	</div>
+</div>
 
