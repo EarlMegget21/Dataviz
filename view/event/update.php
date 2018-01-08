@@ -25,10 +25,10 @@ if ( isset($_GET[ModelEvent::getPrimary()])) {  //MàJ d'un event
 					<br>
 					<label class='hide' for=\"longitude_id\">Coordonee X</label> :
 					<input class='hide' type=\"text\" placeholder=\"Ex :128\" name=\"longitude\" id=\"longitude_id\" value=\"" . $v -> getLongitude () . "\" readonly required/>
-					<br>
+					
 					<label class='hide' for=\"latitude_id\">Coordonee Y</label> :
 					<input class='hide' type=\"text\" placeholder=\"Ex :256\" name=\"latitude\" id=\"latitude_id\" value=\"" . $v -> getLatitude () . "\" readonly required/>
-					<br>
+					
 					<label for=\"description_id\">Description</label></label> :
 					<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\" value=\"" . $v -> getDescription () . "\" />
 					<br>
@@ -65,10 +65,10 @@ if ( isset($_GET[ModelEvent::getPrimary()])) {  //MàJ d'un event
 					<br>
 					<label class='hide' for=\"longitude_id\">Coordonee X :</label>
 					<input class='hide' type=\"text\" placeholder=\"Ex :128\" name=\"longitude\" id=\"longitude_id\" required/>
-					<br>
+					
 					<label class='hide' for=\"latitude_id\">Coordonee Y :</label>
 					<input class='hide' type=\"text\" placeholder=\"Ex :256\" name=\"latitude\" id=\"latitude_id\" required/>
-					<br>
+					
 					<label for=\"description_id\">Description :</label>
 					<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\"  />
 					<br>
