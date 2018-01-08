@@ -22,22 +22,22 @@ if ( isset($_GET[ModelEvent::getPrimary()])) {  //MàJ d'un event
     }
     echo "<label for=\"date_id\">Date</label> :
 					<input type=\"date\" placeholder=\"Ex :00/00/00\" name=\"date\" id=\"date_id\" value=\"" . $v -> getDate () . "\" required/>
-					
+					<br>
 					<label class='hide' for=\"longitude_id\">Coordonee X</label> :
 					<input class='hide' type=\"text\" placeholder=\"Ex :128\" name=\"longitude\" id=\"longitude_id\" value=\"" . $v -> getLongitude () . "\" readonly required/>
-					
+					<br>
 					<label class='hide' for=\"latitude_id\">Coordonee Y</label> :
 					<input class='hide' type=\"text\" placeholder=\"Ex :256\" name=\"latitude\" id=\"latitude_id\" value=\"" . $v -> getLatitude () . "\" readonly required/>
-					
+					<br>
 					<label for=\"description_id\">Description</label></label> :
 					<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\" value=\"" . $v -> getDescription () . "\" />
-					
+					<br>
 					<label for='mp3_id'>MP3</label> :
 					<input type='text' placeholder=\"Ex :http://loremipsum.fr/exemple.mp3\" name=\"mp3\" id=\"mp3_id\" value=\"" . $v -> getMP3 () . "\" />
-					
+					<br>
 					<label for='nom_id'>Nom</label> :
 					<input type='text' placeholder='Ex :Developpement des écoles' name='nom' id='nom_id' value='" . $v -> getNom () . "' required/>
-					
+					<br>
 					
 					<input type='hidden' name='login' value='".$v->getLogin()."'>
 					<input type='hidden' name='id' value='".$v->getId()."'>
@@ -62,19 +62,19 @@ if ( isset($_GET[ModelEvent::getPrimary()])) {  //MàJ d'un event
     }
     echo "<label for=\"date_id\">Date :</label>
 					<input type=\"date\" placeholder=\"Ex :00/00/00\" name=\"date\" id=\"date_id\" required/>
-					
+					<br>
 					<label class='hide' for=\"longitude_id\">Coordonee X :</label>
 					<input class='hide' type=\"text\" placeholder=\"Ex :128\" name=\"longitude\" id=\"longitude_id\" required/>
-					
+					<br>
 					<label class='hide' for=\"latitude_id\">Coordonee Y :</label>
 					<input class='hide' type=\"text\" placeholder=\"Ex :256\" name=\"latitude\" id=\"latitude_id\" required/>
-					
+					<br>
 					<label for=\"description_id\">Description :</label>
 					<input type=\"text\" placeholder=\"Ex :Ceci est un reportage\" name=\"description\" id=\"description_id\"  />
-					
+					<br>
 					<label for=\"mp3_id\">MP3 :</label>
 					<input type=\"text\" placeholder=\"Ex :http://loremipsum.fr/exemple.mp3\" name=\"mp3\" id=\"mp3_id\" />
-					
+					<br>
 					<label for=\"nom_id\">Nom :</label>
 					<input type=\"text\" placeholder=\"Ex :Developpement des écoles\" name=\"nom\" id=\"nom_id\" required/>
 					
