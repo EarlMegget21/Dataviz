@@ -19,6 +19,19 @@
     </head>
     <body>
         <header>
+            <div id="metanav" class="navbar-metanav" data-no-instant=""><ul class="level1"><li class="handle"><span data-metanav-handle="" class="icon-iconeradiofrance"></span></li><li><a target="_blank" title="Radio France" href="http://www.radiofrance.fr" sl-processed="1">
+                            Radio France</a></li><li><a target="_blank" title="France Inter" href="https://www.franceinter.fr" sl-processed="1">
+                            France Inter</a></li><li><a target="_blank" title="franceinfo" href="http://www.francetvinfo.fr" sl-processed="1">
+                            franceinfo</a></li><li><a target="_blank" title="France Bleu" href="https://www.francebleu.fr" sl-processed="1">
+                            France Bleu</a></li><li><a target="_blank" title="France Culture" href="https://www.franceculture.fr" sl-processed="1">
+                            France Culture</a></li><li><a target="_blank" title="France Musique" href="https://www.francemusique.fr" sl-processed="1">
+                            France Musique</a></li><li><a target="_blank" title="Fip" href="http://www.fipradio.fr/" sl-processed="1">
+                            Fip</a></li><li><a target="_blank" title="Mouv" href="http://www.mouv.fr" sl-processed="1">
+                            Mouv</a></li><li data-metanav-submenu="" class="submenu"><button type="button" data-metanav-submenu-handle=""><span class="icon-more">+</span></button><ul class="level2"><li><a target="_blank" title="Un Monde de Radio France" href="https://monde.radiofrance.fr" sl-processed="1">
+                                    Un Monde de Radio France</a></li><li><a target="_blank" title="le Médiateur" href="http://mediateur.radiofrance.fr" sl-processed="1">
+                                    le Médiateur</a></li><li><a target="_blank" title="les Éditions" href="http://editions.radiofrance.fr" sl-processed="1">
+                                    les Éditions</a></li><li><a target="_blank" title="Maison de la Radio" href="http://www.maisondelaradio.fr" sl-processed="1">
+                                    Maison de la Radio</a></li></ul></li></ul></div>
             <nav class="menu">
                 <a href="index.php?controller=event">Event</a>
                 <?php
@@ -40,19 +53,7 @@
             require $filepath;
         ?>
         </div>
-        <footer class="footer"><div id="metanav" class="navbar-metanav" data-no-instant=""><ul class="level1"><li class="handle"><span data-metanav-handle="" class="icon-iconeradiofrance"></span></li><li><a target="_blank" title="Radio France" href="http://www.radiofrance.fr" sl-processed="1">
-                            Radio France</a></li><li><a target="_blank" title="France Inter" href="https://www.franceinter.fr" sl-processed="1">
-                            France Inter</a></li><li><a target="_blank" title="franceinfo" href="http://www.francetvinfo.fr" sl-processed="1">
-                            franceinfo</a></li><li><a target="_blank" title="France Bleu" href="https://www.francebleu.fr" sl-processed="1">
-                            France Bleu</a></li><li><a target="_blank" title="France Culture" href="https://www.franceculture.fr" sl-processed="1">
-                            France Culture</a></li><li><a target="_blank" title="France Musique" href="https://www.francemusique.fr" sl-processed="1">
-                            France Musique</a></li><li><a target="_blank" title="Fip" href="http://www.fipradio.fr/" sl-processed="1">
-                            Fip</a></li><li><a target="_blank" title="Mouv" href="http://www.mouv.fr" sl-processed="1">
-                            Mouv</a></li><li data-metanav-submenu="" class="submenu"><button type="button" data-metanav-submenu-handle=""><span class="icon-more">+</span></button><ul class="level2"><li><a target="_blank" title="Un Monde de Radio France" href="https://monde.radiofrance.fr" sl-processed="1">
-                                    Un Monde de Radio France</a></li><li><a target="_blank" title="le Médiateur" href="http://mediateur.radiofrance.fr" sl-processed="1">
-                                    le Médiateur</a></li><li><a target="_blank" title="les Éditions" href="http://editions.radiofrance.fr" sl-processed="1">
-                                    les Éditions</a></li><li><a target="_blank" title="Maison de la Radio" href="http://www.maisondelaradio.fr" sl-processed="1">
-                                    Maison de la Radio</a></li></ul></li></ul></div>
+        <footer class="footer">
             <script data-no-instant="">
                 (function(window, doc) {
                     var metanavSubmenu = doc.querySelector('[data-metanav-submenu]');

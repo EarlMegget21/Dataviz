@@ -1,8 +1,8 @@
 <?php
 	session_start();
 	require_once File ::build_path ( [ 'config' , 'Conf.php' ] );
-	require_once File ::build_path( array ( 'controller', 'ControllerEvent.php' ) );
-	require_once File ::build_path( array ( 'controller', 'ControllerUtilisateurs.php' ) );
+	require_once File ::build_path( [ 'controller', 'ControllerEvent.php' ] );
+	require_once File ::build_path( [ 'controller', 'ControllerUtilisateurs.php' ] );
 	if (isset( $_GET['controller'] )) {
 		$controller = $_GET[ 'controller' ];
 		$controller_class = 'Controller' . ucfirst( $controller );
@@ -26,6 +26,7 @@
 				$controller_class::readAll();
 			}
 		} else {
+			$error="notFound";
             ControllerUtilisateurs::error();
 		}
 	} else {

@@ -15,28 +15,28 @@
 		}
 
 		public static function created() {
-            $data = array ();
-            if ( Conf::getDebug() ) {
-                foreach ($_GET as $k => $v) {
-                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
-                        $data += [$k => $v];
+            if ( isset( $_SESSION[ "login" ] ) ) {
+                $data = array ();
+                if ( Conf::getDebug() ) {
+                    foreach ($_GET as $k => $v) {
+                        if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                            $data += [$k => $v];
+                        }
+                    }
+                }else{
+                    foreach ($_POST as $k => $v) {
+                        if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                            $data += [$k => $v];
+                        }
                     }
                 }
-            }else{
-                foreach ($_POST as $k => $v) {
-                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
-                        $data += [$k => $v];
-                    }
-                }
-            }
-			if ( isset( $_SESSION[ "login" ] ) ) {
 				ModelEvent ::save ( $data );
 			}
             self ::readAll ();
 		}
 
 		public static function update () {
-			if ( isset( $_SESSION[ "login" ] )) {
+			if ( isset( $_SESSION[ "login" ] )) { //si on est connecté
 				if ( isset( $_GET[ "id" ] ) ) { //cas où on update
 					$v = ModelEvent ::select ( $_GET[ "id" ] );
 					if($v == null){
@@ -48,82 +48,67 @@
                                 $view = 'update';
                                 $pagetitle = 'Update Event';
                                 require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-                            }else {
+                            } else {
                                 self ::readAll ();
                             }
-                        }else {
+                        } else {
                             $object = 'event';
                             $view = 'update';
                             $pagetitle = 'Update Event';
                             require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
                         }
                     }
-				}
-				else { //cas où on crée
+				} else { //cas où on crée
 					$object = 'event';
 					$view = 'update';
 					$pagetitle = 'Créer Event';
 					require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
 				}
-			}
-			else {
+			} else {
 				self ::readAll ();
 			}
 		}
 
 
 		public static function updated () {
-            $data = array ();
-            if ( Conf::getDebug() ) {
-                foreach ($_GET as $k => $v) {
-                    if (strcmp( $k, "action" ) != 0 && strcmp( $k, "controller" ) != 0) {
-                        $data += [ $k => $v ];
+            if ( isset( $_SESSION[ "login" ] ) ) {
+                $data = array();
+                if (Conf::getDebug()) {
+                    foreach ($_GET as $k => $v) {
+                        if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                            $data += [$k => $v];
+                        }
+                    }
+                } else {
+                    foreach ($_POST as $k => $v) {
+                        if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                            $data += [$k => $v];
+                        }
                     }
                 }
-            }else{
-                foreach ($_POST as $k => $v) {
-                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
-                        $data += [$k => $v];
+                if (isset($_SESSION["login"]) && isset($data["login"])) {
+                    if (Session::is_admin() || strcmp($data["login"], $_SESSION["login"]) == 0) {//Admin ou utilisateur qui modif un evnet qu'il a lui-même créé
+                        ModelEvent::update($data);
+                        self::readAll();
                     }
                 }
-            }
-			if ( isset( $_SESSION[ "login" ] ) && isset( $data[ "login" ] )){
-                if(Session::is_admin() || strcmp ( $data[ "login" ] , $_SESSION[ "login" ] ) == 0 ) {//Admin ou utilisateur qui modif un evnet qu'il a lui-même créé
-                    ModelEvent::update($data);
-                    ControllerEvent::readAll();
-                }
-			}
-			elseif ( !isset( $_SESSION[ "login" ] ) ) {
-				$object = 'main';
-				$view = 'connect';
-				$pagetitle = 'Connection à la page utilisateur';
-				require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-			}
-			else {
                 self::readAll();
-			}
-
+            }
 		}
 
 
         public static function delete () {
-            $model = $_GET['model'];
-            $primary = $_GET[$model::getPrimary()];
-            $l = $model::select($primary);
-            $isLogged = isset( $_SESSION["login"] );
-            if ( $isLogged && ( $_SESSION["isAdmin"] || strcmp( $l -> getLogin() , $_SESSION["login"] ) == 0 ) ) {
-                $model::delete ( $primary );
-                self::readAll();
+		    if(isset($_GET['model'])) {
+                $model = $_GET['model'];
+		        if(isset($_GET[$model::getPrimary()])) {
+                    $primary = $_GET[$model::getPrimary()];
+                    $l = $model::select($primary);
+                    if (isset($_SESSION["login"]) && (Session::is_admin() || Session::is_user($l->getLogin()))) {
+                        $model::delete($primary);
+                    }
+                }
             }
-            elseif ( !$isLogged ) {
-                $object = 'main';
-                $view = 'connect';
-                $pagetitle = 'Connection à la page utilisateur';
-                require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-            }
-            else {
-                self ::readAll ();
-            }
+            self ::readAll ();
         }
 
 		public static function generate() {
@@ -166,26 +151,24 @@ Aliquam lectus nunc, varius eget sagittis viverra, pharetra ut sapien. Phasellus
 		}
 
 		public static function comment() {
-            $data = array ();
-            if ( Conf::getDebug() ) {
-                foreach ($_GET as $k => $v) {
-                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
-                        $data += [$k => $v];
-                    }
-                }
-            }else{
-                foreach ($_POST as $k => $v) {
-                    if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
-                        $data += [$k => $v];
-                    }
-                }
-            }
             if ( isset( $_SESSION[ "login" ] ) ) {
+                $data = array ();
+                if ( Conf::getDebug() ) {
+                    foreach ($_GET as $k => $v) {
+                        if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                            $data += [$k => $v];
+                        }
+                    }
+                }else{
+                    foreach ($_POST as $k => $v) {
+                        if (strcmp($k, "action") != 0 && strcmp($k, "controller") != 0) {
+                            $data += [$k => $v];
+                        }
+                    }
+                }
                 ModelCommentaire ::save ( $data );
-                ControllerEvent::readAll();
-            }else {
-                self::readAll();
             }
+            self::readAll();
 		}
 
         public static function searchEvents() { //fonction appelée par AJAX pour récupérer le XML des events

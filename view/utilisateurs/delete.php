@@ -1,3 +1,3 @@
 <?php
-    echo '<p>L\'utilisateurs a bien été supprimé !</p>';
-    require File::build_path(array('view','utilisateurs','list.php'));
+    echo '<p>L\'utilisateur a bien été supprimé !</p>';
+    ControllerUtilisateurs::connect();

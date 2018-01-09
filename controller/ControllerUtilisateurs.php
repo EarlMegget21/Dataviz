@@ -6,7 +6,7 @@ class ControllerUtilisateurs{
     protected static $controller="utilisateurs";
 
     public static function readAll() {
-        if( isset( $_SESSION[ "login" ] )) {
+        if( Session::is_admin()) { //seul les admin peuvent voir tous les utilisateurs
             $tab_v = ModelUtilisateurs::selectAll();     //appel au modèle pour gerer la BD
             $object = 'utilisateurs';
             $view = 'list';
@@ -19,83 +19,67 @@ class ControllerUtilisateurs{
 
 
     public static function read() {
-        if ( isset( $_SESSION[ "login" ] ) && (($_SESSION[ "isAdmin" ] == 1 ) || ($_SESSION["login"] == $_GET['login'])) ) {    //Il fau être un admin connecté pour accéder aux détails des utilisateurs
+        if ( isset($_GET['login']) && ( Session::is_admin() || Session::is_user($_GET["login"] ) ) ) {    //Il faut être un admin ou accéder à ses propres détails
             $v = ModelUtilisateurs ::select ( $_GET['login'] );
             $object = 'utilisateurs';
             $view = 'detail';
             $pagetitle = 'Détail de l\'utilisateur.';
             require ( File ::build_path ( [ 'view' , 'view.php' ] ) );  //"redirige" vers la vue
-        }
-        else {
-            $object = 'utilisateurs';
-            $view = "error";
-            $pagetitle = "Accès interdit";
-            require File ::build_path( array ( 'view', 'view.php' ) );
+        } else {
+            ControllerEvent::readAll();
         }
     }
 
     public static function create() {
-        if(Session::is_admin ()){
+        if(Session::is_admin ()){ //pour créer il faut être admin
             $object = 'utilisateurs';
             $pagetitle='Création d\'un utilisateur';
             $view='update';
             require File::build_path(array('view','view.php'));
+        }else {
+            ControllerEvent::readAll();
         }
-        $object = 'main';
-        $pagetitle='Erreur';
-        $view='error';
-        require File::build_path(array('view','view.php'));
     }
 
 
     public static function created() {
-        if (strcmp ( $_GET[ "mdp" ] , $_GET[ "mdp_conf" ] ) == 0 ) {
-            if(isset($_GET['isAdmin'])){
-                $data=array(
-                    'login'=>$_GET['login'],
-                    'mdp'=>Security::chiffrer(Security::getSeed().$_GET['mdp']),
-                    'isAdmin'=>1
-                );
-            }else{
-                $data=array(
-                    'login'=>$_GET['login'],
-                    'mdp'=>Security::chiffrer(Security::getSeed().$_GET['mdp']),
-                    'isAdmin'=>0
-                );
+        if(Session::is_admin()) { //si on est admin on peut créer
+            if (strcmp($_GET["mdp"], $_GET["mdp_conf"]) == 0) { //si les deux mdp sont identiques
+                if (isset($_GET['isAdmin'])) { // si l'utilisateur est admin
+                    $data = array(
+                        'login' => $_GET['login'],
+                        'mdp' => Security::chiffrer(Security::getSeed() . $_GET['mdp']),
+                        'isAdmin' => 1
+                    );
+                } else {
+                    $data = array(
+                        'login' => $_GET['login'],
+                        'mdp' => Security::chiffrer(Security::getSeed() . $_GET['mdp']),
+                        'isAdmin' => 0
+                    );
+                }
+                ModelUtilisateurs::save($data);
+                $tab_v = ModelUtilisateurs::selectAll();
+                $object = 'utilisateurs';
+                $view = 'created';
+                $pagetitle = 'Liste des utilisateurs';
+                require(File::build_path(['view', 'view.php']));
+            } else {
+                $error = "mdp";
+                self::error($error);
             }
-            ModelUtilisateurs ::save ( $data );
-            $tab_v = ModelUtilisateurs ::selectAll ();
-            $object = 'utilisateurs';
-            $view = 'created';
-            $pagetitle = 'Liste des utilisateurs';
-            require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-        }
-        else {
-            $object = 'utilisateurs';
-            $tab_v = ModelUtilisateurs ::selectAll ();
-            $error = "mdp";
-            $view = 'error';
-            $pagetitle = 'Erreur';
-            require_once File ::build_path ( [ 'view' , 'view.php' ] );
+        }else{
+            ControllerEvent::readAll();
         }
     }
 
     public static function update() {
-        if ( isset($_GET["login"])&&(Session ::is_user ( $_GET[ "login" ] ) || Session::is_admin ()) ) {
+        if ( isset($_GET["login"]) && ( Session ::is_user ( $_GET["login"] ) || Session::is_admin() ) ) {
             $object = 'utilisateurs';
             $view = 'update';
-            $pagetitle = 'Utilisateur update';
+            $pagetitle = 'Mettre à jour le profil';
             require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-
-        }
-        else if(empty($_SESSION["login"])){
-            $object = 'utilisateurs';
-            $view = 'update';
-            $pagetitle = 'Utilisateur créée';
-            require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-
-        }
-        else{
+        }else{
             ControllerEvent::readAll ();
         }
     }
@@ -118,14 +102,12 @@ class ControllerUtilisateurs{
                     }
                     ModelUtilisateurs::update($data);
                     $view = 'updated';
-                    $pagetitle = 'User updated';
-                }else{
+                    $pagetitle = 'Profil mit à jour';
                     $object = 'utilisateurs';
-                    $tab_v = ModelUtilisateurs ::selectAll ();
+                    require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
+                }else{
                     $error = "mdp";
-                    $view = 'error';
-                    $pagetitle = 'Erreur';
-                    require_once File ::build_path ( [ 'view' , 'view.php' ] );
+                    self::error($error);
                 }
             }else{  //Pas de changement du mdp
                 $data["login"] = $_GET["login"];
@@ -136,58 +118,45 @@ class ControllerUtilisateurs{
                 }
                 ModelUtilisateurs::update($data);
                 $view = 'updated';
-                $pagetitle = 'User updated';
+                $pagetitle = 'Profil mit à jour';
+                $object = 'utilisateurs';
+                require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
             }
+        } else {
+            self::connect();
         }
-        else {
-            echo "Vous n'êtes pas connecté !";
-            $view = 'list';
-            $pagetitle = 'Liste des utilisateurs';
-        }
-        $object = 'utilisateurs';
-        $tab_v = ModelUtilisateurs ::selectAll ();
-        require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
     }
 
 
     public static function delete() {
-        $primary = $_GET["login"];
-        if ( Session ::is_user ( $primary ) ) {
-            $object = 'utilisateurs';
+        if(isset($_GET["login"])) {
+            $primary = $_GET["login"];
+            if (Session::is_user($primary)) {
+                ModelUtilisateurs::delete($primary);
+                $object = 'utilisateurs';
+                $view = 'delete';
+                $pagetitle = 'Utilisateur supprimé';
+                $tab_v = ModelUtilisateurs::selectAll();
 
-            ModelUtilisateurs ::delete ( $primary );
-            $view = 'delete';
-            $pagetitle = 'Utilisateur supprimé';
-            $tab_v = ModelUtilisateurs ::selectAll ();
-
-            session_unset ();
-            session_destroy ();
-            setcookie ( session_name () , '' , time () - 1 );
-            require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-
+                session_unset();
+                session_destroy();
+                setcookie(session_name(), '', time() - 1);
+                require(File::build_path(['view', 'view.php']));
+            } else {
+                self::connect();
+            }
+        }else{
+            ControllerEvent::readAll();
         }
-        elseif ( !isset( $_SESSION[ "login" ] ) ) {
-
-            $object = 'utilisateurs';
-            $view = 'connect';
-            $pagetitle = 'Connection à la page utilisateur';
-            require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-
-        }
-        else {
-            self ::readAll ();
-        }
-
     }
 
     public static function connect() {
         if ( !isset( $_SESSION[ "login" ] ) ) {
-            $object = 'main';
+            $object = 'utilisateurs';
             $view = 'connect';
             $pagetitle = 'Connection à la page utilisateur';
             require ( File ::build_path ( [ 'view' , 'view.php' ] ) );
-        }
-        else {
+        } else {
             ControllerEvent ::readAll ();
         }
     }
@@ -198,14 +167,14 @@ class ControllerUtilisateurs{
                 $login = $_GET["login"];
                 $mdp = $_GET["mdp"];
             }else{
-                ControllerUtilisateurs ::connect();
+                self ::connect();
             }
         }else{
             if(isset( $_POST["login"])&& isset( $_POST["mdp"])) {
                 $login = $_POST["login"];
                 $mdp = $_POST["mdp"];
             }else{
-                ControllerUtilisateurs ::connect();
+                self ::connect();
             }
         }
         if ( !isset( $_SESSION[ "login" ] ) ) {
@@ -213,14 +182,12 @@ class ControllerUtilisateurs{
             if ( $g !== FALSE ) {
                 $_SESSION[ "login" ] = $g -> getLogin ();
                 $_SESSION[ "isAdmin" ] = $g -> getIsAdmin ();
-                ControllerUtilisateurs ::read($_SESSION["login"]);
+                self ::read($_SESSION["login"]);
+            } else {
+                self ::error("mdp2");
             }
-            else {
-                ControllerUtilisateurs ::connect();
-            }
-        }
-        else {
-            ControllerUtilisateurs ::connect();
+        } else {
+            self ::connect();
         }
     }
 
@@ -241,6 +208,7 @@ class ControllerUtilisateurs{
         }
         self::readAll ();
     }
+
     private static function generateRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -251,8 +219,9 @@ class ControllerUtilisateurs{
         return $randomString;
     }
 
-    public static function error(){
-        $object = 'main';
+    public static function error($e){
+        $error=$e;
+        $object = 'utilisateurs';
         $view = 'error';
         $pagetitle = 'Erreur';
         require( File ::build_path( [ 'view', 'view.php' ] ) );
