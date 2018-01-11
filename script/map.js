@@ -136,6 +136,7 @@ function recupererPoints(reponseRequete){ //fonction qui rempli le tableau de po
     var markers = xml.documentElement.getElementsByTagName('marker'); //récupère les tags XML 'marker' pour les mettre dans un tableau
 
     tab_minmax=["3000-01-01", "0000-12-31"]; //on reinitialise le tableau des min et max à chaque requête avec des valeurs hors du range pour pouvoir tester
+    i=0;
     Array.prototype.forEach.call(markers, function (markerElem) { //pour chaque tag marker dans le tableau
         var id = markerElem.getAttribute('id'); //on récupère les attributs dans des variables
         var nom = markerElem.getAttribute('nom');
@@ -163,17 +164,12 @@ function recupererPoints(reponseRequete){ //fonction qui rempli le tableau de po
             tab_minmax[1]=date;
         }
 
-        marker.addListener('click', function () { //ajoute un handler lorsqu'on clique sur le point
-            $('#detail').html('<h5>'+marker.nom+'</h5>'+ //on affiche les details du point dans la zone correspondante
-                '<div><p>Date: '+marker.date+'</p>'+
-                '<p>Auteur: '+marker.login+'</p>'+
-                '<p>Latitude: '+marker.getPosition().lat()+'</p>'+
-                '<p>Longitude: '+marker.getPosition().lng()+'</p>'+
-                '<p>Description: '+marker.description+'</p></div>');
-            $('#retour').css("display", "block"); //on fait apparaître le bouton retour pour revenir sur la liste
-            infoWindow.setContent(infowincontent); //défini le contenu de la mini fenetre en y mettant le <div> créé plus haut
-            infoWindow.open(map, marker); //ouvre cette mini fenêtre avec les details de l'event
-        });
+        marker.addListener('click', function(tab_marker, i){ //utilisation de closure (bien se renseigner sur le fonctionnement) car sinon l'index i dans le handler était égale au dernier i comme si les listener de chaque bouton se créaient après la boucle entière. J'aurais pu aussi mettre l'id du bouton = à l'index de l'event en queton puis récupérer cet id avec target (comme e.source en java)
+            return function(){ //la fonction en parametre de click(), doit être fonction() pour se lancer à chaque event sinon se lance juste à la creation du listener. Ici, vu qu'on lui passe des paramêtres, on doit renvoyer une function() qui se lancera donc à chaque event
+                voirHandler(tab_marker, i) //les parametres passés sont bel et bien connu car on se trouve à l'interieur de l'autre fonction, on récupère donc ses parametres
+            }
+        }(tab_marker,i));
+        i+=1;
     });
 }
 
