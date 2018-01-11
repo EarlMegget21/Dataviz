@@ -8,7 +8,7 @@ if(isset($error)){
             echo "Les deux mots de passe que vous avez rentrés sont différents !";
             break;
         case "mdp2":
-            echo "Le mot de passe est incorrecte";
+            echo "Le mot de passe est incorrect";
             break;
         default:
             echo "Vous ne pouvez pas accéder à ces informations !";
