@@ -18,7 +18,7 @@ class Conf {
     'port'=>'3306'
   );
   
-  static private $debug = True; 
+  static private $debug = false; 
     
   static public function getDebug() {
     return self::$debug;

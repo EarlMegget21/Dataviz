@@ -89,7 +89,6 @@
                 if (isset($_SESSION["login"]) && isset($data["login"])) {
                     if (Session::is_admin() || strcmp($data["login"], $_SESSION["login"]) == 0) {//Admin ou utilisateur qui modif un evnet qu'il a lui-même créé
                         ModelEvent::update($data);
-                        self::readAll();
                     }
                 }
                 self::readAll();
@@ -170,6 +169,39 @@ Aliquam lectus nunc, varius eget sagittis viverra, pharetra ut sapien. Phasellus
             }
             self::readAll();
 		}
+
+
+    public static function test(){
+        $t=[];
+        if(Conf::getDebug()){
+            if(isset($_GET[ "login" ])){
+                $t["login"]=$_GET[ "login" ];
+            }
+            if(isset($_GET[ "mdp" ])){
+                $t["mdp"]=$_GET[ "mdp" ];
+            }
+            if(isset($_GET[ "mdp_conf" ])){
+                $t["mdp_conf"]=$_GET[ "mdp_conf" ];
+            }
+            if(isset($_GET[ "isAdmin" ])){
+                $t["isAdmin"]=$_GET[ "isAdmin" ];
+            }
+        }else{
+            if(isset($_POST[ "login" ])){
+                $t["login"]=$_POST[ "login" ];
+            }
+            if(isset($_POST[ "mdp" ])){
+                $t["mdp"]=$_POST[ "mdp" ];
+            }
+            if(isset($_POST[ "mdp_conf" ])){
+                $t["mdp_conf"]=$_POST[ "mdp_conf" ];
+            }
+            if(isset($_POST[ "isAdmin" ])){
+                $t["isAdmin"]=$_POST[ "isAdmin" ];
+            }
+        }
+        return $t;
+    }
 
         public static function searchEvents() { //fonction appelée par AJAX pour récupérer le XML des events
 		    $mindate=$_GET["mindate"];

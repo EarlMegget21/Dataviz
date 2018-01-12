@@ -8,7 +8,7 @@
             <p>";
     }
 	echo "<label for='login_id'>Login :</label>
-			<input type='text'  name='login' id='login_id_id' required/>
+			<input type='text'  name='login' id='login_id' required/>
 			<label for='mdp_id'>Mot de passe :</label>
 			<input type='password' name='mdp' id='mdp_id' required>
         </p>
