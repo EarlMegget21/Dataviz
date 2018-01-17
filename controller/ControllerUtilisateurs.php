@@ -90,7 +90,7 @@ class ControllerUtilisateurs{
 		if ( isset($t["login"]) && (Session ::is_user ( $t["login"] ) || Session::is_admin ())){    //A-t-on le droit d'update ?
             if (isset($t["mdp"])&&$t["mdp"]!=""){   //Changement du mdp
                 if(strcmp($t["mdp"], $t["mdp_conf"]) == 0){   //mdp et confirmation de mdp OK
-                    $data["mdp"] = Security::chiffrer($t["mdp"]);
+                    $data["mdp"] = Security::chiffrer(Security::getSeed() . $t["mdp"]);
                     $data["login"] = $t["login"];
                     if(Session::is_admin ()) { //que l'admin a le droit de modifier
                         if (isset($t["isAdmin"])) { //on passe l'user en admin
@@ -166,9 +166,8 @@ class ControllerUtilisateurs{
     	$t=self::test();
        if(isset( $t["login"])&& isset( $t["mdp"])) {
             $login = $t["login"];
-            $mdp = $t["mdp"];
+            $mdp = Security::getSeed() . $t["mdp"];
         }else{
-        	echo "oui";
             self ::connect();
         }
         if ( !isset( $_SESSION[ "login" ] ) ) {
