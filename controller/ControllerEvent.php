@@ -215,6 +215,18 @@ Aliquam lectus nunc, varius eget sagittis viverra, pharetra ut sapien. Phasellus
             header('Content-Type: text/xml');
             echo $doc->saveXML();
         }
+		
+	public static function searchEventsJSON() { //fonction appelée par Android pour récupérer le JSON des events
+	    $mindate=$_GET["mindate"];
+	    $maxdate=$_GET["maxdate"];
+	    $xa=$_GET["xa"];
+	    $ya=$_GET["ya"];
+	    $xb=$_GET["xb"];
+	    $yb=$_GET["yb"];
+	    $keyword=$_GET["keyword"];
+            $doc = ModelEvent::getEventListJSON ($mindate."-01-01", $maxdate."-12-31", $xa, $ya, $xb, $yb, $keyword); //appel au modèle pour interroger la BD
+            echo($doc);
+        }
 
         public static function searchComments() { //fonction appelée par AJAX pour récupérer le XML des commentaires
 		    $idEvent=$_GET["idEvent"];
