@@ -83,67 +83,67 @@
 					WHERE date>=:low and date<=:high and latitude>=:yA and latitude<=:yB and ";
 			if($xa>$xb){ //si on est de l'autre côté de la Terre (x1>x2)
 			    $sql=$sql.'(longitude>=:xA or longitude<=:xB)';
-            }else{
-                $sql=$sql.'longitude>=:xA and longitude<=:xB';
-            }
-			if(!is_null($keyword)){ //Si on a un keyword alors on recherche
-			    $sql = $sql." AND (description LIKE CONCAT('%',:keyword,'%') OR nom LIKE CONCAT('%',:keyword,'%'))";
-            }
-            try{
-                $req_prep = Model ::$pdo -> prepare ( $sql );
-                if(!is_null($keyword)) { //Si on a un keyword
-                    $match = [
-                        "low" => $lowest,
-                        "high" => $highest,
-                        "xA" => $xa,
-                        "yA" => $ya,
-                        "xB" => $xb,
-                        "yB" => $yb,
-                        "keyword" => $keyword,
-                    ];
-                }else{  //Pas de keyword
-                    $match = [
-                        "low" => $lowest,
-                        "high" => $highest,
-                        "xA" => $xa,
-                        "yA" => $ya,
-                        "xB" => $xb,
-                        "yB" => $yb,
-                    ];
-                }
+		    }else{
+			$sql=$sql.'longitude>=:xA and longitude<=:xB';
+		    }
+				if(!is_null($keyword)){ //Si on a un keyword alors on recherche
+				    $sql = $sql." AND (description LIKE CONCAT('%',:keyword,'%') OR nom LIKE CONCAT('%',:keyword,'%'))";
+		    }
+		    try{
+			$req_prep = Model ::$pdo -> prepare ( $sql );
+			if(!is_null($keyword)) { //Si on a un keyword
+			    $match = [
+				"low" => $lowest,
+				"high" => $highest,
+				"xA" => $xa,
+				"yA" => $ya,
+				"xB" => $xb,
+				"yB" => $yb,
+				"keyword" => $keyword,
+			    ];
+			}else{  //Pas de keyword
+			    $match = [
+				"low" => $lowest,
+				"high" => $highest,
+				"xA" => $xa,
+				"yA" => $ya,
+				"xB" => $xb,
+				"yB" => $yb,
+			    ];
+			}
 
-                $req_prep -> execute ( $match );
-                $req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelEvent' );
-                $tab_v=$req_prep -> fetchAll ();
+			$req_prep -> execute ( $match );
+			$req_prep -> setFetchMode ( PDO::FETCH_CLASS , 'ModelEvent' );
+			$tab_v=$req_prep -> fetchAll ();
 
-                //création du doc XML(virtuel)
-                $doc = new DOMDocument("1.0", "UTF-8"); //créer un objet de type document DOM(format de balises comme XML, html, ...)
-                $node = $doc->createElement("markers"); //créer une balise <markers> contenant tous les points
-                $parnode = $doc->appendChild($node); //ajoute cette balise au document
-                foreach ($tab_v as $event) { //pour chaque event retourné par la requête
-                    // Add to XML document node
-                    $node = $doc->createElement("marker"); //créer une balise <marker> représentant un point
-                    $newnode = $parnode->appendChild($node); //ajoute cette balise en enfant à <markers>
+			//création du doc XML(virtuel)
+			$doc = new DOMDocument("1.0", "UTF-8"); //créer un objet de type document DOM(format de balises comme XML, html, ...)
+			$node = $doc->createElement("markers"); //créer une balise <markers> contenant tous les points
+			$parnode = $doc->appendChild($node); //ajoute cette balise au document
+			foreach ($tab_v as $event) { //pour chaque event retourné par la requête
+			    // Add to XML document node
+			    $node = $doc->createElement("marker"); //créer une balise <marker> représentant un point
+			    $newnode = $parnode->appendChild($node); //ajoute cette balise en enfant à <markers>
 
-                    $newnode->setAttribute("id", $event->getId()); //ajoute chaque attribut
-                    $newnode->setAttribute("nom", $event->getNom());
-                    $newnode->setAttribute("description", $event->getDescription());
-                    $newnode->setAttribute("lat", $event->getLatitude());
-                    $newnode->setAttribute("lng", $event->getLongitude());
-                    $newnode->setAttribute("date", $event->getDate());
-                    $newnode->setAttribute("login", $event->getLogin());
-                    $newnode->setAttribute("mp3", $event->getMP3());
-                }
+			    $newnode->setAttribute("id", $event->getId()); //ajoute chaque attribut
+			    $newnode->setAttribute("nom", $event->getNom());
+			    $newnode->setAttribute("description", $event->getDescription());
+			    $newnode->setAttribute("lat", $event->getLatitude());
+			    $newnode->setAttribute("lng", $event->getLongitude());
+			    $newnode->setAttribute("date", $event->getDate());
+			    $newnode->setAttribute("login", $event->getLogin());
+			    $newnode->setAttribute("mp3", $event->getMP3());
+			}
 
-                return $doc;
-            } catch(PDOException $e){
-                if ( Conf ::getDebug () ) {
-                    echo $e -> getMessage (); // affiche un message d'erreur
-                } else {
-                    echo 'Une erreur est survenue <a href="#"> retour a la page d\'accueil </a>';
-                }
-                die(); //supprimer equilvalent à System.exit(1); en java
-            }
+			return $doc;
+		    } catch(PDOException $e){
+			if ( Conf ::getDebug () ) {
+			    echo $e -> getMessage (); // affiche un message d'erreur
+			} else {
+			    echo 'Une erreur est survenue <a href="#"> retour a la page d\'accueil </a>';
+			}
+			die(); //supprimer equilvalent à System.exit(1); en java
+		    }
 		}
 
 		/*
@@ -162,7 +162,57 @@
 			return $filter;
 
 		}
+		
+		public static function getEventListJSON ( $lowest , $highest , $xa, $ya , $xb, $yb, $keyword) {
+			$sql = "SELECT * 
+				FROM Event 
+				WHERE date>=:low and date<=:high and latitude>=:yA and latitude<=:yB and ";
+			if($xa>$xb){ //si on est de l'autre côté de la Terre (x1>x2)
+				$sql=$sql.'(longitude>=:xA or longitude<=:xB)';
+			}else{
+				$sql=$sql.'longitude>=:xA and longitude<=:xB';
+			}
+			if(!is_null($keyword)){ //Si on a un keyword alors on recherche
+				$sql = $sql." AND (description LIKE CONCAT('%',:keyword,'%') OR nom LIKE CONCAT('%',:keyword,'%'))";
+			}
+			try{
+				$req_prep = Model ::$pdo -> prepare ( $sql );
+				if(!is_null($keyword)) { //Si on a un keyword
+				    $match = [
+					"low" => $lowest,
+					"high" => $highest,
+					"xA" => $xa,
+					"yA" => $ya,
+					"xB" => $xb,
+					"yB" => $yb,
+					"keyword" => $keyword,
+				    ];
+				}else{  //Pas de keyword
+				    $match = [
+					"low" => $lowest,
+					"high" => $highest,
+					"xA" => $xa,
+					"yA" => $ya,
+					"xB" => $xb,
+					"yB" => $yb,
+				    ];
+				}
 
-	}
+				$req_prep -> execute ( $match );
+				$req_prep -> setFetchMode ( PDO::FETCH_ASSOC);
+				$tab_v=$req_prep -> fetchAll ();
+
+				return json_encode($tab_v);
+			    } catch(PDOException $e){
+				if ( Conf ::getDebug () ) {
+				    echo $e -> getMessage (); // affiche un message d'erreur
+				} else {
+				    echo 'Une erreur est survenue <a href="#"> retour a la page d\'accueil </a>';
+				}
+				die(); //supprimer equilvalent à System.exit(1); en java
+			    }
+			}
+
+		}
 
 ?>
